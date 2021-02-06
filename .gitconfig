@@ -1,0 +1,45 @@
+[include]
+	path = ~/.gitconfig.user
+
+[alias]
+  st = status --branch --short
+  ci = commit
+  co = checkout
+  br = branch
+  unstage = reset HEAD --
+  log1 = log --pretty=oneline
+  tree = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+[color]
+  ui = true
+[core]
+  editor = emacs
+[pull]
+  rebase = true
+[push]
+  default = simple
+
+# [merge]
+# 	keepBackup = false
+# 	tool = p4merge
+
+# [mergetool]
+# 	prompt = false
+
+# [mergetool "p4merge"]
+# 	cmd = p4merge "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+# 	keepTemporaries = false
+# 	trustExitCode = false
+# 	keepBackup = false
+
+# [diff]
+# 	tool = p4merge
+
+# [difftool]
+# 	prompt = false
+
+# [difftool "p4merge"]
+# 	cmd = p4merge "$LOCAL" "$REMOTE"
+# 	keepTemporaries = false
+# 	trustExitCode = false
+# 	keepBackup = false
