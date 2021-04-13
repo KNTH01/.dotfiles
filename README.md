@@ -1,6 +1,8 @@
 # dotfiles
 My dotfiles
 
+`git clone {repo} .dotfiles`
+
 Add `~/.gitconfig.user` with you Git credentials
 
 ```plaintext
@@ -11,10 +13,15 @@ Add `~/.gitconfig.user` with you Git credentials
 ```
 
 ```bash
-ln -s ~/dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/.dotfiles/.zshrc ~/.zshrc
 ```
 
-# TODO
+## How to
+
+- Copy the env file `ln -s .dotfiles_env $HOME/.dotfiles_env` and change the values if needed
+
+## TODO
 
 - [ ] .zshrc
 - [ ] .profile
