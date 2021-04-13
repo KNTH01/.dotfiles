@@ -11,7 +11,7 @@
   tree = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 
 [color]
-  ui = true
+  ui = auto
 [core]
   editor = emacs
 [pull]

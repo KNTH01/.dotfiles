@@ -13,3 +13,9 @@ Add `~/.gitconfig.user` with you Git credentials
 ```bash
 ln -s ~/dotfiles/.gitconfig ~/.gitconfig
 ```
+
+# TODO
+
+- [ ] .zshrc
+- [ ] .profile
+- [ ] npm / yarn bin location configuration
