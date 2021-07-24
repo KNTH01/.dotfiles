@@ -2,16 +2,12 @@
 source $HOME/.dotfiles_env
 
 # Path to npm bin
-export PATH=$HOME/npm/bin:$PATH
+export PATH=$HOME/.npm/bin:$PATH
 # Path to Yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Export ~/.local/bin
 export PATH="$HOME/.local/bin:$PATH"
-export BROWSER="wsl-open"
-
-# for WSL: https://github.com/microsoft/WSL/issues/1801
-umask 22
 
 # https://github.com/nvbn/thefuck
 eval $(thefuck --alias)
@@ -87,18 +83,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-alias goweb="cd ~/web/"
-alias goevenjoy="cd ~/web/evenjoy"
-alias gogekri="cd ~/web/gekri"
-alias golifewrite="cd ~/web/lifewrite"
-alias ne="emacs -nw"
-alias sourceme="source ~/.zshrc"
-alias yolo='rm -rf node_modules/ && rm package-lock.json && yarn install'
-alias myip='curl http://ipecho.net/plain; echo'
-alias drop-cache="sudo sh -c \"echo 3 >'/proc/sys/vm/drop_caches' && swapoff -a && swapon -a && printf '\n%s\n' 'Ram-cache and Swap Cleared'\""
-
-
+source ~/.me.aliases
+source ~/.arcolinux.aliases
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -119,8 +105,8 @@ fi
 # fuzzy finder https://github.com/junegunn/fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
+# export VOLTA_HOME="$HOME/.volta"
+# export PATH="$VOLTA_HOME/bin:$PATH"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
@@ -129,3 +115,7 @@ export PATH="$PATH:/opt/bin"
 # RMagick gem
 export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 . $HOME/.asdf/asdf.sh
+
+# for WSL: https://github.com/microsoft/WSL/issues/1801
+# umask 22
+# export BROWSER="wsl-open"

@@ -1,0 +1,7 @@
+alias ne="emacs -nw"
+alias sourceme="source ~/.zshrc"
+alias yolo='rm -rf node_modules/ && rm package-lock.json && yarn install'
+alias myip='curl http://ipecho.net/plain; echo'
+
+# WSL2
+alias drop-cache="sudo sh -c \"echo 3 >'/proc/sys/vm/drop_caches' && swapoff -a && swapon -a && printf '\n%s\n' 'Ram-cache and Swap Cleared'\""
