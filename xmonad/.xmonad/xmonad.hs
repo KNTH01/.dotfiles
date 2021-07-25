@@ -444,23 +444,23 @@ myKeys2 conf@XConfig {XMonad.modMask = modm} =
       ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
     ]
 
+defaults =
+  def
+    { modMask = myModMask,
+      terminal = myTerminal,
+      startupHook = myStartupHook,
+      manageHook = myManageHook <+> manageDocks,
+      handleEventHook = docksEventHook <+> fullscreenEventHook,
+      layoutHook = gaps [(U, 35), (D, 5), (R, 5), (L, 5)] $ showWName' myShowWNameTheme myLayoutHook,
+      workspaces = myWorkspaces,
+      borderWidth = myBorderWidth,
+      normalBorderColor = myNormColor,
+      focusedBorderColor = myFocusColor,
+      focusFollowsMouse = myFocusFollowsMouse,
+      clickJustFocuses = myClickJustFocuses
+      -- keys = myKeys2 -- need to play with myBaseConfig... TODO later
+    }
+    `additionalKeysP` myKeys
+
 main :: IO ()
-main = do
-  xmonad $
-    ewmh
-      def
-        { modMask = myModMask,
-          terminal = myTerminal,
-          startupHook = myStartupHook,
-          manageHook = myManageHook <+> manageDocks,
-          handleEventHook = docksEventHook <+> fullscreenEventHook,
-          layoutHook = gaps [(U, 35), (D, 5), (R, 5), (L, 5)] $ showWName' myShowWNameTheme myLayoutHook,
-          workspaces = myWorkspaces,
-          borderWidth = myBorderWidth,
-          normalBorderColor = myNormColor,
-          focusedBorderColor = myFocusColor,
-          focusFollowsMouse = myFocusFollowsMouse,
-          clickJustFocuses = myClickJustFocuses
-          -- keys = myKeys2 -- need to play with myBaseConfig... TODO later
-        }
-      `additionalKeysP` myKeys
+main = xmonad $ ewmh defaults
