@@ -11,7 +11,7 @@ import qualified Data.Map as M
 import Data.Maybe (fromJust, isJust)
 import Data.Monoid
 import Data.Tree
-import Graphics.X11.ExtraTypes.XF86 ()
+import Graphics.X11.ExtraTypes.XF86
 import System.Directory
 import System.Exit
 import System.IO
@@ -278,11 +278,6 @@ mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
       tiled_ratio = 1 / 2
 -}
 
-floats =
-  renamed [Replace "floats"] $
-    smartBorders $
-      limitWindows 20 simplestFloat
-
 tall =
   renamed [Replace "tall"] $
     smartBorders $
@@ -403,8 +398,7 @@ myLayoutHook =
   avoidStruts $
     mouseResize $
       windowArrange $
-        T.toggleLayouts floats $
-          mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
+        mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
   where
     myDefaultLayout =
       withBorder
@@ -415,7 +409,6 @@ myLayoutHook =
 
 {-
   Disabled layouts
-||| floats
 ||| monocle
 ||| grid
 ||| spirals
@@ -436,7 +429,7 @@ myKeys =
     --Xmonad
     ("M-C-r", spawn "xmonad --recompile"), -- Recompiles xmonad
     ("M-S-r", spawn "xmonad --restart"), -- Restarts xmonad
-    -- ("M-S-w", io exitSuccess), -- Quits xmonad
+    ("M-S-w", io exitSuccess), -- Quits xmonad
     --
     -- Useful programs to have a keybinding for launch
     ("M-<Return>", spawn myTerminal),
@@ -445,36 +438,16 @@ myKeys =
     ("M-x", spawn "arcolinux-logout"),
     ("M-e", spawn myFileManager),
     ("M-v", spawn "pavucontrol"),
+    ("C-M1-<Delete>", spawn "xfce4-taskmanager"),
+    ("M-S-b", spawn "polybar-msg cmd toggle"),
+    -- ((controlMask .|. mod1Mask, xK_Next), spawn "conky-rotate -n"),
+    -- ((controlMask .|. mod1Mask, xK_Prior), spawn "conky-rotate -p"),
     --
-    -- Rofi
-    -- ("M-M1-t", spawn "rofi-theme-selector"),
+    -- rofi
     ("M-p", spawn "rofi -show window"),
     ("M-S-p", spawn "rofi -show drun -drun-icon-theme \"candy-icons\""),
     ("M-S-d", spawn "rofi -show run"),
-    -- ("M-S-d", spawn "dmenu_run -i -p \"Run: \""), -- Dmenu
-    -- ("M-S-d", spawn "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'"), -- Dmenu
-    --
-    -- ((modMask, xK_y), spawn "polybar-msg cmd toggle"),
-    -- ((0, xK_F12), spawn "xfce4-terminal --drop-down"),
-    -- ((controlMask .|. mod1Mask, xK_Next), spawn "conky-rotate -n"),
-    -- ((controlMask .|. mod1Mask, xK_Prior), spawn "conky-rotate -p"),
-    -- ((controlMask .|. mod1Mask, xK_o), spawn "$HOME/.xmonad/scripts/picom-toggle.sh"),
-    -- ((controlMask .|. mod1Mask, xK_u), spawn "pavucontrol"),
-    -- ((mod1Mask, xK_f), spawn "variety -f"),
-    -- ((mod1Mask, xK_n), spawn "variety -n"),
-    -- ((mod1Mask, xK_p), spawn "variety -p"),
-    -- ((mod1Mask, xK_t), spawn "variety -t"),
-    -- ((mod1Mask, xK_Up), spawn "variety --pause"),
-    -- ((mod1Mask, xK_Down), spawn "variety --resume"),
-    -- ((mod1Mask, xK_Left), spawn "variety -p"),
-    -- ((mod1Mask, xK_Right), spawn "variety -n"),
-    -- ((mod1Mask, xK_F2), spawn "xfce4-appfinder --collapsed"),
-    -- ((mod1Mask, xK_F3), spawn "xfce4-appfinder"),
-    -- ((mod1Mask .|. shiftMask, xK_f), spawn "variety -f && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&"),
-    -- ((mod1Mask .|. shiftMask, xK_n), spawn "variety -n && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&"),
-    -- ((mod1Mask .|. shiftMask, xK_p), spawn "variety -p && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&"),
-    -- ((mod1Mask .|. shiftMask, xK_t), spawn "variety -t && wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&"),
-    ("C-M1-<Delete>", spawn "xfce4-taskmanager"),
+    ("M-M1-t", spawn "rofi-theme-selector"),
     --
     -- Kill windows
     ("M-S-c", kill1), -- Kill the currently focused client
@@ -487,28 +460,21 @@ myKeys =
     ("M-.", nextScreen), -- Switch focus to next monitor
     ("M-S-<Right>", shiftTo Next nonNSP >> moveTo Next nonNSP), -- Shifts focused window to next ws
     ("M-S-<Left>", shiftTo Prev nonNSP >> moveTo Prev nonNSP), -- Shifts focused window to prev ws
-
+    ("M1-<Tab>", nextWS),
+    ("M1-S-<Tab>", prevWS),
+    ("C-M1-<Right>", nextWS),
+    ("C-M1-<Left>", prevWS),
+    --
     -- Floating windows
-    -- TODO: M-f doessnt work?
-    -- ("M-f", sendMessage (T.Toggle "floats")), -- Toggles my 'floats' layout
     ("M-t", withFocused $ windows . W.sink), -- Push floating window back to tile
     ("M-S-t", sinkAll), -- Push ALL floating windows to tile
-
-    -- Increase/decrease spacing (gaps)
-    -- ("C-M1-j", decWindowSpacing 4), -- Decrease window spacing
-    -- ("C-M1-k", incWindowSpacing 4), -- Increase window spacing
-    -- ("C-M1-h", decScreenSpacing 4), -- Decrease screen spacing
-    -- ("C-M1-l", incScreenSpacing 4), -- Increase screen spacing
-
-    -- Grid Select (CTR-g followed by a key)
-    -- ("C-g g", spawnSelected' myAppGrid), -- grid select favorite apps
-    -- ("C-g t", goToSelected $ mygridConfig myColorizer), -- goto selected window
-    -- ("C-g b", bringSelected $ mygridConfig myColorizer), -- bring selected window
-
     --
-    -- Windows navigation
+    -- Master Windows
     ("M-m", windows W.focusMaster), -- Move focus to the master window
     ("M-S-m", windows W.swapMaster), -- Swap the focused window and the master window
+    ("M-<Backspace>", promote), -- Moves focused window to master, others maintain order
+    ("C-M-<Up>", sendMessage (IncMasterN 1)), -- Increase # of clients master pane
+    ("C-M-<Down>", sendMessage (IncMasterN (-1))), -- Decrease # of clients master pane
     --
     -- Focus windows
     ("M-j", windows W.focusDown), -- Move focus to the next window
@@ -521,22 +487,13 @@ myKeys =
     ("M-S-<Down>", windows W.swapDown), -- Swap focused window with next window
     ("M-S-k", windows W.swapUp), -- Swap focused window with prev window
     ("M-S-<Up>", windows W.swapUp), -- Swap focused window with prev window
-    -- TODO
-    ("M-<Backspace>", promote), -- Moves focused window to master, others maintain order
+    -- Rotate windows
     ("M-S-<Tab>", rotSlavesDown), -- Rotate all windows except master and keep focus in place
     ("M-C-<Tab>", rotAllDown), -- Rotate all the windows in the current stack
     --
     -- Layouts
-    ("M-<Tab>", sendMessage NextLayout), -- Switch to next layout
-    -- TODO
-    ("M-<Space>", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts), -- Toggles noborder/full
-
-    -- TODO Increase/decrease windows in the master pane or the stack
-    -- ("M-S-<Up>", sendMessage (IncMasterN 1)), -- Increase # of clients master pane
-    -- ("M-S-<Down>", sendMessage (IncMasterN (-1))), -- Decrease # of clients master pane
-    -- ("M-C-<Up>", increaseLimit), -- Increase # of windows
-    -- ("M-C-<Down>", decreaseLimit), -- Decrease # of windows
-
+    ("M-<Tab>", sendMessage NextLayout), -- Cycle through the available layout algorithms
+    ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts), -- Toggles noborder/full
     --
     -- Window resizing
     ("M-h", sendMessage Shrink), -- Shrink horiz window width
@@ -548,139 +505,31 @@ myKeys =
     ("M-M1-<Down>", sendMessage MirrorShrink), -- Shrink vert window width
     ("M-M1-k", sendMessage MirrorExpand), -- Expand vert window width
     ("M-M1-<Up>", sendMessage MirrorExpand), -- Expand vert window width
-
     --
-    -- This is used to push windows to tabbed sublayouts, or pull them out of it.
-    -- ("M-C-h", sendMessage $ pullGroup L),
-    -- ("M-C-l", sendMessage $ pullGroup R),
-    -- ("M-C-k", sendMessage $ pullGroup U),
-    -- ("M-C-j", sendMessage $ pullGroup D),
-    -- ("M-C-m", withFocused (sendMessage . MergeAll)),
-    -- ("M-C-/", withFocused (sendMessage . UnMergeAll)),
-    -- ("M-C-.", onGroup W.focusUp'), -- Switch focus to next tab
-    -- ("M-C-,", onGroup W.focusDown'), -- Switch focus to prev tab
-    --
-    -- TODO Scratchpads
-    -- Toggle show/hide these programs.  They run on a hidden workspace.
+    -- TODO Toggle show/hide these programs.  They run on a hidden workspace.
     -- When you toggle them to show, it brings them to your current workspace.
     -- Toggle them to hide and it sends them back to hidden workspace (NSP).
     -- ("C-s t", namedScratchpadAction myScratchPads "terminal"),
     -- ("C-s m", namedScratchpadAction myScratchPads "mocp"),
     -- ("C-s c", namedScratchpadAction myScratchPads "calculator"),
     --
-    -- TODO Set wallpaper with 'feh'. Type 'SUPER+F1' to launch sxiv in the wallpapers directory.
-    -- Then in sxiv, type 'C-x w' to set the wallpaper that you choose.
-    -- ("M-<F1>", spawn "sxiv -r -q -t -o ~/wallpapers/*"),
-    -- ("M-<F2>", spawn "/bin/ls ~/wallpapers | shuf -n 1 | xargs xwallpaper --stretch"),
-    -- --  ("M-<F2>", spawn "feh --randomize --bg-fill ~/wallpapers/*"),
-
-    -- TODO Controls for mocp music player (SUPER-u followed by a key)
-    ("M-u p", spawn "mocp --play"),
-    ("M-u l", spawn "mocp --next"),
-    ("M-u h", spawn "mocp --previous"),
-    ("M-u <Space>", spawn "mocp --toggle-pause"),
-    --
-    -- TODO Emacs (CTRL-e followed by a key)
-    -- --  ("C-e e", spawn myEmacs),                 -- start emacs
-    -- ("C-e e", spawn (myEmacs ++ ("--eval '(dashboard-refresh-buffer)'"))), -- emacs dashboard
-    -- ("C-e b", spawn (myEmacs ++ ("--eval '(ibuffer)'"))), -- list buffers
-    -- ("C-e d", spawn (myEmacs ++ ("--eval '(dired nil)'"))), -- dired
-    -- ("C-e i", spawn (myEmacs ++ ("--eval '(erc)'"))), -- erc irc client
-    -- ("C-e m", spawn (myEmacs ++ ("--eval '(mu4e)'"))), -- mu4e email
-    -- ("C-e n", spawn (myEmacs ++ ("--eval '(elfeed)'"))), -- elfeed rss
-    -- ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'"))), -- eshell
-    -- ("C-e t", spawn (myEmacs ++ ("--eval '(mastodon)'"))), -- mastodon.el
-    -- -- ("C-e v", spawn (myEmacs ++ ("--eval '(vterm nil)'"))), -- vterm if on GNU Emacs
-    -- ("C-e v", spawn (myEmacs ++ ("--eval '(+vterm/here nil)'"))), -- vterm if on Doom Emacs
-    -- -- TODO ("C-e w", spawn (myEmacs ++ ("--eval '(eww \"distrotube.com\")'"))), -- eww browser if on GNU Emacs
-    -- ("C-e w", spawn (myEmacs ++ "--eval '(doom/window-maximize-buffer(eww \"distrotube.com\"))'")), -- eww browser if on Doom Emacs
-    -- emms is an emacs audio player. I set it to auto start playing in a specific directory.
-    -- ("C-e a", spawn (myEmacs ++ ("--eval '(emms)' --eval '(emms-play-directory-tree \"~/Music/Non-Classical/70s-80s/\")'"))),
-
-    --
-    -- TODO Multimedia Keys
-    -- ("<XF86AudioPlay>", spawn (myTerminal ++ "mocp --play")),
-    -- ("<XF86AudioPrev>", spawn (myTerminal ++ "mocp --previous")),
-    -- ("<XF86AudioNext>", spawn (myTerminal ++ "mocp --next")),
-    -- ("<XF86AudioMute>", spawn "amixer set Master toggle"),
+    -- Multimedia Keys
+    ("<XF86AudioPlay>", spawn "playerctl play-pause"),
+    ("<XF86AudioPrev>", spawn "playerctl next"),
+    ("<XF86AudioNext>", spawn "playerctl previous"),
+    ("<xF86AudioStop>", spawn "playerctl stop"),
+    ("<XF86AudioMute>", spawn "amixer set Master toggle"),
     ("<XF86AudioLowerVolume>", spawn "amixer set Master 3%- unmute"),
     ("<XF86AudioRaiseVolume>", spawn "amixer set Master 3%+ unmute"),
-    -- ("<XF86HomePage>", spawn "qutebrowser https://www.youtube.com/c/DistroTube"),
-    -- ("<XF86Search>", spawn "dmsearch"),
-    -- ("<XF86Mail>", runOrRaise "thunderbird" (resource =? "thunderbird")),
-    -- ("<XF86Calculator>", runOrRaise "qalculate-gtk" (resource =? "qalculate-gtk")),
-    -- ("<XF86Eject>", spawn "toggleeject"),
+    ("<XF86Calculator>", runOrRaise "qalculate-gtk" (resource =? "qalculate-gtk")),
+    ("<XF86Eject>", spawn "toggleeject"),
+    ("<xF86MonBrightnessUp>", spawn "xbacklight -inc 3"), -- Increase brightness
+    ("<xF86MonBrightnessDown>", spawn "xbacklight -dec 3"), -- Decrease brightness
+    --
     -- TODO Screenshot
     ("<Print>", spawn "dmscrot")
-    --
-    --
-    --
-    --
-    --
-
-    -- ((mod1Mask .|. shiftMask, xK_u), spawn "wal -i $(cat $HOME/.config/variety/wallpaper/wallpaper.jpg.txt)&"),
-    -- ((0, xK_Print), spawn "scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'"),
     -- ((controlMask, xK_Print), spawn "xfce4-screenshooter"),
     -- ((controlMask .|. shiftMask, xK_Print), spawn "gnome-screenshot -i"),
-    -- --MULTIMEDIA KEYS
-
-    -- -- Mute volume
-    -- ((0, xF86XK_AudioMute), spawn "amixer -q set Master toggle"),
-    -- -- Decrease volume
-    -- ((0, xF86XK_AudioLowerVolume), spawn "amixer -q set Master 5%-"),
-    -- -- Increase volume
-    -- ((0, xF86XK_AudioRaiseVolume), spawn "amixer -q set Master 5%+"),
-    -- -- Increase brightness
-    -- ((0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 5"),
-    -- -- Decrease brightness
-    -- ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5"),
-    -- --  , ((0, xF86XK_AudioPlay), spawn $ "mpc toggle")
-    -- --  , ((0, xF86XK_AudioNext), spawn $ "mpc next")
-    -- --  , ((0, xF86XK_AudioPrev), spawn $ "mpc prev")
-    -- --  , ((0, xF86XK_AudioStop), spawn $ "mpc stop")
-
-    -- ((0, xF86XK_AudioPlay), spawn "playerctl play-pause"),
-    -- ((0, xF86XK_AudioNext), spawn "playerctl next"),
-    -- ((0, xF86XK_AudioPrev), spawn "playerctl previous"),
-    -- ((0, xF86XK_AudioStop), spawn "playerctl stop"),
-    -- --  XMONAD LAYOUT KEYS
-
-    -- -- Cycle through the available layout algorithms.
-    -- ((modMask, xK_space), sendMessage NextLayout),
-    -- --Focus selected desktop
-    -- ((mod1Mask, xK_Tab), nextWS),
-    -- --Focus selected desktop
-    -- ((modMask, xK_Tab), nextWS),
-    -- --Focus selected desktop
-    -- ((controlMask .|. mod1Mask, xK_Left), prevWS),
-    -- --Focus selected desktop
-    -- ((controlMask .|. mod1Mask, xK_Right), nextWS),
-    -- --  Reset the layouts on the current workspace to default.
-    -- ((modMask .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf),
-    -- -- Move focus to the next window.
-    -- ((modMask, xK_j), windows W.focusDown),
-    -- -- Move focus to the previous window.
-    -- ((modMask, xK_k), windows W.focusUp),
-    -- -- Move focus to the master window.
-    -- ((modMask .|. shiftMask, xK_m), windows W.focusMaster),
-    -- -- Swap the focused window with the next window.
-    -- ((modMask .|. shiftMask, xK_j), windows W.swapDown),
-    -- -- Swap the focused window with the next window.
-    -- ((controlMask .|. modMask, xK_Down), windows W.swapDown),
-    -- -- Swap the focused window with the previous window.
-    -- ((modMask .|. shiftMask, xK_k), windows W.swapUp),
-    -- -- Swap the focused window with the previous window.
-    -- ((controlMask .|. modMask, xK_Up), windows W.swapUp),
-    -- -- Shrink the master area.
-    -- ((controlMask .|. shiftMask, xK_h), sendMessage Shrink),
-    -- -- Expand the master area.
-    -- ((controlMask .|. shiftMask, xK_l), sendMessage Expand),
-    -- -- Push window back into tiling.
-    -- ((controlMask .|. shiftMask, xK_t), withFocused $ windows . W.sink),
-    -- -- Increment the number of windows in the master area.
-    -- ((controlMask .|. modMask, xK_Left), sendMessage (IncMasterN 1)),
-    -- -- Decrement the number of windows in the master area.
-    -- ((controlMask .|. modMask, xK_Right), sendMessage (IncMasterN (-1)))
   ]
   where
     -- The following lines are needed for named scratchpads.
@@ -691,6 +540,7 @@ myKeys2 conf@XConfig {XMonad.modMask = modm} =
   M.fromList
     [ --
       -- reset to default layout
+      -- TODO
       ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
     ]
 
