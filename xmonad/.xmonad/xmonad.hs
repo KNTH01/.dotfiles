@@ -11,7 +11,7 @@ import qualified Data.Map as M
 import Data.Maybe (fromJust, isJust)
 import Data.Monoid
 import Data.Tree
-import Graphics.X11.ExtraTypes.XF86
+import Graphics.X11.ExtraTypes.XF86 ()
 import System.Directory
 import System.Exit
 import System.IO
@@ -126,8 +126,13 @@ myNormColor = "#4c566a" -- Border color of normal windows
 myFocusColor :: String
 myFocusColor = "#5e81ac" -- Border color of focused windows
 
+-- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
+
+-- Whether clicking on a window to focus also passes the click to the window
+myClickJustFocuses :: Bool
+myClickJustFocuses = False
 
 windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
@@ -387,6 +392,13 @@ myShowWNameTheme =
     }
 
 -- The layout hook
+--    You can specify and transform your layouts by modifying these values.
+--    If you change layout bindings be sure to use 'mod-shift-space' after
+--    restarting (with 'mod-q') to reset your layout state to the new
+--    defaults, as xmonad preserves your old layout settings by default.
+--
+--    The available layouts.  Note that each layout is separated by |||,
+--    which denotes layout choice.
 myLayoutHook =
   avoidStruts $
     mouseResize $
@@ -418,6 +430,7 @@ myLayoutHook =
     The Xmonad.Util.EZConfig module which allows keybindings to be written in simpler, emacs-like format.
     The Super/Windows key is ‘M’ (the modkey).  The ALT key is ‘M1’.  SHIFT is ‘S’ and CTR is ‘C’.
 -}
+
 myKeys =
   [ --
     --Xmonad
@@ -436,7 +449,7 @@ myKeys =
     -- Rofi
     -- ("M-M1-t", spawn "rofi-theme-selector"),
     ("M-p", spawn "rofi -show window"),
-    ("M-S-p", spawn "rofi -show drun"),
+    ("M-S-p", spawn "rofi -show drun -drun-icon-theme \"candy-icons\""),
     ("M-S-d", spawn "rofi -show run"),
     -- ("M-S-d", spawn "dmenu_run -i -p \"Run: \""), -- Dmenu
     -- ("M-S-d", spawn "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'"), -- Dmenu
@@ -674,6 +687,13 @@ myKeys =
     nonNSP = WSIs (return (\ws -> W.tag ws /= "NSP"))
     nonEmptyNonNSP = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "NSP"))
 
+myKeys2 conf@XConfig {XMonad.modMask = modm} =
+  M.fromList
+    [ --
+      -- reset to default layout
+      ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
+    ]
+
 main :: IO ()
 main = do
   -- Launching three instances of xmobar on their monitors.
@@ -699,7 +719,8 @@ main = do
           borderWidth = myBorderWidth,
           normalBorderColor = myNormColor,
           focusedBorderColor = myFocusColor,
-          focusFollowsMouse = myFocusFollowsMouse
+          focusFollowsMouse = myFocusFollowsMouse,
+          clickJustFocuses = myClickJustFocuses
           -- TODO logHook
           -- logHook =
           --   dynamicLogWithPP $
@@ -720,5 +741,6 @@ main = do
           --           ppExtras = [windowCount], -- # of windows current workspace
           --           ppOrder = \(ws : l : t : ex) -> [ws, l] ++ ex ++ [t] -- order of things in xmobar
           --         }
+          -- keys = myKeys2 -- need to play with myBaseConfig... TODO later
         }
       `additionalKeysP` myKeys
