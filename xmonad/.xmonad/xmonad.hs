@@ -160,30 +160,9 @@ myStartupHook = do
   spawnOnce "$HOME/.xmonad/scripts/autostart.sh"
   setWMName "LG3D"
 
--- TODO
--- myStartupHook = do
---     spawnOnce "lxsession &"
---     spawnOnce "picom &"
-
---     spawnOnce "volumeicon &"
---     spawnOnce "conky -c $HOME/.config/conky/xmonad.conkyrc"
---     spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x282c34  --height 22 &"
---     spawnOnce "/usr/bin/emacs --daemon &" -- emacs daemon for the emacsclient
---     -- spawnOnce "kak -d -s mysession &"  -- kakoune daemon for better performance
---     -- spawnOnce "urxvtd -q -o -f &"      -- urxvt daemon for better performance
-
---     spawnOnce "xargs xwallpaper --stretch < ~/.xwallpaper"  -- set last saved with xwallpaper
---     -- spawnOnce "/bin/ls ~/wallpapers | shuf -n 1 | xargs xwallpaper --stretch"  -- set random xwallpaper
---     -- spawnOnce "~/.fehbg &"  -- set last saved feh wallpaper
---     -- spawnOnce "feh --randomize --bg-fill ~/wallpapers/*"  -- feh set random wallpaper
---     -- spawnOnce "nitrogen --restore &"   -- if you prefer nitrogen to feh
---     setWMName "LG3D"
-
 {-
-  END StartHook
+  Window manipulations
 -}
-
--- window manipulations
 myManageHook =
   composeAll . concat $
     -- 'doFloat' forces a window to float.  Useful for dialog boxes and such.
@@ -208,7 +187,6 @@ myManageHook =
   where
     -- scratchpads todo
     -- <+> namedScratchpadManageHook myScratchPads
-
     doShiftAndGo = doF . liftM2 (.) W.greedyView W.shift
     myCFloats =
       [ "Arandr",
@@ -235,27 +213,17 @@ myManageHook =
     myIgnores = ["desktop_window"]
     my1Shifts = ["Chromium", "Vivaldi-stable", "Firefox"]
     my2Shifts = []
-    my3Shifts = ["Inkscape"]
-    my4Shifts = ["Telegram", "WhatsApp", "Signal", "discord"]
-    my5Shifts = ["Gimp", "feh"]
+    my3Shifts = []
+    my4Shifts = ["Spotify"]
+    my5Shifts = ["Telegram", "WhatsApp", "Signal", "discord"]
     my6Shifts = ["vlc", "mpv"]
-    my7Shifts = ["Virtualbox"]
-    my8Shifts = ["Thunar"]
+    my7Shifts = []
+    my8Shifts = []
     my9Shifts = []
-    my10Shifts = []
+    my10Shifts = ["Virtualbox"]
 
 {-
-  Layouts ARCO
--}
-myLayout1 = spacingRaw True (Border 0 5 5 5) True (Border 5 5 5 5) True $ avoidStruts $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) $ tiled ||| Mirror tiled ||| spiral (6 / 7) ||| ThreeColMid 1 (3 / 100) (1 / 2) ||| Full
-  where
-    tiled = Tall nmaster delta tiled_ratio
-    nmaster = 1
-    delta = 3 / 100
-    tiled_ratio = 1 / 2
-
-{-
-  Layouts DT
+  Layouts
 -}
 --Makes setting the spacingRaw simpler to write. The spacingRaw module adds a configurable amount of space around windows.
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
@@ -299,70 +267,11 @@ magnify =
                 mySpacing 8 $
                   ResizableTall 1 (3 / 100) (1 / 2) []
 
--- monocle =
---   renamed [Replace "monocle"] $
---     smartBorders $
---       windowNavigation $
---         addTabs shrinkText myTabTheme $
---           subLayout [] (smartBorders Simplest) $
---             limitWindows 20 Full
+tabs = renamed [Replace "tabs"] $ tabbed shrinkText myTabTheme
 
--- grid =
---   renamed [Replace "grid"] $
---     smartBorders $
---       windowNavigation $
---         addTabs shrinkText myTabTheme $
---           subLayout [] (smartBorders Simplest) $
---             limitWindows 12 $
---               mySpacing 8 $
---                 mkToggle (single MIRROR) $
---                   Grid (16 / 10)
+tallAccordion = renamed [Replace "tallAccordion"] Accordion
 
--- spirals =
---   renamed [Replace "spirals"] $
---     smartBorders $
---       windowNavigation $
---         addTabs shrinkText myTabTheme $
---           subLayout [] (smartBorders Simplest) $
---             mySpacing' 8 $
---               spiral (6 / 7)
-
--- threeCol =
---   renamed [Replace "threeCol"] $
---     smartBorders $
---       windowNavigation $
---         addTabs shrinkText myTabTheme $
---           subLayout [] (smartBorders Simplest) $
---             limitWindows 7 $
---               ThreeCol 1 (3 / 100) (1 / 2)
-
--- threeRow =
---   renamed [Replace "threeRow"] $
---     smartBorders $
---       windowNavigation $
---         addTabs shrinkText myTabTheme $
---           subLayout [] (smartBorders Simplest) $
---             limitWindows 7
---             -- Mirror takes a layout and rotates it by 90 degrees.
---             -- So we are applying Mirror to the ThreeCol layout.
---             $
---               Mirror $
---                 ThreeCol 1 (3 / 100) (1 / 2)
-
-tabs =
-  renamed [Replace "tabs"]
-  -- I cannot add spacing to this layout because it will
-  -- add spacing between window and tabs which looks bad.
-  $
-    tabbed shrinkText myTabTheme
-
--- tallAccordion =
---   renamed [Replace "tallAccordion"] $
---     Accordion
-
--- wideAccordion =
---   renamed [Replace "wideAccordion"] $
---     Mirror Accordion
+wideAccordion = renamed [Replace "wideAccordion"] $ Mirror Accordion
 
 -- setting colors for tabs layout and tabs sublayout.
 myTabTheme =
@@ -406,17 +315,8 @@ myLayoutHook =
         tall
         ||| magnify
         ||| tabs
-
-{-
-  Disabled layouts
-||| monocle
-||| grid
-||| spirals
-||| threeCol
-||| threeRow
-||| tallAccordion
-||| wideAccordion
--}
+        ||| tallAccordion
+        ||| wideAccordion
 
 {-
   Keys config
@@ -546,11 +446,6 @@ myKeys2 conf@XConfig {XMonad.modMask = modm} =
 
 main :: IO ()
 main = do
-  -- Launching three instances of xmobar on their monitors.
-  -- xmproc0 <- spawnPipe "xmobar -x 0 $HOME/.config/xmobar/xmobarrc0"
-  -- xmproc1 <- spawnPipe "xmobar -x 1 $HOME/.config/xmobar/xmobarrc1"
-  -- xmproc2 <- spawnPipe "xmobar -x 2 $HOME/.config/xmobar/xmobarrc2"
-  -- the xmonad, ya know...what the WM is named after!
   xmonad $
     ewmh
       def
@@ -558,11 +453,6 @@ main = do
           terminal = myTerminal,
           startupHook = myStartupHook,
           manageHook = myManageHook <+> manageDocks,
-          -- Add `fullscreenEventHook` to `handleEventHook` to enable fullscreen support
-          -- on things like YouTube/Netflix.
-          -- This works perfect on SINGLE monitor systems. On multi-monitor systems,
-          -- it adds a border around the window if screen does not have focus. So, the solution
-          -- is to use a keybinding to toggle fullscreen noborders instead. e.g: (M-<Space>)
           handleEventHook = docksEventHook <+> fullscreenEventHook,
           layoutHook = gaps [(U, 35), (D, 5), (R, 5), (L, 5)] $ showWName' myShowWNameTheme myLayoutHook,
           workspaces = myWorkspaces,
@@ -571,26 +461,6 @@ main = do
           focusedBorderColor = myFocusColor,
           focusFollowsMouse = myFocusFollowsMouse,
           clickJustFocuses = myClickJustFocuses
-          -- TODO logHook
-          -- logHook =
-          --   dynamicLogWithPP $
-          --     namedScratchpadFilterOutWorkspacePP $
-          --       xmobarPP
-          --         { -- the following variables beginning with 'pp' are settings for xmobar.
-          --           ppOutput = \x ->
-          --             hPutStrLn xmproc0 x -- xmobar on monitor 1
-          --               >> hPutStrLn xmproc1 x -- xmobar on monitor 2
-          --               >> hPutStrLn xmproc2 x, -- xmobar on monitor 3
-          --           ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]", -- Current workspace
-          --           ppVisible = xmobarColor "#98be65" "" . clickable, -- Visible but not current workspace
-          --           ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" . clickable, -- Hidden workspaces
-          --           ppHiddenNoWindows = xmobarColor "#c792ea" "" . clickable, -- Hidden workspaces (no windows)
-          --           ppTitle = xmobarColor "#b3afc2" "" . shorten 60, -- Title of active window
-          --           ppSep = "<fc=#666666> <fn=1>|</fn> </fc>", -- Separator character
-          --           ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!", -- Urgent workspace
-          --           ppExtras = [windowCount], -- # of windows current workspace
-          --           ppOrder = \(ws : l : t : ex) -> [ws, l] ++ ex ++ [t] -- order of things in xmobar
-          --         }
           -- keys = myKeys2 -- need to play with myBaseConfig... TODO later
         }
       `additionalKeysP` myKeys
