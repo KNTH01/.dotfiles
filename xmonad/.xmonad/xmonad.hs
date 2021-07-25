@@ -1,11 +1,10 @@
-import qualified Codec.Binary.UTF8.String as UTF8
+--
+-- Base
+--
 import Control.Monad (liftM2)
 import qualified DBus as D
 import qualified DBus.Client as D
 import qualified Data.ByteString as B
---
---
---
 import Data.Char (isSpace, toUpper)
 import qualified Data.Map as M
 import Data.Maybe (fromJust, isJust)
@@ -15,9 +14,6 @@ import Graphics.X11.ExtraTypes.XF86
 import System.Directory
 import System.Exit
 import System.IO
---
--- Base
---
 import XMonad
 --
 -- Action
@@ -51,7 +47,6 @@ import XMonad.Hooks.WorkspaceHistory
 import XMonad.Layout.Accordion
 import XMonad.Layout.CenteredMaster (centerMaster)
 import XMonad.Layout.Cross (simpleCross)
-import XMonad.Layout.Fullscreen (fullscreenFull)
 import XMonad.Layout.Gaps
 import XMonad.Layout.GridVariants (Grid (Grid))
 import XMonad.Layout.IndependentScreens
@@ -149,8 +144,6 @@ myWorkspaceIndices = M.fromList $ zip myWorkspaces [1 ..]
 clickable ws = "<action=xdotool key super+" ++ show i ++ ">" ++ ws ++ "</action>"
   where
     i = fromJust $ M.lookup ws myWorkspaceIndices
-
-myBaseConfig = desktopConfig
 
 {-
   StartupHook
@@ -444,12 +437,15 @@ myKeys2 conf@XConfig {XMonad.modMask = modm} =
       ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
     ]
 
-defaults =
-  def
+-- could be: def, desktopConfig
+myBaseConfig = desktopConfig
+
+myConfig =
+  myBaseConfig
     { modMask = myModMask,
       terminal = myTerminal,
       startupHook = myStartupHook,
-      manageHook = myManageHook <+> manageDocks,
+      manageHook = myManageHook <+> manageDocks <+> manageHook myBaseConfig,
       handleEventHook = docksEventHook <+> fullscreenEventHook,
       layoutHook = gaps [(U, 35), (D, 5), (R, 5), (L, 5)] $ showWName' myShowWNameTheme myLayoutHook,
       workspaces = myWorkspaces,
@@ -463,4 +459,12 @@ defaults =
     `additionalKeysP` myKeys
 
 main :: IO ()
-main = xmonad $ ewmh defaults
+main = do
+  dbus <- D.connectSession
+  -- Request access to the DBus name
+  D.requestName
+    dbus
+    (D.busName_ "org.xmonad.Log")
+    [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+
+  xmonad $ ewmh myConfig
