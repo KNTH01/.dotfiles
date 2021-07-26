@@ -2,6 +2,9 @@
 # Oh my Zsh config #
 ####################
 
+# Oh my Zsh setup
+ZSH="$HOME/.oh-my-zsh"
+
 # Don't load any Oh my Zsh theme
 ZSH_THEME=""
 
