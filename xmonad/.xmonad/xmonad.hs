@@ -338,6 +338,7 @@ myKeys =
     --
     -- rofi
     ("M-p", spawn "rofi -show window"),
+    ("M-<Space>", spawn "rofi -show window"),
     ("M-S-p", spawn "rofi -show drun -drun-icon-theme \"candy-icons\""),
     ("M-S-d", spawn "rofi -show run"),
     ("M-M1-t", spawn "rofi-theme-selector"),
@@ -353,10 +354,12 @@ myKeys =
     ("M-.", nextScreen), -- Switch focus to next monitor
     ("M-S-<Right>", shiftTo Next nonNSP >> moveTo Next nonNSP), -- Shifts focused window to next ws
     ("M-S-<Left>", shiftTo Prev nonNSP >> moveTo Prev nonNSP), -- Shifts focused window to prev ws
+    ("M-C-S-<Right>", shiftTo Next nonNSP >> moveTo Next nonNSP), -- Shifts focused window to next ws
+    ("M-C-S-<Left>", shiftTo Prev nonNSP >> moveTo Prev nonNSP), -- Shifts focused window to prev ws
     ("M1-<Tab>", nextWS),
     ("M1-S-<Tab>", prevWS),
-    ("C-M1-<Right>", nextWS),
-    ("C-M1-<Left>", prevWS),
+    ("M-C-<Right>", nextWS),
+    ("M-C-<Left>", prevWS),
     --
     -- Floating windows
     ("M-t", withFocused $ windows . W.sink), -- Push floating window back to tile
@@ -366,8 +369,8 @@ myKeys =
     ("M-m", windows W.focusMaster), -- Move focus to the master window
     ("M-S-m", windows W.swapMaster), -- Swap the focused window and the master window
     ("M-<Backspace>", promote), -- Moves focused window to master, others maintain order
-    ("C-M-<Up>", sendMessage (IncMasterN 1)), -- Increase # of clients master pane
-    ("C-M-<Down>", sendMessage (IncMasterN (-1))), -- Decrease # of clients master pane
+    ("M-C-<Up>", sendMessage (IncMasterN 1)), -- Increase # of clients master pane
+    ("M-C-<Down>", sendMessage (IncMasterN (-1))), -- Decrease # of clients master pane
     --
     -- Focus windows
     ("M-j", windows W.focusDown), -- Move focus to the next window
