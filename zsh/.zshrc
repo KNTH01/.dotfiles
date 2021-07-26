@@ -46,9 +46,8 @@ plugins=(
     sudo
     command-not-found
     colored-man-pages
+    fzf
     # npm
-    # zsh-autosuggestions
-    # zsh-syntax-highlighting
 )
 
 ### Source oh my zsh
@@ -98,6 +97,13 @@ if [ -d "/opt/bin" ] ;
   then PATH="/opt/bin:$PATH"
 fi
 
+### Manual plugins install
+
+# https://github.com/zsh-users/zsh-autosuggestions
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+# https://github.com/zsh-users/zsh-syntax-highlighting
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+
 ### You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -112,8 +118,6 @@ fi
 ### ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-### fuzzy finder https://github.com/junegunn/fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ### the fuck https://github.com/nvbn/thefuck
 # eval $(thefuck --alias)

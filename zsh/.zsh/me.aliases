@@ -1,11 +1,12 @@
 # source shell
-alias sourceme="source ~/.zshrc"
+alias sourceme="source $HOME/.zshrc"
 alias reshell="exec zsh"
 alias rezsh="exec zsh"
 
 # dev
 alias yolo='rm -rf node_modules/ && rm package-lock.json && yarn install'
-alias dotfiles="cd ~/.dotfiles"
+alias dotfiles="cd $HOME/.dotfiles"
+alias repolybar="$HOME/.config/polybar/launch.sh"
 
 # confirm before overwriting something
 alias cp="cp -i"
