@@ -19,6 +19,7 @@ alias la='exa -la --color=always --group-directories-first'  # all files and dir
 alias lt='exa -aT --color=always --group-directories-first' # tree listing
 alias l.='exa -a --color=always --group-directories-first | grep "^\."'
 alias ll.='exa -la --color=always --group-directories-first | grep "^\."'
+alias oldls='/usr/bin/ls'
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'
