@@ -411,8 +411,8 @@ myKeys =
     --
     -- Multimedia Keys
     ("<XF86AudioPlay>", spawn "playerctl play-pause"),
-    ("<XF86AudioPrev>", spawn "playerctl next"),
-    ("<XF86AudioNext>", spawn "playerctl previous"),
+    ("<XF86AudioPrev>", spawn "playerctl previous"),
+    ("<XF86AudioNext>", spawn "playerctl next"),
     ("<xF86AudioStop>", spawn "playerctl stop"),
     ("<XF86AudioMute>", spawn "amixer set Master toggle"),
     ("<XF86AudioLowerVolume>", spawn "amixer set Master 3%- unmute"),
