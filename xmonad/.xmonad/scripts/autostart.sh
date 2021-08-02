@@ -19,21 +19,20 @@ function run {
 # or load the config file from arandr
 run $HOME/.screenlayout/init.sh &
 
-
+# polybar
 (sleep 2; run $HOME/.config/polybar/launch.sh) &
 
-#change your keyboard if you need it
-#setxkbmap -layout be
-
-#cursor active at boot
+# cursor active at boot
 xsetroot -cursor_name left_ptr &
 
-#Some ways to set your wallpaper besides variety or nitrogen
+# some ways to set your wallpaper besides variety or nitrogen
 feh --bg-fill /usr/share/backgrounds/arcolinux/arco-wallpaper.jpg &
-#start the conky to learn the shortcuts
+
+# start the conky to learn the shortcuts
 (conky -c $HOME/.xmonad/scripts/conky-system-overview) &
 
-#starting utility applications at boot time
+# starting utility applications at boot time
+run imwheel
 run variety &
 run nm-applet &
 run pamac-tray &
