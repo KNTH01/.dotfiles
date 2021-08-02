@@ -64,26 +64,26 @@ source $ZSH/oh-my-zsh.sh
 ### Starship prompt
 eval "$(starship init zsh)"
 
-### Aliases
-source $HOME/.zsh/arcolinux.aliases
-source $HOME/.zsh/me.aliases
-
 ### Exports
-export DOTFILES="$HOME/.dotfiles" # my dotfiles
+
 export ZSH="$HOME/.oh-my-zsh" # oh-my-zsh
+export DOTFILES="$HOME/.dotfiles" # my dotfiles
+export FILE_MANAGER="thunar"
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)" # history ignore
 export PATH=$HOME/.npm/bin:$PATH # Path to npm bin
 export EDITOR="emacs -nw" # $EDITOR use Emacs in terminal
 export VISUAL="code" # $VISUAL use Code
 export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH" # RMagick gem
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-# export VOLTA_HOME="$HOME/.volta"
+export VOLTA_HOME="$HOME/.volta" # volta config
+export PATH="$VOLTA_HOME/bin:$PATH" # volta config
 # export MANPATH="/usr/local/man:$MANPATH"
 # export ARCHFLAGS="-arch x86_64" # Compilation flags
+# export SSH_KEY_PATH="~/.ssh/rsa_id" # ssh
+# export LANG=en_US.UTF-8 # You may need to manually set your language environment
 
 ### Paths
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH" # Path to Yarn
-# export PATH="$VOLTA_HOME/bin:$PATH"
 if [ -d "$HOME/.bin" ] ;
   then PATH="$HOME/.bin:$PATH"
 fi
@@ -97,17 +97,6 @@ if [ -d "/opt/bin" ] ;
   then PATH="/opt/bin:$PATH"
 fi
 
-### Manual plugins install
-
-# https://github.com/zsh-users/zsh-autosuggestions
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-# https://github.com/zsh-users/zsh-syntax-highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-
-### You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-
 ### Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='emacs -nw'
@@ -115,9 +104,18 @@ else
   export EDITOR='code'
 fi
 
-### ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+### Aliases
+source $HOME/.zsh/arcolinux.aliases
+source $HOME/.zsh/me.aliases
 
+### Manual plugins install
+
+# https://github.com/zsh-users/zsh-autosuggestions
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+# https://github.com/zsh-users/zsh-syntax-highlighting
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+# broot
+source /home/knth/.config/broot/launcher/bash/br
 
 ### the fuck https://github.com/nvbn/thefuck
 # eval $(thefuck --alias)
