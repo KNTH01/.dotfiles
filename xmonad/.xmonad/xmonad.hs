@@ -337,10 +337,11 @@ myKeys =
     -- ((controlMask .|. mod1Mask, xK_Prior), spawn "conky-rotate -p"),
     --
     -- rofi
-    ("M-p", spawn "rofi -show window"),
-    ("M-<Space>", spawn "rofi -show window"),
-    ("M-S-p", spawn "rofi -show drun -drun-icon-theme \"candy-icons\""),
-    ("M-S-d", spawn "rofi -show run"),
+    -- rofi -no-lazy-grab -show drun -modi drun -theme $dir/"$theme"
+    ("M-p", spawn "rofi -no-lazy-grab -show window -theme '~/.config/rofi/launchers/misc/kde_krunner'"),
+    ("M-<Space>", spawn "rofi -no-lazy-grab -show window -theme '~/.config/rofi/launchers/misc/kde_krunner'"),
+    ("M-S-p", spawn "rofi -no-lazy-grab -show drun -theme '~/.config/rofi/launchers/misc/kde_simplemenu'"),
+    ("M-S-d", spawn "rofi -no-lazy-grab -show run -theme '~/.config/rofi/launchers/misc/kde_krunner'"),
     ("M-M1-t", spawn "rofi-theme-selector"),
     --
     -- Kill windows
@@ -422,10 +423,9 @@ myKeys =
     ("<xF86MonBrightnessUp>", spawn "xbacklight -inc 3"), -- Increase brightness
     ("<xF86MonBrightnessDown>", spawn "xbacklight -dec 3"), -- Decrease brightness
     --
-    -- TODO Screenshot
-    ("<Print>", spawn "dmscrot")
-    -- ((controlMask, xK_Print), spawn "xfce4-screenshooter"),
-    -- ((controlMask .|. shiftMask, xK_Print), spawn "gnome-screenshot -i"),
+    -- Screenshots
+    ("<Print>", spawn "scrot"),
+    ("M-S-s", spawn "scrot -s -f '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'")
   ]
   where
     -- The following lines are needed for named scratchpads.
