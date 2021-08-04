@@ -1,7 +1,7 @@
 # source shell
 alias sourceme="source $HOME/.zshrc"
-alias reshell="exec zsh"
 alias rezsh="exec zsh"
+alias reshell="exec zsh"
 
 # dev
 alias dotfiles="cd $HOME/.dotfiles"
@@ -17,6 +17,9 @@ alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'" # switch to b
 alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'" # switch to zsh
 alias tofish="sudo chsh $USER -s /usr/bin/fish && echo 'Now log out.'" # switch to fish
 alias xprop="xprop WM_CLASS | grep -o '\"[^\"]*\"' | head -n 1"
+alias set_kblayout_us="setxkbmap -layout us"
+alias set_kblayout_us-intl="setxkbmap -layout us -variant intl"
+alias myscrot="scrot -s -f -p"
 
 # programs
 alias rg="rg --sort path" # search content with ripgrep
