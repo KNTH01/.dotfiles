@@ -135,8 +135,9 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 -- encodeCChar = map fromIntegral . B.unpack
 -- myWorkspaces = ["\61612", "\61899", "\61947", "\61635", "\61502", "\61501", "\61705", "\61564", "\62150", "\61872"]
 -- myWorkspaces = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"]
---myWorkspaces    = ["I","II","III","IV","V","VI","VII","VIII","IX","X"]
-myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+myWorkspaces = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+
+-- myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 myWorkspaceIndices = M.fromList $ zip myWorkspaces [1 ..]
 
@@ -199,7 +200,9 @@ myManageHook =
         "notification",
         "pinentry-gtk-2",
         "splash",
-        "toolbar"
+        "toolbar",
+        "copyq",
+        "gpick"
       ]
     myTFloats = ["Downloads", "Save As...", "Oracle VM VirtualBox Manager"]
     myRFloats = []
@@ -208,7 +211,7 @@ myManageHook =
     my2Shifts = []
     my3Shifts = []
     my4Shifts = ["Spotify"]
-    my5Shifts = ["Telegram", "WhatsApp", "Signal", "discord"]
+    my5Shifts = ["Telegram", "telegram-desktop", "WhatsApp", "Signal", "discord"]
     my6Shifts = ["vlc", "mpv"]
     my7Shifts = []
     my8Shifts = []
@@ -423,9 +426,13 @@ myKeys =
     ("<xF86MonBrightnessUp>", spawn "xbacklight -inc 3"), -- Increase brightness
     ("<xF86MonBrightnessDown>", spawn "xbacklight -dec 3"), -- Decrease brightness
     --
+    -- Clipboard
+    -- ("C-S-M1-v", spawn "rofi -modi \"clipboard:greenclip print\" -show clipboard -run-command '{cmd}'"),
+    ("C-S-M1-v", spawn "copyq show"),
+    --
     -- Screenshots
-    ("<Print>", spawn "scrot"),
-    ("M-S-s", spawn "scrot -s -f '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'")
+    ("<Print>", spawn "maim ~/Pictures/screenshots/screenshot_$(date +%F_%H:%M:%S).png"),
+    ("M-S-s", spawn "maim -s | tee ~/Pictures/screenshots/screenshot_$(date +%F_%H:%M:%S).png | xclip -selection clipboard -t image/png")
   ]
   where
     -- The following lines are needed for named scratchpads.
