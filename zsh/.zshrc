@@ -120,6 +120,9 @@ source /home/knth/.config/broot/launcher/bash/br
 ### the fuck https://github.com/nvbn/thefuck
 # eval $(thefuck --alias)
 
+### rbenv https://github.com/rbenv/rbenv
+eval "$(rbenv init -)"
+
 ### for WSL: https://github.com/microsoft/WSL/issues/1801
 # umask 22
 # export BROWSER="wsl-open"
