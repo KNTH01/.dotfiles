@@ -19,6 +19,9 @@ function run {
 # or load the config file from arandr
 run $HOME/.screenlayout/init.sh &
 
+# keyboard layout
+setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_toggle'
+
 # polybar
 (sleep 2; run $HOME/.config/polybar/launch.sh) &
 
@@ -38,11 +41,13 @@ run nm-applet &
 run pamac-tray &
 run xfce4-power-manager &
 run volumeicon &
+run copyq &
 numlockx on &
 blueberry-tray &
 picom --config $HOME/.xmonad/scripts/picom.conf &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
+
 
 #starting user applications at boot time
 #nitrogen --restore &
@@ -58,3 +63,6 @@ picom --config $HOME/.xmonad/scripts/picom.conf &
 #run dropbox &
 #run insync start &
 #run ckb-next -b &
+
+# NZXT smart device v2 config
+liquidctl initialize all
