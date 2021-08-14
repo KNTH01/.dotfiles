@@ -119,21 +119,22 @@ local browser1          = "vivaldi-stable"
 local browser2          = "firefox"
 local browser3          = "chromium -no-default-browser-check"
 local editor            = os.getenv("EDITOR") or "nano"
-local editorgui         = "atom"
+local editorgui         = "code"
 local filemanager       = "thunar"
 local mailclient        = "evolution"
 local mediaplayer       = "spotify"
-local terminal          = "urxvt"
+local terminal          = "alacritty"
 local virtualmachine    = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒", "➓" }
+awful.util.tagnames = {  "一", "二", "三", "四", "五", "六", "七", "八", "九", "十" }
+-- awful.util.tagnames = {  "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒", "➓" }
 --awful.util.tagnames = { "⠐", "⠡", "⠲", "⠵", "⠻", "⠿" }
 --awful.util.tagnames = { "⌘", "♐", "⌥", "ℵ" }
 --awful.util.tagnames = { "www", "edit", "gimp", "inkscape", "music" }
 -- Use this : https://fontawesome.com/cheatsheet
---awful.util.tagnames = { "", "", "", "", "" }
+-- awful.util.tagnames = { "", "", "", "", "" }
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
