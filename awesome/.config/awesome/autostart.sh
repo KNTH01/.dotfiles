@@ -8,7 +8,7 @@ function run {
 }
 
 # load the config file from arandr
-run $HOME/.screenlayout/init.sh &
+run $HOME/.screenlayout/init.sh
 
 # keyboard layout
 setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_toggle'
