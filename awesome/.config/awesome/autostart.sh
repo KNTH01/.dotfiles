@@ -6,10 +6,17 @@ function run {
     $@&
   fi
 }
-run dex $HOME/.config/autostart/arcolinux-welcome-app.desktop
-#run xrandr --output VGA-1 --primary --mode 1360x768 --pos 0x0 --rotate normal
-#run xrandr --output HDMI2 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output VIRTUAL1 --off
-#autorandr horizontal
+
+# load the config file from arandr
+run $HOME/.screenlayout/init.sh &
+
+# keyboard layout
+setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_toggle'
+
+# polybar
+# (sleep 2; run $HOME/.config/polybar/launch.sh) &
+
+### Arco Linux default
 run nm-applet
 #run caffeine
 run pamac-tray
@@ -21,14 +28,7 @@ run numlockx on
 run volumeicon
 #run nitrogen --restore
 run conky -c $HOME/.config/awesome/system-overview
-#you can set wallpapers in themes as well
-feh --bg-fill /usr/share/backgrounds/arcolinux/arco-wallpaper.jpg &
-#run applications from startup
-#run firefox
-#run atom
-#run dropbox
-#run insync start
-#run spotify
-#run ckb-next -b
-#run discord
-#run telegram-desktop
+
+### My runs
+run imwheel
+run liquidctl initialize all # NZXT smart device v2 config
