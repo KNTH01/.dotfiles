@@ -333,19 +333,45 @@ local globalkeys = my_table.join(
 	}),
 
 	-- dmenu
-	awful.key({ modKey, shiftKey }, "d", function()
-		awful.spawn(
-			string.format(
-				"dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn NotoMonoRegular:bold:pixelsize=14",
-				beautiful.bg_normal,
-				beautiful.fg_normal,
-				beautiful.bg_focus,
-				beautiful.fg_focus
-			)
-		)
+	-- awful.key({ modKey, shiftKey }, "d", function()
+	-- 	awful.spawn(
+	-- 		string.format(
+	-- 			"dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn NotoMonoRegular:bold:pixelsize=14",
+	-- 			beautiful.bg_normal,
+	-- 			beautiful.fg_normal,
+	-- 			beautiful.bg_focus,
+	-- 			beautiful.fg_focus
+	-- 		)
+	-- 	)
+	-- end, {
+	-- 	description = "show dmenu",
+	-- 	group = "hotkeys",
+	-- }),
+
+	-- rofi
+	awful.key({ modKey }, "p", function()
+		awful.util.spawn("rofi -no-lazy-grab -show window -theme '~/.config/rofi/launchers/misc/kde_krunner'")
 	end, {
-		description = "show dmenu",
-		group = "hotkeys",
+		description = "show windows",
+		group = "rofi",
+	}),
+	awful.key({ modKey }, "Space", function()
+		awful.util.spawn("rofi -no-lazy-grab -show window -theme '~/.config/rofi/launchers/misc/kde_krunner'")
+	end, {
+		description = "show windows",
+		group = "rofi",
+	}),
+	awful.key({ modKey, shiftKey }, "p", function()
+		awful.util.spawn("rofi -no-lazy-grab -show drun -theme '~/.config/rofi/launchers/misc/kde_simplemenu'")
+	end, {
+		description = "show desktop programs",
+		group = "rofi",
+	}),
+	awful.key({ modKey, shiftKey }, "d", function()
+		awful.util.spawn("rofi -no-lazy-grab -show run -theme '~/.config/rofi/launchers/misc/kde_krunner'")
+	end, {
+		description = "show runner",
+		group = "rofi",
 	}),
 
 	-- TODO: alacritty dropdown?
@@ -411,14 +437,6 @@ local globalkeys = my_table.join(
 		awful.util.spawn(editorgui)
 	end, {
 		description = "run gui editor",
-		group = "super",
-	}),
-	--awful.key({ modKey }, "h", function () awful.util.spawn( "urxvt -T 'htop task manager' -e htop" ) end,
-	--{description = "htop", group = "super"}),
-	awful.key({ modKey }, "r", function()
-		awful.util.spawn("rofi-theme-selector")
-	end, {
-		description = "rofi theme selector",
 		group = "super",
 	}),
 	awful.key({ modKey }, "t", function()
