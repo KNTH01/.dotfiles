@@ -324,12 +324,56 @@ root.buttons(my_table.join(
 -- {{{ Key bindings
 local globalkeys = my_table.join(
 
-	-- Personal keybindings
+	-- program launcher
 	awful.key({ modKey }, "b", function()
 		awful.util.spawn(browser1)
 	end, {
 		description = browser1,
-		group = "function keys",
+		group = "program launcher",
+	}),
+	awful.key({ modKey }, "e", function()
+		awful.util.spawn(filemanager)
+	end, {
+		description = filemanager,
+		group = "program launcher",
+	}),
+	awful.key({ modKey }, "c", function()
+		awful.util.spawn("conky-toggle")
+	end, {
+		description = "conky-toggle",
+		group = "program launcher",
+	}),
+	awful.key({ modKey }, "t", function()
+		awful.util.spawn(terminal)
+	end, {
+		description = terminal,
+		group = "program launcher",
+	}),
+	awful.key({ modKey }, "v", function()
+		awful.util.spawn("pavucontrol")
+	end, {
+		description = "pulseaudio control",
+		group = "program launcher",
+	}),
+	awful.key({ ctrlKey, altKey }, "Delete", function()
+		awful.util.spawn("xfce4-taskmanager")
+	end, {
+		description = "task manager",
+		group = "program launcher",
+	}),
+	awful.key({ modKey }, "x", function()
+		awful.util.spawn("arcolinux-logout")
+	end, {
+		description = "exit",
+		group = "program launcher",
+	}),
+
+	-- hotkeys
+	awful.key({ modKey }, "Escape", function()
+		awful.util.spawn("xkill")
+	end, {
+		description = "Kill proces",
+		group = "hotkeys",
 	}),
 
 	-- dmenu
@@ -382,9 +426,8 @@ local globalkeys = my_table.join(
 
 	-- Hotkeys Awesome
 	awful.key({ modKey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
-
 	awful.key({ modKey, shiftKey }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
-
+	-- run lua code
 	awful.key({ altKey }, "x", function()
 		awful.prompt.run({
 			prompt = "Run Lua code: ",
@@ -396,7 +439,6 @@ local globalkeys = my_table.join(
 		description = "lua execute prompt",
 		group = "awesome",
 	}),
-
 	-- Show/Hide Wibox
 	awful.key({ modKey, shiftKey }, "b", function()
 		for s in screen do
@@ -409,7 +451,6 @@ local globalkeys = my_table.join(
 		description = "toggle wibox",
 		group = "awesome",
 	}),
-
 	-- Show/Hide Systray
 	awful.key({ modKey }, "-", function()
 		awful.screen.focused().systray.visible = not awful.screen.focused().systray.visible
@@ -418,82 +459,21 @@ local globalkeys = my_table.join(
 		group = "awesome",
 	}),
 
-	-- Show/Hide Systray
-	awful.key({ modKey }, "KP_Subtract", function()
-		awful.screen.focused().systray.visible = not awful.screen.focused().systray.visible
-	end, {
-		description = "Toggle systray visibility",
-		group = "awesome",
-	}),
-
-	-- super + ...
-	awful.key({ modKey }, "c", function()
-		awful.util.spawn("conky-toggle")
-	end, {
-		description = "conky-toggle",
-		group = "super",
-	}),
-	awful.key({ modKey }, "e", function()
-		awful.util.spawn(editorgui)
-	end, {
-		description = "run gui editor",
-		group = "super",
-	}),
-	awful.key({ modKey }, "t", function()
-		awful.util.spawn(terminal)
-	end, { description = "terminal", group = "super" }),
-	awful.key({ modKey }, "v", function()
-		awful.util.spawn("pavucontrol")
-	end, {
-		description = "pulseaudio control",
-		group = "super",
-	}),
-	--awful.key({ modKey }, "u", function () awful.screen.focused().mypromptbox:run() end,
-	--{description = "run prompt", group = "super"}),
-	awful.key({ modKey }, "x", function()
-		awful.util.spawn("arcolinux-logout")
-	end, {
-		description = "exit",
-		group = "hotkeys",
-	}),
-	awful.key({ modKey }, "Escape", function()
-		awful.util.spawn("xkill")
-	end, {
-		description = "Kill proces",
-		group = "hotkeys",
-	}),
-
-	-- super + shift + ...
-	awful.key({ modKey, shiftKey }, "Return", function()
-		awful.util.spawn(filemanager)
-	end),
-
-	-- ctrl + shift + ...
-	awful.key({ ctrlKey, shiftKey }, "Escape", function()
-		awful.util.spawn("xfce4-taskmanager")
-	end),
-
 	-- screenshots
 	awful.key({}, "Print", function()
-		awful.util.spawn("scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'")
+		awful.util.spawn_with_shell("maim ~/Pictures/screenshots/screenshot_$(date +%F_%H:%M:%S).png")
 	end, {
-		description = "Scrot",
+		description = "Capture desktop",
 		group = "screenshots",
 	}),
-	awful.key({ ctrlKey }, "Print", function()
-		awful.util.spawn("xfce4-screenshooter")
+	awful.key({ modKey, shiftKey }, "s", function()
+		awful.util.spawn_with_shell(
+			"maim -s | tee ~/Pictures/screenshots/screenshot_$(date +%F_%H:%M:%S).png | xclip -selection clipboard -t image/png"
+		)
 	end, {
-		description = "Xfce screenshot",
+		description = "capture selection",
 		group = "screenshots",
 	}),
-	awful.key({ ctrlKey, shiftKey }, "Print", function()
-		awful.util.spawn("gnome-screenshot -i")
-	end, {
-		description = "Gnome screenshot",
-		group = "screenshots",
-	}),
-
-	-- Personal keybindings}}}
 
 	-- Tag browsing with modKey
 	awful.key({ modKey, ctrlKey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
