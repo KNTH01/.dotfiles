@@ -1,43 +1,51 @@
 [include]
-	path = ~/.gitconfig.user
+path = ~/.gitconfig.user
 
 [alias]
-  st = status --branch --short
-  ci = commit
-  co = checkout
-  br = branch
-  unstage = reset HEAD --
-  log1 = log --pretty=oneline
-  tree = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+st = status --branch --short
+ci = commit
+co = checkout
+br = branch
+unstage = reset HEAD --
+log1 = log --pretty=oneline
+tree = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 
 [color]
-  ui = auto
+ui = auto
 [core]
-  editor = emacs
+editor = emacs
 [pull]
-  rebase = true
+rebase = true
 [push]
-  default = simple
+default = simple
 
 ################################
 ### Configure git-delta
 ################################
 [pager]
-  diff = delta
-  log = delta
-  reflog = delta
-  show = delta
+diff = delta
+log = delta
+reflog = delta
+show = delta
+
 [interactive]
-  diffFilter = delta --color-only
+diffFilter = delta --color-only
+
 [delta]
-  syntax-theme = Dracula
-  plus-style = syntax "#003800"
-  minus-style = syntax "#3f0001"
-  navigate = true
-  line-numbers = true
-  side-by-side = false
+syntax-theme = Dracula
+plus-style = syntax "#003800"
+minus-style = syntax "#3f0001"
+navigate = true
+line-numbers = true
+side-by-side = false
 
+features = side-by-side line-numbers decorations
+whitespace-error-style = 22 reverse
 
+[delta "decorations"]
+commit-decoration-style = bold yellow box ul
+file-style = bold yellow ul
+file-decoration-style = none
 
 ################################
 ### Old stuff
