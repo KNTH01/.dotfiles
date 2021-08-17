@@ -1,9 +1,8 @@
 #!/bin/bash
 
 function run {
-  if ! pgrep $1 ;
-  then
-    $@&
+  if ! pgrep $1; then
+    $@ &
   fi
 }
 
@@ -23,7 +22,10 @@ run $HOME/.screenlayout/init.sh &
 setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_toggle'
 
 # polybar
-(sleep 2; run $HOME/.config/polybar/launch.sh) &
+(
+  sleep 2
+  run $HOME/.config/polybar/launch.sh
+) &
 
 # cursor active at boot
 xsetroot -cursor_name left_ptr &
@@ -47,7 +49,6 @@ blueberry-tray &
 picom --config $HOME/.xmonad/scripts/picom.conf &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
-
 
 #starting user applications at boot time
 #nitrogen --restore &

@@ -1126,8 +1126,12 @@ client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
 end)
 
+-- awesome memory leak
+gears.timer.start_new(600, function()
+	collectgarbage("step", 1024)
+	return true
+end)
 -- }}}
 
 -- Autostart applications
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
-awful.spawn.with_shell("picom -b --config  $HOME/.config/awesome/picom.conf")
