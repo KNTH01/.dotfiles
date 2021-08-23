@@ -15,6 +15,10 @@
 local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
 
+-- If LuaRocks is installed, make sure that packages installed through it are
+-- found (e.g. lgi). If LuaRocks is not installed, do nothing.
+pcall(require, "luarocks.loader")
+
 --https://awesomewm.org/doc/api/documentation/05-awesomerc.md.html
 -- Standard awesome library
 local gears = require("gears") --Utilities such as color parsing and objects
@@ -32,14 +36,9 @@ local naughty = require("naughty")
 naughty.config.defaults["icon_size"] = 100
 
 --local menubar       = require("menubar")
-
 local lain = require("lain")
 local freedesktop = require("freedesktop")
-
--- TODO
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
-local hotkeys_popup = require("awful.hotkeys_popup").widget
+local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
@@ -77,6 +76,8 @@ end
 -- }}}
 
 -- {{{ Autostart windowless processes
+
+-- This function will run once every time Awesome is started
 local function run_once(cmd_arr)
 	for _, cmd in ipairs(cmd_arr) do
 		awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
@@ -131,7 +132,7 @@ local virtualmachine = "virtualbox"
 
 -- awesome variables
 awful.util.terminal = terminal
-awful.util.tagnames = { "一", "二", "三", "四", "五", "六", "七", "八", "九", "十" }
+awful.util.tagnames = { "一", "二", "三", "四", "五", "六", "七", "八", "九" } -- #10 => "十"
 -- awful.util.tagnames = { "➊", "➋", "➌", "➍", "➎", "➏", "➐", "➑", "➒", "➓" }
 --awful.util.tagnames = { "⠐", "⠡", "⠲", "⠵", "⠻", "⠿" }
 -- Use this : https://fontawesome.com/cheatsheet
@@ -164,7 +165,17 @@ awful.layout.layouts = {
 	--lain.layout.termfair.center,
 }
 
--- TODO
+-- TODO: comment this
+lain.layout.termfair.nmaster = 3
+lain.layout.termfair.ncol = 1
+lain.layout.termfair.center.nmaster = 3
+lain.layout.termfair.center.ncol = 1
+lain.layout.cascade.tile.offset_x = dpi(2)
+lain.layout.cascade.tile.offset_y = dpi(32)
+lain.layout.cascade.tile.extra_padding = dpi(5)
+lain.layout.cascade.tile.nmaster = 5
+lain.layout.cascade.tile.ncol = 2
+
 awful.util.taglist_buttons = my_table.join(
 	awful.button({}, 1, function(t)
 		t:view_only()
@@ -188,24 +199,12 @@ awful.util.taglist_buttons = my_table.join(
 	end)
 )
 
--- TODO
 awful.util.tasklist_buttons = my_table.join(
 	awful.button({}, 1, function(c)
 		if c == client.focus then
 			c.minimized = true
 		else
-			--c:emit_signal("request::activate", "tasklist", {raise = true})<Paste>
-
-			-- Without this, the following
-			-- :isvisible() makes no sense
-			c.minimized = false
-			if not c:isvisible() and c.first_tag then
-				c.first_tag:view_only()
-			end
-			-- This will also un-minimize
-			-- the client, if needed
-			client.focus = c
-			c:raise()
+			c:emit_signal("request::activate", "tasklist", { raise = true })
 		end
 	end),
 	awful.button({}, 3, function()
@@ -227,16 +226,6 @@ awful.util.tasklist_buttons = my_table.join(
 		awful.client.focus.byidx(-1)
 	end)
 )
-
-lain.layout.termfair.nmaster = 3
-lain.layout.termfair.ncol = 1
-lain.layout.termfair.center.nmaster = 3
-lain.layout.termfair.center.ncol = 1
-lain.layout.cascade.tile.offset_x = dpi(2)
-lain.layout.cascade.tile.offset_y = dpi(32)
-lain.layout.cascade.tile.extra_padding = dpi(5)
-lain.layout.cascade.tile.nmaster = 5
-lain.layout.cascade.tile.ncol = 2
 
 -- }}}
 
@@ -296,19 +285,21 @@ end)
 screen.connect_signal("arrange", function(s)
 	local only_one = #s.tiled_clients == 1
 	for _, c in pairs(s.clients) do
-		if only_one and not c.floating or c.maximized then
-			c.border_width = 2
+		if only_one and not c.floating or c.maximized or c.fullscreen then
+			c.border_width = 0
 		else
 			c.border_width = beautiful.border_width
 		end
 	end
 end)
+
 -- Create a wibox for each screen and add it
 awful.screen.connect_for_each_screen(function(s)
 	beautiful.at_screen_connect(s)
 	s.systray = wibox.widget.systray()
 	s.systray.visible = true
 end)
+
 -- }}}
 
 -- {{{ Mouse bindings
@@ -560,6 +551,46 @@ local globalkeys = my_table.join(
 	-- Client
 	--
 
+	-- By direction client focus
+	-- awful.key({ modKey }, "j", function()
+	-- 	awful.client.focus.global_bydirection("down")
+	-- 	if client.focus then
+	-- 		client.focus:raise()
+	-- 	end
+	-- end, {
+	-- 	description = "focus down",
+	-- 	group = "client",
+	-- }),
+	-- awful.key({ modKey }, "k", function()
+	-- 	awful.client.focus.global_bydirection("up")
+	-- 	if client.focus then
+	-- 		client.focus:raise()
+	-- 	end
+	-- end, {
+	-- 	description = "focus up",
+	-- 	group = "client",
+	-- }),
+	-- awful.key({ modKey }, "h", function()
+	-- 	awful.client.focus.global_bydirection("left")
+	-- 	if client.focus then
+	-- 		client.focus:raise()
+	-- 	end
+	-- end, {
+	-- 	description = "focus left",
+	-- 	group = "client",
+	-- }),
+	-- awful.key({ modKey }, "l", function()
+	-- 	awful.client.focus.global_bydirection("right")
+	-- 	if client.focus then
+	-- 		client.focus:raise()
+	-- 	end
+	-- end, {
+	-- 	description = "focus right",
+	-- 	group = "client",
+	-- }),
+	--
+	--
+
 	-- Default client focus
 	awful.key({ modKey }, "Down", function()
 		awful.client.focus.byidx(1)
@@ -573,46 +604,20 @@ local globalkeys = my_table.join(
 		description = "focus previous by index",
 		group = "client",
 	}),
-
-	-- By direction client focus
 	awful.key({ modKey }, "j", function()
-		awful.client.focus.global_bydirection("down")
-		if client.focus then
-			client.focus:raise()
-		end
+		awful.client.focus.byidx(1)
 	end, {
-		description = "focus down",
+		description = "focus next by index",
 		group = "client",
 	}),
 	awful.key({ modKey }, "k", function()
-		awful.client.focus.global_bydirection("up")
-		if client.focus then
-			client.focus:raise()
-		end
+		awful.client.focus.byidx(-1)
 	end, {
-		description = "focus up",
-		group = "client",
-	}),
-	awful.key({ modKey }, "h", function()
-		awful.client.focus.global_bydirection("left")
-		if client.focus then
-			client.focus:raise()
-		end
-	end, {
-		description = "focus left",
-		group = "client",
-	}),
-	awful.key({ modKey }, "l", function()
-		awful.client.focus.global_bydirection("right")
-		if client.focus then
-			client.focus:raise()
-		end
-	end, {
-		description = "focus right",
+		description = "focus previous by index",
 		group = "client",
 	}),
 
-	-- focus
+	-- Swap focused client position
 	awful.key({ modKey, shiftKey }, "Down", function()
 		awful.client.swap.byidx(1)
 	end, {
@@ -620,6 +625,18 @@ local globalkeys = my_table.join(
 		group = "client",
 	}),
 	awful.key({ modKey, shiftKey }, "Up", function()
+		awful.client.swap.byidx(-1)
+	end, {
+		description = "swap with previous client by index",
+		group = "client",
+	}),
+	awful.key({ modKey, shiftKey }, "j", function()
+		awful.client.swap.byidx(1)
+	end, {
+		description = "swap with next client by index",
+		group = "client",
+	}),
+	awful.key({ modKey, shiftKey }, "k", function()
 		awful.client.swap.byidx(-1)
 	end, {
 		description = "swap with previous client by index",
@@ -675,6 +692,18 @@ local globalkeys = my_table.join(
 	}),
 
 	-- master size
+	awful.key({ modKey }, "l", function()
+		awful.tag.incmwfact(0.05)
+	end, {
+		description = "increase master width factor",
+		group = "layout",
+	}),
+	awful.key({ modKey }, "h", function()
+		awful.tag.incmwfact(-0.05)
+	end, {
+		description = "decrease master width factor",
+		group = "layout",
+	}),
 	awful.key({ modKey }, "Right", function()
 		awful.tag.incmwfact(0.05)
 	end, {
@@ -771,20 +800,40 @@ local globalkeys = my_table.join(
 )
 
 local clientkeys = my_table.join(
+	-- close client
+	awful.key({ modKey }, "q", function(c)
+		c:kill()
+	end, { description = "close", group = "hotkeys" }),
+
 	-- magnify client
 	awful.key({ modKey, shiftKey }, "m", lain.util.magnify_client, { description = "magnify client", group = "client" }),
-	awful.key({ modKey, shiftKey }, "f", function(c)
+
+	-- maximize client
+	awful.key({ modKey }, "m", function(c)
+		c.maximized = not c.maximized
+		c:raise()
+	end, {
+		description = "maximize",
+		group = "client",
+	}),
+
+	-- full screen
+	awful.key({ modKey }, "f", function(c)
 		c.fullscreen = not c.fullscreen
 		c:raise()
 	end, {
 		description = "toggle fullscreen",
 		group = "client",
 	}),
-	-- close client
-	awful.key({ modKey }, "q", function(c)
-		c:kill()
-	end, { description = "close", group = "hotkeys" }),
-	awful.key({ modKey }, "f", awful.client.floating.toggle, { description = "toggle floating", group = "client" }),
+
+	-- toggle float
+	awful.key(
+		{ modKey, shiftKey },
+		"f",
+		awful.client.floating.toggle,
+		{ description = "toggle floating", group = "client" }
+	),
+
 	-- promote client to master
 	awful.key({ modKey }, "backspace", function(c)
 		c:swap(awful.client.getmaster())
@@ -792,28 +841,26 @@ local clientkeys = my_table.join(
 		description = "promote to master",
 		group = "client",
 	}),
-	awful.key({ modKey }, "o", function(c)
-		c:move_to_screen()
-	end, { description = "move to screen", group = "client" }),
+
+	-- pin to top
 	awful.key({ modKey }, "t", function(c)
 		c.ontop = not c.ontop
 	end, {
 		description = "toggle keep on top",
 		group = "client",
 	}),
+
+	-- ??
+	awful.key({ modKey }, "o", function(c)
+		c:move_to_screen()
+	end, { description = "move to screen", group = "client" }),
+
 	awful.key({ modKey }, "n", function(c)
 		-- The client currently has the input focus, so it cannot be
 		-- minimized, since minimized clients can't have the focus.
 		c.minimized = true
 	end, {
 		description = "minimize",
-		group = "client",
-	}),
-	awful.key({ modKey }, "m", function(c)
-		c.maximized = not c.maximized
-		c:raise()
-	end, {
-		description = "maximize",
 		group = "client",
 	})
 )
@@ -854,7 +901,6 @@ for i = 1, 9 do
 				local tag = client.focus.screen.tags[i]
 				if tag then
 					client.focus:move_to_tag(tag)
-					tag:view_only()
 				end
 			end
 		end, descr_move),
@@ -908,96 +954,59 @@ awful.rules.rules = {
 	},
 
 	-- Titlebars
-	{ rule_any = { type = { "dialog", "normal" } }, properties = { titlebars_enabled = false } },
-	-- Set applications to always map on the tag 2 on screen 1.
-	--{ rule = { class = "Subl" },
-	--properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
+	{
+		rule_any = {
+			type = { "dialog", "normal" },
+		},
+		properties = { titlebars_enabled = false },
+	},
 
-	-- Set applications to always map on the tag 1 on screen 1.
+	-- Set applications to always map on the tag x on screen y.
 	-- find class or role via xprop command
-	--{ rule = { class = browser2 },
-	--properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
-	--{ rule = { class = browser1 },
-	--properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
-	--{ rule = { class = "Vivaldi-stable" },
-	--properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true } },
-
-	--{ rule = { class = "Chromium" },
-	--properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true  } },
-
-	--{ rule = { class = "Opera" },
-	--properties = { screen = 1, tag = awful.util.tagnames[1],switchtotag = true  } },
-
-	-- Set applications to always map on the tag 2 on screen 1.
-	--{ rule = { class = "Subl" },
-	--properties = { screen = 1, tag = awful.util.tagnames[2],switchtotag = true  } },
-
-	--{ rule = { class = editorgui },
-	--properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-	--{ rule = { class = "Brackets" },
-	--properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-	--{ rule = { class = "Code" },
-	--properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-	--    { rule = { class = "Geany" },
-	--  properties = { screen = 1, tag = awful.util.tagnames[2], switchtotag = true  } },
-
-	-- Set applications to always map on the tag 3 on screen 1.
-	--{ rule = { class = "Inkscape" },
-	--properties = { screen = 1, tag = awful.util.tagnames[3], switchtotag = true  } },
-
-	-- Set applications to always map on the tag 4 on screen 1.
-	--{ rule = { class = "Gimp" },
-	--properties = { screen = 1, tag = awful.util.tagnames[4], switchtotag = true  } },
-
-	-- Set applications to always map on the tag 5 on screen 1.
-	--{ rule = { class = "Meld" },
-	--properties = { screen = 1, tag = awful.util.tagnames[5] , switchtotag = true  } },
+	{
+		rule_any = {
+			class = {
+				browser1,
+				browser2,
+				"chromium (/home/knth/.config/Cypress/cy/production/browsers/chromium-stable/interactive)",
+			},
+		},
+		properties = { screen = 1, tag = awful.util.tagnames[1], switchtotag = true },
+	},
+	{
+		rule_any = {
+			name = {
+				"Spotify",
+			},
+			class = {
+				"spotify",
+			},
+		},
+		properties = { screen = 1, tag = awful.util.tagnames[4], switchtotag = false },
+	},
+	{
+		rule_any = {
+			class = {
+				"Telegram",
+				"telegram-desktop",
+				"WhatsApp",
+				"whatsapp-nativefier-d40211",
+				"Signal",
+				"discord",
+			},
+		},
+		properties = { screen = 1, tag = awful.util.tagnames[5], switchtotag = false },
+	},
 
 	-- Set applications to be maximized at startup.
-	-- find class or role via xprop command
-
-	{ rule = { class = editorgui }, properties = { maximized = true } },
-
-	{ rule = { class = "Geany" }, properties = { maximized = false, floating = false } },
-
-	-- { rule = { class = "Thunar" },
-	--     properties = { maximized = false, floating = false } },
-
 	{ rule = { class = "Gimp*", role = "gimp-image-window" }, properties = { maximized = true } },
-
 	{ rule = { class = "Gnome-disks" }, properties = { maximized = true } },
-
 	{ rule = { class = "inkscape" }, properties = { maximized = true } },
-
 	{ rule = { class = musicplayer }, properties = { maximized = true } },
-
 	{ rule = { class = "Vlc" }, properties = { maximized = true } },
-
 	{ rule = { class = "VirtualBox Manager" }, properties = { maximized = true } },
-
 	{ rule = { class = "VirtualBox Machine" }, properties = { maximized = true } },
-
-	{ rule = { class = "Vivaldi-stable" }, properties = { maximized = false, floating = false } },
-
-	{ rule = { class = "Vivaldi-stable" }, properties = {
-		callback = function(c)
-			c.maximized = false
-		end,
-	} },
-
-	--IF using Vivaldi snapshot you must comment out the rules above for Vivaldi-stable as they conflict
-	--    { rule = { class = "Vivaldi-snapshot" },
-	--          properties = { maximized = false, floating = false } },
-
-	--    { rule = { class = "Vivaldi-snapshot" },
-	--          properties = { callback = function (c) c.maximized = false end } },
-
-	{ rule = { class = "Xfce4-settings-manager" }, properties = { floating = false } },
+	{ rule = { class = "Xfce4-settings-manager" }, properties = { floating = true } },
 
 	-- Floating clients.
 	{
@@ -1005,9 +1014,11 @@ awful.rules.rules = {
 			instance = {
 				"DTA", -- Firefox addon DownThemAll.
 				"copyq", -- Includes session name in class.
+				"pinentry",
 			},
 			class = {
 				"Arandr",
+				"Blueman-manager",
 				"Arcolinux-welcome-app.py",
 				"Blueberry",
 				"Galculator",
@@ -1022,19 +1033,21 @@ awful.rules.rules = {
 				"Skype",
 				"System-config-printer.py",
 				"Sxiv",
+				"Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
 				"Unetbootin.elf",
 				"Wpa_gui",
-				"pinentry",
 				"veromix",
 				"xtightvncviewer",
-				"Xfce4-terminal",
 			},
 
+			-- Note that the name property shown in xprop might be set slightly after creation of the client
+			-- and the name shown there might not match defined rules here.
 			name = {
 				"Event Tester", -- xev.
 			},
 			role = {
 				"AlarmWindow", -- Thunderbird's calendar.
+				"ConfigManager", -- Thunderbird's about:config.
 				"pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
 				"Preferences",
 				"setup",
@@ -1057,6 +1070,7 @@ awful.rules.rules = {
 		end,
 	},
 }
+
 -- }}}
 
 -- {{{ Signals
