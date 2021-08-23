@@ -47,6 +47,7 @@ plugins=(
     command-not-found
     colored-man-pages
     fzf
+    vi-mode
     # npm
 )
 
@@ -99,9 +100,9 @@ fi
 
 ### Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='emacs -nw'
+  export EDITOR='nvim'
 else
-  export EDITOR='code'
+  export EDITOR='nvim'
 fi
 
 ### Aliases
@@ -123,6 +124,9 @@ source /home/knth/.config/broot/launcher/bash/br
 ### rbenv https://github.com/rbenv/rbenv
 eval "$(rbenv init -)"
 
-### for WSL: https://github.com/microsoft/WSL/issues/1801
-# umask 22
-# export BROWSER="wsl-open"
+### Init z.lua https://github.com/skywind3000/z.lua
+eval "$(lua /usr/share/z.lua/z.lua --init zsh)"
+
+# Vim
+bindkey -v
+

@@ -26,6 +26,8 @@ alias rg="rg --sort path" # search content with ripgrep
 alias ne="emacs -nw" # emacs in the terminal
 alias myip='curl http://ipecho.net/plain; echo' # show my ip
 alias open="$FILE_MANAGER"
+alias v=$EDITOR
+alias f=xplr
 
 # confirm before overwriting something
 alias cp="cp -i"
