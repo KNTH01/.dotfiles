@@ -13,7 +13,7 @@ tree = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgr
 [color]
 ui = auto
 [core]
-editor = emacs
+editor = vim
 [pull]
 rebase = true
 [push]
