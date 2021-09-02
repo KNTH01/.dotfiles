@@ -834,9 +834,8 @@ local clientkeys = my_table.join(
 		awful.client.floating.toggle,
 		{ description = "toggle floating", group = "client" }
 	),
-
 	-- promote client to master
-	awful.key({ modKey }, "backspace", function(c)
+	awful.key({ modKey }, "BackSpace", function(c)
 		c:swap(awful.client.getmaster())
 	end, {
 		description = "promote to master",
@@ -994,6 +993,7 @@ awful.rules.rules = {
 				"whatsapp-nativefier-d40211",
 				"Signal",
 				"discord",
+				"slack",
 			},
 		},
 		properties = { screen = 1, tag = awful.util.tagnames[5], switchtotag = false },
