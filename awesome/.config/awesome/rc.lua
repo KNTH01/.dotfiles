@@ -115,6 +115,7 @@ beautiful.init(theme_path)
 -- modKey or mod4 = super key
 local modKey = "Mod4"
 local altKey = "Mod1"
+local altGrKey = "Mod5"
 local ctrlKey = "Control"
 local shiftKey = "Shift"
 
@@ -366,7 +367,13 @@ local globalkeys = my_table.join(
 		description = "copyq",
 		group = "program launcher",
 	}),
-
+	awful.key({ ctrlKey, altGrKey, shiftKey }, "v", function()
+		awful.util.spawn("copyq show")
+	end, {
+		description = "copyq",
+		group = "program launcher",
+	}),
+        
 	--
 	-- hotkeys
 	--
@@ -765,11 +772,11 @@ local globalkeys = my_table.join(
 	--
 
 	awful.key({}, "XF86AudioRaiseVolume", function()
-		os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
+		os.execute(string.format("amixer -q set %s 3%%+", beautiful.volume.channel))
 		beautiful.volume.update()
 	end),
 	awful.key({}, "XF86AudioLowerVolume", function()
-		os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
+		os.execute(string.format("amixer -q set %s 3%%-", beautiful.volume.channel))
 		beautiful.volume.update()
 	end),
 	awful.key({}, "XF86AudioMute", function()
