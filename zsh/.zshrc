@@ -72,7 +72,6 @@ export DOTFILES="$HOME/.dotfiles" # my dotfiles
 export FILE_MANAGER="thunar"
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)" # history ignore
 export PATH=$HOME/.npm/bin:$PATH # Path to npm bin
-export EDITOR="emacs -nw" # $EDITOR use Emacs in terminal
 export VISUAL="code" # $VISUAL use Code
 export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH" # RMagick gem
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -100,9 +99,9 @@ fi
 
 ### Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
+  export EDITOR='lvim'
 else
-  export EDITOR='nvim'
+  export EDITOR='lvim'
 fi
 
 ### Aliases
