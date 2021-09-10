@@ -982,17 +982,6 @@ awful.rules.rules = {
 	},
 	{
 		rule_any = {
-			name = {
-				"Spotify",
-			},
-			class = {
-				"spotify",
-			},
-		},
-		properties = { screen = 1, tag = awful.util.tagnames[4], switchtotag = false },
-	},
-	{
-		rule_any = {
 			class = {
 				"Telegram",
 				"telegram-desktop",
@@ -1014,7 +1003,6 @@ awful.rules.rules = {
 	{ rule = { class = "Vlc" }, properties = { maximized = true } },
 	{ rule = { class = "VirtualBox Manager" }, properties = { maximized = true } },
 	{ rule = { class = "VirtualBox Machine" }, properties = { maximized = true } },
-	{ rule = { class = "Xfce4-settings-manager" }, properties = { floating = true } },
 
 	-- Floating clients.
 	{
@@ -1046,6 +1034,7 @@ awful.rules.rules = {
 				"Wpa_gui",
 				"veromix",
 				"xtightvncviewer",
+        "Xfce4-settings-manager",
 			},
 
 			-- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -1078,6 +1067,16 @@ awful.rules.rules = {
 		end,
 	},
 }
+
+-- Normally we'd do this with a rule, but Spotify doesn't set its class or name
+-- until after it starts up, so we need to catch that signal.
+client.connect_signal("property::class", function(c)
+	if c.class == "Spotify" or c.class == "spotify" then
+		-- Move the Spotify instance to "music" tag on this screen
+		local t = awful.screen.focused().tags[4]
+		c:move_to_tag(t)
+	end
+end)
 
 -- }}}
 
