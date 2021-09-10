@@ -99,15 +99,14 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/cmp-path"
   },
+  ["cmp-tabnine"] = {
+    config = { "\27LJ\1\2p\0\0\4\0\4\0\b4\0\0\0%\1\1\0>\0\2\2\16\2\0\0007\1\2\0003\3\3\0>\1\3\1G\0\1\0\1\0\3\20max_num_results\3\20\14max_lines\3è\a\tsort\2\nsetup\23cmp_tabnine.config\frequire\0" },
+    loaded = true,
+    path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/cmp-tabnine"
+  },
   cmp_luasnip = {
     loaded = true,
     path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/cmp_luasnip"
-  },
-  ["compe-tabnine"] = {
-    after_files = { "/home/knth/.local/share/lunarvim/site/pack/packer/opt/compe-tabnine/after/plugin/compe_tabnine.vim" },
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/knth/.local/share/lunarvim/site/pack/packer/opt/compe-tabnine"
   },
   ["dashboard-nvim"] = {
     config = { "\27LJ\1\2<\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\19core.dashboard\frequire\0" },
@@ -151,6 +150,12 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/null-ls.nvim"
   },
+  ["numb.nvim"] = {
+    config = { "\27LJ\1\0028\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\vconfig\14user.numb\frequire\0" },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/knth/.local/share/lunarvim/site/pack/packer/opt/numb.nvim"
+  },
   ["nvim-autopairs"] = {
     config = { "\27LJ\1\2<\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\19core.autopairs\frequire\0" },
     load_after = {},
@@ -163,15 +168,16 @@ _G.packer_plugins = {
     loaded = true,
     only_config = true
   },
+  ["nvim-colorizer.lua"] = {
+    config = { "\27LJ\1\2=\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\vconfig\19user.colorizer\frequire\0" },
+    loaded = true,
+    path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/nvim-colorizer.lua"
+  },
   ["nvim-comment"] = {
     config = { "\27LJ\1\2:\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\17core.comment\frequire\0" },
     loaded = false,
     needs_bufread = false,
     path = "/home/knth/.local/share/lunarvim/site/pack/packer/opt/nvim-comment"
-  },
-  ["nvim-compe"] = {
-    loaded = true,
-    path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/nvim-compe"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -183,6 +189,12 @@ _G.packer_plugins = {
     needs_bufread = false,
     path = "/home/knth/.local/share/lunarvim/site/pack/packer/opt/nvim-lspinstall"
   },
+  ["nvim-spectre"] = {
+    config = { "\27LJ\1\2;\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\vconfig\17user.spectre\frequire\0" },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/knth/.local/share/lunarvim/site/pack/packer/opt/nvim-spectre"
+  },
   ["nvim-tree.lua"] = {
     config = { "\27LJ\1\2;\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\18core.nvimtree\frequire\0" },
     loaded = true,
@@ -192,6 +204,11 @@ _G.packer_plugins = {
     config = { "\27LJ\1\2=\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\20core.treesitter\frequire\0" },
     loaded = true,
     path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/nvim-treesitter"
+  },
+  ["nvim-ts-autotag"] = {
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/knth/.local/share/lunarvim/site/pack/packer/opt/nvim-ts-autotag"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
@@ -225,10 +242,6 @@ _G.packer_plugins = {
     needs_bufread = false,
     path = "/home/knth/.local/share/lunarvim/site/pack/packer/opt/toggleterm.nvim"
   },
-  ["tokyonight.nvim"] = {
-    loaded = true,
-    path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/tokyonight.nvim"
-  },
   ["trouble.nvim"] = {
     commands = { "TroubleToggle" },
     loaded = false,
@@ -244,30 +257,38 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-try_loadstring("\27LJ\1\2<\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\19core.telescope\frequire\0", "config", "telescope.nvim")
-time([[Config for telescope.nvim]], false)
--- Config for: lualine.nvim
-time([[Config for lualine.nvim]], true)
-try_loadstring("\27LJ\1\2:\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\17core.lualine\frequire\0", "config", "lualine.nvim")
-time([[Config for lualine.nvim]], false)
--- Config for: lua-dev.nvim
-time([[Config for lua-dev.nvim]], true)
-try_loadstring("\27LJ\1\2„\1\0\0\3\0\t\0\0184\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\a\0004\2\3\0007\2\4\0027\2\5\0027\2\6\0027\2\2\2:\2\b\1>\0\2\0024\1\3\0007\1\4\0017\1\5\0017\1\6\1:\0\2\1G\0\1\0\14lspconfig\1\0\0\blsp\blua\tlang\tlvim\nsetup\flua-dev\frequire\0", "config", "lua-dev.nvim")
-time([[Config for lua-dev.nvim]], false)
 -- Config for: nvim-treesitter
 time([[Config for nvim-treesitter]], true)
 try_loadstring("\27LJ\1\2=\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\20core.treesitter\frequire\0", "config", "nvim-treesitter")
 time([[Config for nvim-treesitter]], false)
--- Config for: nvim-tree.lua
-time([[Config for nvim-tree.lua]], true)
-try_loadstring("\27LJ\1\2;\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\18core.nvimtree\frequire\0", "config", "nvim-tree.lua")
-time([[Config for nvim-tree.lua]], false)
 -- Config for: nvim-cmp
 time([[Config for nvim-cmp]], true)
 try_loadstring("\27LJ\1\0026\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\rcore.cmp\frequire\0", "config", "nvim-cmp")
 time([[Config for nvim-cmp]], false)
+-- Config for: nvim-colorizer.lua
+time([[Config for nvim-colorizer.lua]], true)
+try_loadstring("\27LJ\1\2=\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\vconfig\19user.colorizer\frequire\0", "config", "nvim-colorizer.lua")
+time([[Config for nvim-colorizer.lua]], false)
+-- Config for: lualine.nvim
+time([[Config for lualine.nvim]], true)
+try_loadstring("\27LJ\1\2:\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\17core.lualine\frequire\0", "config", "lualine.nvim")
+time([[Config for lualine.nvim]], false)
+-- Config for: cmp-tabnine
+time([[Config for cmp-tabnine]], true)
+try_loadstring("\27LJ\1\2p\0\0\4\0\4\0\b4\0\0\0%\1\1\0>\0\2\2\16\2\0\0007\1\2\0003\3\3\0>\1\3\1G\0\1\0\1\0\3\20max_num_results\3\20\14max_lines\3è\a\tsort\2\nsetup\23cmp_tabnine.config\frequire\0", "config", "cmp-tabnine")
+time([[Config for cmp-tabnine]], false)
+-- Config for: lua-dev.nvim
+time([[Config for lua-dev.nvim]], true)
+try_loadstring("\27LJ\1\2„\1\0\0\3\0\t\0\0184\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\a\0004\2\3\0007\2\4\0027\2\5\0027\2\6\0027\2\2\2:\2\b\1>\0\2\0024\1\3\0007\1\4\0017\1\5\0017\1\6\1:\0\2\1G\0\1\0\14lspconfig\1\0\0\blsp\blua\tlang\tlvim\nsetup\flua-dev\frequire\0", "config", "lua-dev.nvim")
+time([[Config for lua-dev.nvim]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+try_loadstring("\27LJ\1\2<\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\19core.telescope\frequire\0", "config", "telescope.nvim")
+time([[Config for telescope.nvim]], false)
+-- Config for: nvim-tree.lua
+time([[Config for nvim-tree.lua]], true)
+try_loadstring("\27LJ\1\2;\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\18core.nvimtree\frequire\0", "config", "nvim-tree.lua")
+time([[Config for nvim-tree.lua]], false)
 -- Config for: project.nvim
 time([[Config for project.nvim]], true)
 try_loadstring("\27LJ\1\2:\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\17core.project\frequire\0", "config", "project.nvim")
@@ -292,8 +313,8 @@ vim.cmd [[au!]]
 time([[Defining lazy-load event autocommands]], true)
 vim.cmd [[au BufWinEnter * ++once lua require("packer.load")({'dashboard-nvim', 'toggleterm.nvim', 'which-key.nvim', 'barbar.nvim'}, { event = "BufWinEnter *" }, _G.packer_plugins)]]
 vim.cmd [[au VimEnter * ++once lua require("packer.load")({'nvim-lspinstall'}, { event = "VimEnter *" }, _G.packer_plugins)]]
-vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'compe-tabnine'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
-vim.cmd [[au BufRead * ++once lua require("packer.load")({'gitsigns.nvim', 'nvim-comment'}, { event = "BufRead *" }, _G.packer_plugins)]]
+vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'nvim-ts-autotag'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au BufRead * ++once lua require("packer.load")({'numb.nvim', 'gitsigns.nvim', 'nvim-spectre', 'nvim-comment'}, { event = "BufRead *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end

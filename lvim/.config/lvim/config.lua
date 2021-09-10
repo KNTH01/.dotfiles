@@ -5,12 +5,10 @@ Linters should be
 filled in as strings with either
 a global executable or a path to
 an executable
-]]
--- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
-
+]] -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 -- general
 lvim.log.level = "warn"
-lvim.format_on_save = true
+lvim.format_on_save = false
 lvim.colorscheme = "gruvbox"
 
 -- vim settings 
@@ -22,7 +20,7 @@ vim.opt.hidden = true -- required to keep multiple buffers and open multiple buf
 vim.opt.hlsearch = true -- highlight all matches on previous search pattern
 vim.opt.ignorecase = true -- ignore case in search patterns
 vim.opt.mouse = "a" -- allow the mouse to be used in neovim
-vim.opt.scrolloff = 8 
+vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.wrap = true -- display lines as one long line
 vim.opt.number = true -- set numbered lines
@@ -64,36 +62,54 @@ vim.opt.relativenumber = true -- set relative numbered lines
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<esc><esc>"] = ":nohl<cr>"
 
--- unmap a default keymapping
+-- uunmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = ""
 -- edit a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 lvim.builtin.telescope.on_config_done = function()
-  local actions = require "telescope.actions"
-  -- for input mode
-  lvim.builtin.telescope.defaults.mappings.i["<C-j>"] = actions.move_selection_next
-  lvim.builtin.telescope.defaults.mappings.i["<C-k>"] = actions.move_selection_previous
-  lvim.builtin.telescope.defaults.mappings.i["<C-n>"] = actions.cycle_history_next
-  lvim.builtin.telescope.defaults.mappings.i["<C-p>"] = actions.cycle_history_prev
-  -- for normal mode
-  lvim.builtin.telescope.defaults.mappings.n["<C-j>"] = actions.move_selection_next
-  lvim.builtin.telescope.defaults.mappings.n["<C-k>"] = actions.move_selection_previous
+    local actions = require "telescope.actions"
+    -- for input mode
+    lvim.builtin.telescope.defaults.mappings.i["<C-j>"] =
+        actions.move_selection_next
+    lvim.builtin.telescope.defaults.mappings.i["<C-k>"] =
+        actions.move_selection_previous
+    lvim.builtin.telescope.defaults.mappings.i["<C-n>"] =
+        actions.cycle_history_next
+    lvim.builtin.telescope.defaults.mappings.i["<C-p>"] =
+        actions.cycle_history_prev
+    -- for normal mode
+    lvim.builtin.telescope.defaults.mappings.n["<C-j>"] =
+        actions.move_selection_next
+    lvim.builtin.telescope.defaults.mappings.n["<C-k>"] =
+        actions.move_selection_previous
 end
 
 -- Use which-key to add extra bindings with the leader-key prefix
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["P"] = {
+    "<cmd>Telescope projects<CR>", "Projects"
+}
 lvim.builtin.which_key.mappings["t"] = {
-  name = "+Trouble",
-  t = { "<cmd>TroubleToggle<cr>", "Toggle" },
-  r = { "<cmd>Trouble lsp_references<cr>", "References" },
-  f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
-  d = { "<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics" },
-  q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
-  l = { "<cmd>Trouble loclist<cr>", "LocationList" },
-  w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
+    name = "+Trouble",
+    t = {"<cmd>TroubleToggle<cr>", "Toggle"},
+    r = {"<cmd>Trouble lsp_references<cr>", "References"},
+    f = {"<cmd>Trouble lsp_definitions<cr>", "Definitions"},
+    d = {"<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics"},
+    q = {"<cmd>Trouble quickfix<cr>", "QuickFix"},
+    l = {"<cmd>Trouble loclist<cr>", "LocationList"},
+    w = {"<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics"}
+}
+lvim.builtin.which_key.mappings["r"] = {
+    name = "Replace",
+    r = {"<cmd>lua require('spectre').open()<cr>", "Replace"},
+    w = {
+        "<cmd>lua require('spectre').open_visual({select_word=true})<cr>",
+        "Replace Word"
+    },
+    f = {"<cmd>lua require('spectre').open_file_search()<cr>", "Replace Buffer"}
 }
 
 -- TODO: User Config for predefined plugins
@@ -105,7 +121,7 @@ lvim.builtin.nvimtree.show_icons.git = 0
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = "maintained"
-lvim.builtin.treesitter.ignore_install = { "haskell" }
+lvim.builtin.treesitter.ignore_install = {"haskell"}
 lvim.builtin.treesitter.highlight.enabled = true
 
 -- generic LSP settings
@@ -135,45 +151,53 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- end
 
 -- set a formatter if you want to override the default lsp one (if it exists)
--- lvim.lang.python.formatters = {
---   {
---     exe = "black",
---   }
--- }
+lvim.lang.lua.formatters = {{exe = "lua_format"}}
+-- lvim.lang.python.formatters = { { exe = "black" } }
+
 -- set an additional linter
--- lvim.lang.python.linters = {
---   {
---     exe = "flake8",
---   }
--- }
+lvim.lang.javascript.linters = {{exe = "eslint_d"}}
+-- lvim.lang.python.linters = { { exe = "flake8" } }
 
 -- Additional Plugins
 lvim.plugins = {
-    {"folke/tokyonight.nvim"},
+    -- themes 
+    -- {"folke/tokyonight.nvim"},
     {"ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}},
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
-    },
-    {
-      "tzachar/compe-tabnine",
-      run = "./install.sh",
-      requires = "hrsh7th/nvim-compe",
-      event = "InsertEnter",
-    },
+    {"folke/trouble.nvim", cmd = "TroubleToggle"}, {
+        "tzachar/cmp-tabnine",
+        config = function()
+            local tabnine = require "cmp_tabnine.config"
+            tabnine:setup{max_lines = 1000, max_num_results = 20, sort = true}
+        end,
+
+        run = "./install.sh",
+        requires = "hrsh7th/nvim-cmp"
+    }, --
     -- {
     --   "tpope/vim-surround",
     --   keys = {"c", "d", "y"}
     -- },
     {
-      "folke/lua-dev.nvim",
-      config = function()
-        local luadev = require("lua-dev").setup({
-          lspconfig = lvim.lang.lua.lsp.setup
-        })
-        lvim.lang.lua.lsp.setup = luadev
-      end
-    },
+        "folke/lua-dev.nvim",
+        config = function()
+            local luadev = require("lua-dev").setup({
+                lspconfig = lvim.lang.lua.lsp.setup
+            })
+            lvim.lang.lua.lsp.setup = luadev
+        end
+    }, {
+        "norcalli/nvim-colorizer.lua",
+        config = function() require("user.colorizer").config() end
+    }, {
+        "windwp/nvim-spectre",
+        event = "BufRead",
+        config = function() require("user.spectre").config() end
+    }, {"windwp/nvim-ts-autotag", event = "InsertEnter"}, {
+        "nacro90/numb.nvim",
+        event = "BufRead",
+        config = function() require("user.numb").config() end
+    }
+    --
     -- interesting to take a look: 
     -- https://www.lunarvim.org/plugins/02-extra-plugins.html#navigation-plugins
     --   - hop 
