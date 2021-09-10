@@ -24,6 +24,10 @@ vim.opt.ignorecase = true -- ignore case in search patterns
 vim.opt.mouse = "a" -- allow the mouse to be used in neovim
 vim.opt.scrolloff = 8 
 vim.opt.sidescrolloff = 8
+vim.opt.wrap = true -- display lines as one long line
+vim.opt.number = true -- set numbered lines
+vim.opt.relativenumber = true -- set relative numbered lines
+
 -- other vim settings examples
 -- vim.opt.completeopt = { "menuone" "noselect" }
 -- vim.opt.conceallevel = 0 -- so that `` is visible in markdown files
@@ -51,11 +55,8 @@ vim.opt.sidescrolloff = 8
 -- vim.opt.shiftwidth = 2 -- the number of spaces inserted for each indentation
 -- vim.opt.tabstop = 2 -- insert 2 spaces for a tab
 -- vim.opt.cursorline = true -- highlight the current line
--- vim.opt.number = true -- set numbered lines
--- vim.opt.relativenumber = false -- set relative numbered lines
 -- vim.opt.numberwidth = 2 -- set number column width to 2 {default 4}
 -- vim.opt.signcolumn = "yes" -- always show the sign column otherwise it would shift the text each time
--- vim.opt.wrap = true -- display lines as one long line
 -- vim.opt.spell = false
 -- vim.opt.spelllang = "en"
 
@@ -63,28 +64,30 @@ vim.opt.sidescrolloff = 8
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = ""
 -- edit a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
--- lvim.builtin.telescope.on_config_done = function()
---   local actions = require "telescope.actions"
---   -- for input mode
---   lvim.builtin.telescope.defaults.mappings.i["<C-j>"] = actions.move_selection_next
---   lvim.builtin.telescope.defaults.mappings.i["<C-k>"] = actions.move_selection_previous
---   lvim.builtin.telescope.defaults.mappings.i["<C-n>"] = actions.cycle_history_next
---   lvim.builtin.telescope.defaults.mappings.i["<C-p>"] = actions.cycle_history_prev
---   -- for normal mode
---   lvim.builtin.telescope.defaults.mappings.n["<C-j>"] = actions.move_selection_next
---   lvim.builtin.telescope.defaults.mappings.n["<C-k>"] = actions.move_selection_previous
--- end
+lvim.builtin.telescope.on_config_done = function()
+  local actions = require "telescope.actions"
+  -- for input mode
+  lvim.builtin.telescope.defaults.mappings.i["<C-j>"] = actions.move_selection_next
+  lvim.builtin.telescope.defaults.mappings.i["<C-k>"] = actions.move_selection_previous
+  lvim.builtin.telescope.defaults.mappings.i["<C-n>"] = actions.cycle_history_next
+  lvim.builtin.telescope.defaults.mappings.i["<C-p>"] = actions.cycle_history_prev
+  -- for normal mode
+  lvim.builtin.telescope.defaults.mappings.n["<C-j>"] = actions.move_selection_next
+  lvim.builtin.telescope.defaults.mappings.n["<C-k>"] = actions.move_selection_previous
+end
 
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["t"] = {
   name = "+Trouble",
+  t = { "<cmd>TroubleToggle<cr>", "Toggle" },
   r = { "<cmd>Trouble lsp_references<cr>", "References" },
   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
   d = { "<cmd>Trouble lsp_document_diagnostics<cr>", "Diagnostics" },

@@ -129,6 +129,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/gruvbox.nvim"
   },
+  ["lua-dev.nvim"] = {
+    config = { "\27LJ\1\2„\1\0\0\3\0\t\0\0184\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\a\0004\2\3\0007\2\4\0027\2\5\0027\2\6\0027\2\2\2:\2\b\1>\0\2\0024\1\3\0007\1\4\0017\1\5\0017\1\6\1:\0\2\1G\0\1\0\14lspconfig\1\0\0\blsp\blua\tlang\tlvim\nsetup\flua-dev\frequire\0" },
+    loaded = true,
+    path = "/home/knth/.local/share/lunarvim/site/pack/packer/start/lua-dev.nvim"
+  },
   ["lualine.nvim"] = {
     config = { "\27LJ\1\2:\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\17core.lualine\frequire\0" },
     loaded = true,
@@ -247,14 +252,18 @@ time([[Config for telescope.nvim]], false)
 time([[Config for lualine.nvim]], true)
 try_loadstring("\27LJ\1\2:\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\17core.lualine\frequire\0", "config", "lualine.nvim")
 time([[Config for lualine.nvim]], false)
--- Config for: nvim-tree.lua
-time([[Config for nvim-tree.lua]], true)
-try_loadstring("\27LJ\1\2;\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\18core.nvimtree\frequire\0", "config", "nvim-tree.lua")
-time([[Config for nvim-tree.lua]], false)
+-- Config for: lua-dev.nvim
+time([[Config for lua-dev.nvim]], true)
+try_loadstring("\27LJ\1\2„\1\0\0\3\0\t\0\0184\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\a\0004\2\3\0007\2\4\0027\2\5\0027\2\6\0027\2\2\2:\2\b\1>\0\2\0024\1\3\0007\1\4\0017\1\5\0017\1\6\1:\0\2\1G\0\1\0\14lspconfig\1\0\0\blsp\blua\tlang\tlvim\nsetup\flua-dev\frequire\0", "config", "lua-dev.nvim")
+time([[Config for lua-dev.nvim]], false)
 -- Config for: nvim-treesitter
 time([[Config for nvim-treesitter]], true)
 try_loadstring("\27LJ\1\2=\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\20core.treesitter\frequire\0", "config", "nvim-treesitter")
 time([[Config for nvim-treesitter]], false)
+-- Config for: nvim-tree.lua
+time([[Config for nvim-tree.lua]], true)
+try_loadstring("\27LJ\1\2;\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\18core.nvimtree\frequire\0", "config", "nvim-tree.lua")
+time([[Config for nvim-tree.lua]], false)
 -- Config for: nvim-cmp
 time([[Config for nvim-cmp]], true)
 try_loadstring("\27LJ\1\0026\0\0\2\0\3\0\0064\0\0\0%\1\1\0>\0\2\0027\0\2\0>\0\1\1G\0\1\0\nsetup\rcore.cmp\frequire\0", "config", "nvim-cmp")
