@@ -47,7 +47,7 @@ plugins=(
     command-not-found
     colored-man-pages
     fzf
-    vi-mode
+    # vi-mode
     # npm
 )
 
@@ -72,7 +72,7 @@ export DOTFILES="$HOME/.dotfiles" # my dotfiles
 export FILE_MANAGER="thunar"
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)" # history ignore
 export PATH=$HOME/.npm/bin:$PATH # Path to npm bin
-export VISUAL="code" # $VISUAL use Code
+export VISUAL="lvim" # $VISUAL use Code
 export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH" # RMagick gem
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export VOLTA_HOME="$HOME/.volta" # volta config
@@ -104,6 +104,42 @@ else
   export EDITOR='lvim'
 fi
 
+### vi-mode
+bindkey -v
+export KEYTIMEOUT=1
+
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+# Change cursor shape for different vi modes.
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+  fi
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+echo -ne '\e[5 q' # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+
+# Edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
+
 ### Aliases
 source $HOME/.zsh/arcolinux.aliases
 source $HOME/.zsh/me.aliases
@@ -125,7 +161,4 @@ eval "$(rbenv init -)"
 
 ### Init z.lua https://github.com/skywind3000/z.lua
 eval "$(lua /usr/share/z.lua/z.lua --init zsh)"
-
-# Vim
-bindkey -v
 
