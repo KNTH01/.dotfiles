@@ -12,6 +12,7 @@ lvim.log.level = "warn"
 lvim.format_on_save = false
 lvim.colorscheme = "gruvbox"
 
+
 -- vim settings
 vim.opt.backup = false -- creates a backup file
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
@@ -64,6 +65,7 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<esc><esc>"] = ":nohl<cr>"
+lvim.keys.visual_mode["<leader>p"] = "_P"
 
 -- uunmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = ""
@@ -167,11 +169,12 @@ lvim.plugins = {
 
 		run = "./install.sh",
 		requires = "hrsh7th/nvim-cmp",
-	}, --
-	-- {
-	--   "tpope/vim-surround",
-	--   keys = {"c", "d", "y"}
-	-- },
+	},
+  -- this configuration of vim-surround is no working much...
+	{
+	  "tpope/vim-surround",
+	  keys = {"c", "d", "y"}
+	},
 	{
 		"folke/lua-dev.nvim",
 		config = function()
