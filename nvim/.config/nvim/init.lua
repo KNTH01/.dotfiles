@@ -21,15 +21,15 @@ require("packer").startup(function()
 	use("tpope/vim-fugitive") -- Git commands in nvim
 	use("tpope/vim-rhubarb") -- Fugitive-companion to interact with github
 	use("tpope/vim-commentary") -- "gc" to comment visual regions/lines
-	use("ludovicchabant/vim-gutentags") -- Automatic tags management
+	-- use("ludovicchabant/vim-gutentags") -- Automatic tags management
 	-- UI to select things (files, grep results, open buffers...)
 	use({ "nvim-telescope/telescope.nvim", requires = { "nvim-lua/plenary.nvim" } })
-	use("joshdick/onedark.vim") -- Theme inspired by Atom
+	use("morhetz/gruvbox") -- Gruvbox theme
 	use("itchyny/lightline.vim") -- Fancier statusline
 	-- Add indentation guides even on blank lines
 	use("lukas-reineke/indent-blankline.nvim")
 	-- Add git related info in the signs columns and popups
-	use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
+	-- use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
 	-- Highlight, edit, and navigate code using a fast incremental parsing library
 	use("nvim-treesitter/nvim-treesitter")
 	-- Additional textobjects for treesitter
@@ -74,51 +74,66 @@ require("packer").startup(function()
 end)
 
 --Incremental live completion (note: this is now a default on master)
-vim.o.inccommand = "nosplit"
+vim.opt.inccommand = "nosplit"
 
 --Set highlight on search
-vim.o.hlsearch = false
+vim.opt.hlsearch = false
 
 --Make line numbers default
-vim.wo.number = true
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.wrap = true
 
 --Do not save when switching buffers (note: this is now a default on master)
-vim.o.hidden = true
+vim.opt.hidden = true
 
 --Enable mouse mode
-vim.o.mouse = "a"
+vim.opt.mouse = "a"
 
 --Enable break indent
-vim.o.breakindent = true
+vim.opt.breakindent = true
 
 --Save undo history
 vim.opt.undofile = true
 
 --Case insensitive searching UNLESS /C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 --Decrease update time
-vim.o.updatetime = 250
+vim.opt.updatetime = 250
 vim.wo.signcolumn = "yes"
 
 -- Add a nice vertical scroll offset
-vim.o.scrolloff = 8
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
+
+-- creates a backup file
+vim.opt.backup = false
+
+-- allows neovim to access the system clipboard
+vim.opt.clipboard = "unnamedplus"
+
+-- set height for the command input below
+vim.opt.cmdheight = 1
 
 --Set colorscheme (order is important here)
-vim.o.termguicolors = true
-vim.g.onedark_terminal_italics = 2
-vim.cmd([[colorscheme onedark]])
+vim.opt.termguicolors = true
+vim.g.gruvbox_terminal_italics = 2
+vim.cmd([[colorscheme gruvbox]])
 
 --Set statusbar
 vim.g.lightline = {
-	colorscheme = "onedark",
+	colorscheme = "gruvbox",
 	active = { left = { { "mode", "paste" }, { "gitbranch", "readonly", "filename", "modified" } } },
 	component_function = { gitbranch = "fugitive#head" },
 }
 
+-- REMAP
+local map_opt = { noremap = true, silent = true }
+
 --Remap space as leader key
-vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("", "<Space>", "<Nop>", map_opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -137,12 +152,32 @@ vim.api.nvim_exec(
 	false
 )
 
--- Y yank until the end of line  (note: this is now a default on master)
-vim.api.nvim_set_keymap("n", "Y", "y$", { noremap = true })
+-- Y yank until the end of line
+vim.api.nvim_set_keymap("n", "Y", "y$", map_opt)
 
 -- My remaps
 
---Map blankline
+-- set hlsearch to false
+vim.api.nvim_set_keymap("n", "<esc><esc>", "<cmd>nohl<CR>", map_opt)
+
+-- :w & :q cmds
+vim.api.nvim_set_keymap("n", "<C-s>", "<cmd>w<CR>", map_opt)
+vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>w<CR>", map_opt)
+vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>q<CR>", map_opt)
+
+-- copy current file path
+vim.api.nvim_set_keymap("n", "<leader>cp", "<cmd>let @+ = expand(\"%\")<CR>", map_opt)
+
+-- replace the visual selection without pushing the latter into the register
+-- #todo: seems not to work
+vim.api.nvim_set_keymap("v", "<leader>p", "_P", map_opt)
+
+-- nvim config
+local nvim_config_path = "~/.config/nvim/init.lua"
+vim.api.nvim_set_keymap("n", "<leader>vs", "<cmd>source " .. nvim_config_path .. "<cr>", map_opt)
+vim.api.nvim_set_keymap("n", "<leader>ve", "<cmd>vsplit " .. nvim_config_path .. "<cr>", map_opt)
+
+-- Map blankline
 vim.g.indent_blankline_char = "┊"
 vim.g.indent_blankline_filetype_exclude = { "help", "packer" }
 vim.g.indent_blankline_buftype_exclude = { "terminal", "nofile" }
@@ -150,15 +185,15 @@ vim.g.indent_blankline_char_highlight = "LineNr"
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 
 -- Gitsigns
-require("gitsigns").setup({
-	signs = {
-		add = { hl = "GitGutterAdd", text = "+" },
-		change = { hl = "GitGutterChange", text = "~" },
-		delete = { hl = "GitGutterDelete", text = "_" },
-		topdelete = { hl = "GitGutterDelete", text = "‾" },
-		changedelete = { hl = "GitGutterChange", text = "~" },
-	},
-})
+-- require("gitsigns").setup({
+-- 	signs = {
+-- 		add = { hl = "GitGutterAdd", text = "+" },
+-- 		change = { hl = "GitGutterChange", text = "~" },
+-- 		delete = { hl = "GitGutterDelete", text = "_" },
+-- 		topdelete = { hl = "GitGutterDelete", text = "‾" },
+-- 		changedelete = { hl = "GitGutterChange", text = "~" },
+-- 	},
+-- })
 
 -- Telescope
 require("telescope").setup({
@@ -315,7 +350,7 @@ local on_attach = function(_, bufnr)
 	)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>dq", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(
 		bufnr,
 		"n",
