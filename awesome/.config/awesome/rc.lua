@@ -1065,7 +1065,7 @@ awful.rules.rules = {
 client.connect_signal("property::class", function(c)
 	if c.class == "Spotify" or c.class == "spotify" then
 		-- Move the Spotify instance to "music" tag on this screen
-		local t = awful.screen.focused().tags[4]
+		local t = awful.screen.focused().tags[6]
 		c:move_to_tag(t)
 	end
 end)
