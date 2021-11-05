@@ -975,13 +975,20 @@ awful.rules.rules = {
 	{
 		rule_any = {
 			class = {
+				"slack",
+			}
+		},
+		properties = { screen = 1, tag = awful.util.tagnames[4], switchtotag = false },
+	},
+	{
+		rule_any = {
+			class = {
 				"Telegram",
 				"telegram-desktop",
 				"WhatsApp",
 				"whatsapp-nativefier-d40211",
 				"Signal",
 				"discord",
-				"slack",
 			},
 		},
 		properties = { screen = 1, tag = awful.util.tagnames[5], switchtotag = false },
@@ -1065,7 +1072,7 @@ awful.rules.rules = {
 client.connect_signal("property::class", function(c)
 	if c.class == "Spotify" or c.class == "spotify" then
 		-- Move the Spotify instance to "music" tag on this screen
-		local t = awful.screen.focused().tags[6]
+		local t = awful.screen.focused().tags[4]
 		c:move_to_tag(t)
 	end
 end)
