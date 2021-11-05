@@ -4,17 +4,15 @@
 local M = {}
 M.options, M.ui, M.mappings, M.plugins = {}, {}, {}, {}
 
--- NOTE: To use this, make a copy with `cp example_chadrc.lua chadrc.lua`
-
 --------------------------------------------------------------------
 
--- To use this file, copy the structure of `core/default_config.lua`,
--- examples of setting relative number & changing theme:
+-- overrides options
+M.options = {
+  so = 8,
+  relativenumber = true,
+}
 
--- M.options = {
---    relativenumber = true,
--- }
-
+-- overrides theme
 M.ui = {
   theme = "gruvchad"
 }
