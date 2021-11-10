@@ -1,3 +1,17 @@
+--
+-- My nvim config
+--
+
+--━━━━━━━━━━━━━❰ Leader Mapping ❱━━━━━━━━━━━━━--
+--Remap space as leader key
+vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+--━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
+
+--━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
+--━━━━━━━━━━━━━━━❰ Package Manager ❱━━━━━━━━━━━━━━━--
+--━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
 -- Install packer
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
@@ -18,19 +32,38 @@ vim.api.nvim_exec(
 local use = require("packer").use
 require("packer").startup(function()
   use("wbthomason/packer.nvim") -- Package manager
-  use("tpope/vim-fugitive") -- Git commands in nvim
-  use("tpope/vim-rhubarb") -- Fugitive-companion to interact with github
-  use("tpope/vim-commentary") -- "gc" to comment visual regions/lines
-  -- use("ludovicchabant/vim-gutentags") -- Automatic tags management
+
+  --━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
+  --━━━━━━━━━━━━━━━❰ Plugins listing ❱━━━━━━━━━━━━━━━━━--
+  --━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
+
+  -- checklist todo:
+  -- 'lewis6991/impatient.nvim'
+  -- 'nathom/filetype.nvim'
+
+  -- Gruvbox theme
+  use("morhetz/gruvbox")
+
+  -- Git commands in nvim
+  use("tpope/vim-fugitive")
+
+  -- Fugitive-companion to interact with github
+  use("tpope/vim-rhubarb")
+
+  -- "gc" to comment visual regions/lines
+  use("tpope/vim-commentary")
+
   -- UI to select things (files, grep results, open buffers...)
   use({ "nvim-telescope/telescope.nvim", requires = { "nvim-lua/plenary.nvim" } })
-  use("morhetz/gruvbox") -- Gruvbox theme
-  use("itchyny/lightline.vim") -- Fancier statusline
+
+  -- Fancier statusline
+  use("itchyny/lightline.vim")
+
   -- Add indentation guides even on blank lines
   use("lukas-reineke/indent-blankline.nvim")
 
   -- Add git related info in the signs columns and popups
-  -- use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
+  use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
 
   -- Highlight, edit, and navigate code using a fast incremental parsing library
   use({
@@ -91,8 +124,14 @@ require("packer").startup(function()
   })
 
   -- rust goodness?
-  use "simrat39/rust-tools.nvim"
+  use("simrat39/rust-tools.nvim")
 end)
+
+--━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
+--━━━━━━━━━━━━━━━━❰ end of Plugin Manager ❱━━━━━━━━━━━━━━━--
+--━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
+
+-------------
 
 --Incremental live completion (note: this is now a default on master)
 vim.opt.inccommand = "nosplit"
@@ -148,7 +187,7 @@ vim.bo.tabstop = 2
 -- convert tabs to spaces
 vim.bo.expandtab = true
 
---Set colorscheme (order is important here)
+-- set colorscheme (order is important here)
 vim.opt.termguicolors = true
 vim.g.gruvbox_terminal_italics = 2
 vim.cmd([[colorscheme gruvbox]])
@@ -168,11 +207,6 @@ vim.g.lightline = {
 
 -- REMAP
 local map_opt = { noremap = true, silent = true }
-
---Remap space as leader key
-vim.api.nvim_set_keymap("", "<Space>", "<Nop>", map_opt)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
 --Remap for dealing with word wrap
 vim.api.nvim_set_keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
@@ -222,15 +256,15 @@ vim.g.indent_blankline_char_highlight = "LineNr"
 vim.g.indent_blankline_show_trailing_blankline_indent = false
 
 -- Gitsigns
--- require("gitsigns").setup({
--- 	signs = {
--- 		add = { hl = "GitGutterAdd", text = "+" },
--- 		change = { hl = "GitGutterChange", text = "~" },
--- 		delete = { hl = "GitGutterDelete", text = "_" },
--- 		topdelete = { hl = "GitGutterDelete", text = "‾" },
--- 		changedelete = { hl = "GitGutterChange", text = "~" },
--- 	},
--- })
+require("gitsigns").setup({
+  signs = {
+    add = { hl = "GitGutterAdd", text = "+" },
+    change = { hl = "GitGutterChange", text = "~" },
+    delete = { hl = "GitGutterDelete", text = "_" },
+    topdelete = { hl = "GitGutterDelete", text = "‾" },
+    changedelete = { hl = "GitGutterChange", text = "~" },
+  },
+})
 
 -- Telescope
 require("telescope").setup({
