@@ -156,6 +156,9 @@ vim.cmd([[colorscheme gruvbox]])
 -- case insensitive in `command-line` mode
 vim.opt.wildignorecase = true
 
+-- op newline continution of comments
+vim.api.nvim_exec([[setlocal formatoptions-=cro]], true)
+
 --Set statusbar
 vim.g.lightline = {
   colorscheme = "gruvbox",
