@@ -28,12 +28,22 @@ require("packer").startup(function()
   use("itchyny/lightline.vim") -- Fancier statusline
   -- Add indentation guides even on blank lines
   use("lukas-reineke/indent-blankline.nvim")
+
   -- Add git related info in the signs columns and popups
   -- use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
+
   -- Highlight, edit, and navigate code using a fast incremental parsing library
-  use("nvim-treesitter/nvim-treesitter")
+  use({
+    "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
+  })
+
   -- Additional textobjects for treesitter
   use("nvim-treesitter/nvim-treesitter-textobjects")
+
+  -- nvim-lsp-installer to auto install lsp language servers
+  use("williamboman/nvim-lsp-installer")
+
   use("neovim/nvim-lspconfig") -- Collection of configurations for built-in LSP client
   use("hrsh7th/nvim-cmp") -- Autocompletion plugin
   use("hrsh7th/cmp-nvim-lsp")
@@ -79,6 +89,9 @@ require("packer").startup(function()
     "jose-elias-alvarez/null-ls.nvim",
     requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
   })
+
+  -- rust goodness?
+  use "simrat39/rust-tools.nvim"
 end)
 
 --Incremental live completion (note: this is now a default on master)
@@ -382,7 +395,12 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
 -- Enable the following language servers
-local servers = { "rust_analyzer", "tsserver" }
+local servers = {
+  "rust_analyzer",
+  "tsserver",
+  "jsonls", -- for json
+}
+
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup({
     on_attach = on_attach,
@@ -426,6 +444,54 @@ require("lspconfig").sumneko_lua.setup({
     },
   },
 })
+
+------------------ nvim-lsp-installer
+--
+local lsp_installer = require("nvim-lsp-installer")
+
+-- Provide settings first!
+lsp_installer.settings({
+  ui = {
+    icons = {
+      server_installed = "✓",
+      server_pending = "➜",
+      server_uninstalled = "✗",
+    },
+  },
+
+  -- Limit for the maximum amount of servers to be installed at the same time. Once this limit is reached, any further
+  -- servers that are requested to be installed will be put in a queue.
+  max_concurrent_installers = 4,
+})
+
+local function make_server_ready(attach)
+  lsp_installer.on_server_ready(function(server)
+    local opts = {}
+    opts.on_attach = attach
+
+    -- This setup() function is exactly the same as lspconfig's setup function (:help lspconfig-quickstart)
+    server:setup(opts)
+    vim.cmd([[ do User LspAttachBuffers ]])
+  end)
+end
+
+local function install_server(server)
+  local lsp_installer_servers = require("nvim-lsp-installer.servers")
+  local ok, server_analyzer = lsp_installer_servers.get_server(server)
+  if ok then
+    if not server_analyzer:is_installed() then
+      server_analyzer:install(server)
+    end
+  end
+end
+
+------------------ nvim-lsp-installer end
+make_server_ready(on_attach) -- LSP mappings
+
+-- install the LS
+for _, server in ipairs(servers) do
+  install_server(server)
+end
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
