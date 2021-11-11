@@ -2,16 +2,17 @@
 -- My nvim config
 --
 
---━━━━━━━━━━━━━❰ Leader Mapping ❱━━━━━━━━━━━━━--
---Remap space as leader key
+---------------❰ Leader Mapping ❱---------------
+-- remap space as leader key
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
---━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
 
---━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
---━━━━━━━━━━━━━━━❰ Package Manager ❱━━━━━━━━━━━━━━━--
---━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
+---------------❰ Load/Source Configs ❱---------------
+require("configs")
+-- require("mappings")
+
+-----------------❰ Package Manager ❱-----------------
 -- Install packer
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
@@ -33,9 +34,7 @@ local use = require("packer").use
 require("packer").startup(function()
   use("wbthomason/packer.nvim") -- Package manager
 
-  --━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
-  --━━━━━━━━━━━━━━━❰ Plugins listing ❱━━━━━━━━━━━━━━━━━--
-  --━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
+  -----------------❰ Plugins listing ❱-------------------
 
   -- checklist todo:
   -- 'lewis6991/impatient.nvim'
@@ -127,76 +126,8 @@ require("packer").startup(function()
   use("simrat39/rust-tools.nvim")
 end)
 
---━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
---━━━━━━━━━━━━━━━━❰ end of Plugin Manager ❱━━━━━━━━━━━━━━━--
---━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━--
 
 -------------
-
---Incremental live completion (note: this is now a default on master)
-vim.opt.inccommand = "nosplit"
-
---Set highlight on search
-vim.opt.hlsearch = false
-
---Make line numbers default
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.wrap = true
-
---Do not save when switching buffers (note: this is now a default on master)
-vim.opt.hidden = true
-
---Enable mouse mode
-vim.opt.mouse = "a"
-
---Enable break indent
-vim.opt.breakindent = true
-
---Save undo history
-vim.opt.undofile = true
-
---Case insensitive searching UNLESS /C or capital in search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
---Decrease update time
-vim.opt.updatetime = 250
-vim.wo.signcolumn = "yes"
-
--- Add a nice vertical scroll offset
-vim.opt.scrolloff = 8
-vim.opt.sidescrolloff = 8
-
--- creates a backup file
-vim.opt.backup = false
-
--- allows neovim to access the system clipboard
-vim.opt.clipboard = "unnamedplus"
-
--- set height for the command input below
-vim.opt.cmdheight = 1
-
--- todo
--- set backspace=indent,eol,start
-
--- makes 1 tab = 4 spaces
-vim.o.shiftwidth = 2
-vim.bo.tabstop = 2
-
--- convert tabs to spaces
-vim.bo.expandtab = true
-
--- set colorscheme (order is important here)
-vim.opt.termguicolors = true
-vim.g.gruvbox_terminal_italics = 2
-vim.cmd([[colorscheme gruvbox]])
-
--- case insensitive in `command-line` mode
-vim.opt.wildignorecase = true
-
--- op newline continution of comments
-vim.api.nvim_exec([[setlocal formatoptions-=cro]], true)
 
 --Set statusbar
 vim.g.lightline = {
