@@ -10,7 +10,7 @@ vim.g.maplocalleader = " "
 
 ---------------❰ Load/Source Configs ❱---------------
 require("configs")
--- require("mappings")
+require("mappings")
 
 -----------------❰ Package Manager ❱-----------------
 -- Install packer
@@ -135,40 +135,7 @@ vim.g.lightline = {
   component_function = { gitbranch = "fugitive#head" },
 }
 
--- REMAP
-local map_opt = { noremap = true, silent = true }
-
---Remap for dealing with word wrap
-vim.api.nvim_set_keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
-vim.api.nvim_set_keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })
-
-
--- Y yank until the end of line
-vim.api.nvim_set_keymap("n", "Y", "y$", map_opt)
-
--- My remaps
-
--- set hlsearch to false
-vim.api.nvim_set_keymap("n", "<esc><esc>", "<cmd>nohl<CR>", map_opt)
-
--- :w & :q cmds
-vim.api.nvim_set_keymap("n", "<C-s>", "<cmd>w<CR>", map_opt)
-vim.api.nvim_set_keymap("n", "<leader>w", "<cmd>w<CR>", map_opt)
-vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>q<CR>", map_opt)
-
--- copy current file path
-vim.api.nvim_set_keymap("n", "<leader>cp", '<cmd>let @+ = expand("%")<CR>', map_opt)
-
--- replace the visual selection without pushing the latter into the register
--- #todo: seems not to work
-vim.api.nvim_set_keymap("v", "<leader>p", "_P", map_opt)
-
--- nvim config
-local nvim_config_path = "~/.config/nvim/init.lua"
-vim.api.nvim_set_keymap("n", "<leader>vs", "<cmd>source " .. nvim_config_path .. "<cr>", map_opt)
-vim.api.nvim_set_keymap("n", "<leader>ve", "<cmd>vsplit " .. nvim_config_path .. "<cr>", map_opt)
-
--- Map blankline
+-- Map blankline (Blankline plugin?)
 vim.g.indent_blankline_char = "┊"
 vim.g.indent_blankline_filetype_exclude = { "help", "packer" }
 vim.g.indent_blankline_buftype_exclude = { "terminal", "nofile" }

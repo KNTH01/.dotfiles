@@ -64,7 +64,7 @@ vim.opt.shell = "zsh"
 vim.opt.inccommand = "nosplit"
 
 --Set highlight on search
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 
 -- incremental search
 vim.opt.incsearch = true
