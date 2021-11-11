@@ -1,5 +1,3 @@
-local exec = vim.api.nvim_exec -- execute Vimscript
-
 --
 -- vim.fn            -- call Vim functions
 -- vim.g             -- global variables
@@ -123,7 +121,7 @@ vim.opt.wildignorecase = true
 ------------------------------------------------
 
 -- highlight on yank
-exec(
+vim.api.nvim_exec(
   [[
   augroup YankHighlight
     autocmd!

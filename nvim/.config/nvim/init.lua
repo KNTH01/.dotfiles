@@ -126,7 +126,6 @@ require("packer").startup(function()
   use("simrat39/rust-tools.nvim")
 end)
 
-
 -------------
 
 --Set statusbar
@@ -143,16 +142,6 @@ local map_opt = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
 vim.api.nvim_set_keymap("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })
 
--- Highlight on yank
-vim.api.nvim_exec(
-  [[
-  augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-  augroup end
-]],
-  false
-)
 
 -- Y yank until the end of line
 vim.api.nvim_set_keymap("n", "Y", "y$", map_opt)
