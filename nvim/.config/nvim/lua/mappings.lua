@@ -29,3 +29,7 @@ vim.api.nvim_set_keymap("v", "<leader>p", "_P", map_opt)
 local nvim_config_path = "~/.config/nvim/init.lua"
 vim.api.nvim_set_keymap("n", "<leader>vs", "<cmd>source " .. nvim_config_path .. "<cr>", map_opt)
 vim.api.nvim_set_keymap("n", "<leader>ve", "<cmd>vsplit " .. nvim_config_path .. "<cr>", map_opt)
+
+-- easier moving of code blocks by keeping selection in visual mode
+vim.api.nvim_set_keymap("v", "<", "<gv", map_opt)
+vim.api.nvim_set_keymap("v", ">", ">gv", map_opt)
