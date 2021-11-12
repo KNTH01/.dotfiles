@@ -46,13 +46,19 @@ require("packer").startup(function()
   -- Collection of common configurations for built-in LSP client
   use({
     "neovim/nvim-lspconfig",
-    config = [[ require('plugins/nvim_lspconfig') ]],
+    config = [[ require('plugins/lsp_config') ]],
   })
 
   -- nvim-lsp-installer to auto install lsp language servers
   use({
     "williamboman/nvim-lsp-installer",
-    confg = [[ require('plugins/lsp_installer_nvim") ]],
+    confg = [[ require('plugins/lsp_installer") ]],
+  })
+
+  -- vscode-like pictograms for neovim lsp completion items Topics
+  use({
+    "onsails/lspkind-nvim",
+    config = [[ require('plugins/lsp_kind') ]],
   })
 
   -- null-ls, for formatting
@@ -75,11 +81,24 @@ require("packer").startup(function()
     config = [[ require('plugins/cmp') ]],
   })
 
+  -- todo
+  use("saadparwaiz1/cmp_luasnip")
+
+  -- Snippets plugin
+  use({
+    "L3MON4D3/LuaSnip",
+    requires = {
+      -- snippets collection for a set of different programming languages for faster development
+      "rafamadriz/friendly-snippets",
+    },
+  })
+
   -- Highlight, edit, and navigate code using a fast incremental parsing library
   use({
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   })
+
   -- Additional textobjects for treesitter
   use("nvim-treesitter/nvim-treesitter-textobjects")
 
@@ -104,9 +123,13 @@ require("packer").startup(function()
   -- Add git related info in the signs columns and popups
   use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
 
-  use("saadparwaiz1/cmp_luasnip")
-  use("L3MON4D3/LuaSnip") -- Snippets plugin
   use("karb94/neoscroll.nvim") -- Smooth scrolling
+
+  -- nvim notify
+  use({
+    "rcarriga/nvim-notify",
+    config = [[ require('plugins/notify') ]],
+  })
 
   -- Better escape
   use({
@@ -307,7 +330,6 @@ require("better_escape").setup({
   clear_empty_lines = false, -- clear line after escaping if there is only whitespace
   keys = "<Esc>", -- keys used for escaping, if it is a function will use the result everytime
 })
-
 
 -- Setup lspconfig.
 -- Here is the formatting config
