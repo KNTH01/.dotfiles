@@ -175,7 +175,10 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
   "n",
   "<leader>sf",
-  [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]],
+  -- without previewer
+  -- [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]],
+  -- with previewer
+  [[<cmd>lua require('telescope.builtin').find_files()<CR>]],
   { noremap = true, silent = true }
 )
 vim.api.nvim_set_keymap(
