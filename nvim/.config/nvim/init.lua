@@ -43,6 +43,31 @@ require("packer").startup(function()
   -- Gruvbox theme
   use("morhetz/gruvbox")
 
+  -- Collection of common configurations for built-in LSP client
+  use({
+    "neovim/nvim-lspconfig",
+  })
+  -- nvim-lsp-installer to auto install lsp language servers
+  use("williamboman/nvim-lsp-installer")
+
+  -- null-ls, for formatting
+  use({
+    "jose-elias-alvarez/null-ls.nvim",
+    requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
+  })
+
+  -- Autocompletion plugin
+  use("hrsh7th/nvim-cmp")
+  use("hrsh7th/cmp-nvim-lsp")
+
+  -- Highlight, edit, and navigate code using a fast incremental parsing library
+  use({
+    "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
+  })
+  -- Additional textobjects for treesitter
+  use("nvim-treesitter/nvim-treesitter-textobjects")
+
   -- Git commands in nvim
   use("tpope/vim-fugitive")
 
@@ -64,21 +89,6 @@ require("packer").startup(function()
   -- Add git related info in the signs columns and popups
   use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
 
-  -- Highlight, edit, and navigate code using a fast incremental parsing library
-  use({
-    "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
-  })
-
-  -- Additional textobjects for treesitter
-  use("nvim-treesitter/nvim-treesitter-textobjects")
-
-  -- nvim-lsp-installer to auto install lsp language servers
-  use("williamboman/nvim-lsp-installer")
-
-  use("neovim/nvim-lspconfig") -- Collection of configurations for built-in LSP client
-  use("hrsh7th/nvim-cmp") -- Autocompletion plugin
-  use("hrsh7th/cmp-nvim-lsp")
   use("saadparwaiz1/cmp_luasnip")
   use("L3MON4D3/LuaSnip") -- Snippets plugin
   use("karb94/neoscroll.nvim") -- Smooth scrolling
@@ -116,19 +126,13 @@ require("packer").startup(function()
   -- Colorizer
   use("norcalli/nvim-colorizer.lua")
 
-  -- null-ls
-  use({
-    "jose-elias-alvarez/null-ls.nvim",
-    requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
-  })
-
   -- rust goodness?
   use("simrat39/rust-tools.nvim")
 end)
 
 -------------
 
---Set statusbar
+-- Set statusbar
 vim.g.lightline = {
   colorscheme = "gruvbox",
   active = { left = { { "mode", "paste" }, { "gitbranch", "readonly", "filename", "modified" } } },
