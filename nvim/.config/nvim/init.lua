@@ -48,8 +48,12 @@ require("packer").startup(function()
     "neovim/nvim-lspconfig",
     config = [[ require('plugins/nvim_lspconfig') ]],
   })
+
   -- nvim-lsp-installer to auto install lsp language servers
-  use("williamboman/nvim-lsp-installer")
+  use({
+    "williamboman/nvim-lsp-installer",
+    confg = [[ require('plugins/lsp_installer_nvim") ]],
+  })
 
   -- null-ls, for formatting
   use({
@@ -281,8 +285,6 @@ require("nvim-treesitter.configs").setup({
     },
   },
 })
-
-
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"

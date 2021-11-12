@@ -1,7 +1,9 @@
 -- LSP settings
-local nvim_lsp = require("lspconfig")
+-- local nvim_lsp = require("lspconfig")
 
 -- On_attach is a global... #todo: refact to export the function instead?
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
 On_attach = function(_, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -43,56 +45,20 @@ On_attach = function(_, bufnr)
 end
 
 -- nvim-cmp supports additional completion capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
 -- Enable the following language servers
-local servers = {
-  "rust_analyzer",
-  "tsserver",
-  "jsonls", -- for json
-}
+-- local servers = {
+--   "rust_analyzer",
+--   "tsserver",
+--   "jsonls", -- for json
+-- }
 
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-  })
-end
+-- for _, lsp in ipairs(servers) do
+--   nvim_lsp[lsp].setup({
+--     on_attach = On_attach,
+--     capabilities = capabilities,
+--   })
+-- end
 
--- Example custom server
-local sumneko_root_path = vim.fn.getenv("HOME") .. "/.local/bin/lua-language-server" -- Change to your sumneko root installation
-local sumneko_binary = sumneko_root_path .. "/bin/Linux/lua-language-server"
-
--- Make runtime files discoverable to the server
-local runtime_path = vim.split(package.path, ";")
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
-
-require("lspconfig").sumneko_lua.setup({
-  cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = "LuaJIT",
-        -- Setup your lua path
-        path = runtime_path,
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = { "vim" },
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-})

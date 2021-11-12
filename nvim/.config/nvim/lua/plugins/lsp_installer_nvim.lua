@@ -22,6 +22,27 @@ local function make_server_ready(attach)
     local opts = {}
     opts.on_attach = attach
 
+    -- for lua
+    if server.name == "sumneko_lua" then
+      -- only apply these settings for the "sumneko_lua" server
+      opts.settings = {
+        Lua = {
+          diagnostics = {
+            -- Get the language server to recognize the 'vim', 'use' global
+            globals = { "vim", "use", "require" },
+          },
+          workspace = {
+            -- Make the server aware of Neovim runtime files
+            library = vim.api.nvim_get_runtime_file("", true),
+          },
+          -- Do not send telemetry data containing a randomized but unique identifier
+          telemetry = {
+            enable = false,
+          },
+        },
+      }
+    end
+
     -- This setup() function is exactly the same as lspconfig's setup function (:help lspconfig-quickstart)
     server:setup(opts)
     vim.cmd([[ do User LspAttachBuffers ]])
@@ -38,16 +59,28 @@ local function install_server(server)
   end
 end
 
-
 -- #todo: refact servers variable to be exported from lua/plugins/nvim_lspconfig.lua
 local servers = {
+  -- rust
   "rust_analyzer",
+
+  -- lua
+  "sumneko_lua",
+
+  -- web dev
   "tsserver",
-  "jsonls", -- for json
+  "jsonls",
+  "vuels",
+  "html",
+  "cssls",
+  "eslint",
 }
+
+require("plugins.nvim_lspconfig")
 
 make_server_ready(On_attach) -- LSP mappings
 
+-- install the language servers
 for _, server in ipairs(servers) do
   install_server(server)
 end
