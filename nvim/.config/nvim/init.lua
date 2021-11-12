@@ -62,8 +62,18 @@ require("packer").startup(function()
   })
 
   -- Autocompletion plugin
-  use("hrsh7th/nvim-cmp")
-  use("hrsh7th/cmp-nvim-lsp")
+  use({ -- A completion plugin for neovim coded in Lua.
+    "hrsh7th/nvim-cmp",
+    requires = {
+      "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim builtin LSP client
+      "hrsh7th/cmp-nvim-lua", -- nvim-cmp source for nvim lua
+      "hrsh7th/cmp-buffer", -- nvim-cmp source for buffer words.
+      "hrsh7th/cmp-path", -- nvim-cmp source for filesystem paths.
+      "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
+      "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
+    },
+    config = [[ require('plugins/cmp') ]],
+  })
 
   -- Highlight, edit, and navigate code using a fast incremental parsing library
   use({
@@ -289,53 +299,6 @@ require("nvim-treesitter.configs").setup({
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
 
--- luasnip setup
-local luasnip = require("luasnip")
-
--- nvim-cmp setup
-local cmp = require("cmp")
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ["<C-p>"] = cmp.mapping.select_prev_item(),
-    ["<C-n>"] = cmp.mapping.select_next_item(),
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.close(),
-    ["<CR>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    }),
-    ["<Tab>"] = function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end,
-    ["<S-Tab>"] = function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end,
-  },
-  sources = {
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-  },
-})
-
 -- Plugins configs
 
 require("better_escape").setup({
@@ -344,6 +307,7 @@ require("better_escape").setup({
   clear_empty_lines = false, -- clear line after escaping if there is only whitespace
   keys = "<Esc>", -- keys used for escaping, if it is a function will use the result everytime
 })
+
 
 -- Setup lspconfig.
 -- Here is the formatting config
