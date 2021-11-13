@@ -63,7 +63,7 @@ require("packer").startup(function()
 
   -- null-ls, for formatting
   use({
-          "jose-elias-alvarez/null-ls.nvim",
+    "jose-elias-alvarez/null-ls.nvim",
     requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
     config = [[ require('plugins/null_ls') ]],
   })
@@ -124,8 +124,6 @@ require("packer").startup(function()
   -- Add git related info in the signs columns and popups
   use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
 
-  use("karb94/neoscroll.nvim") -- Smooth scrolling
-
   -- nvim notify
   use({
     "rcarriga/nvim-notify",
@@ -144,8 +142,21 @@ require("packer").startup(function()
     config = [[ require('plugins/autosave') ]],
   })
 
+  -- Smooth scrolling
+  use({
+    "karb94/neoscroll.nvim",
+    config = function()
+      require("neoscroll").setup()
+    end,
+  })
+
   -- Colorizer
-  use("norcalli/nvim-colorizer.lua")
+  use({
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+  })
 
   -- rust goodness?
   use("simrat39/rust-tools.nvim")
@@ -293,9 +304,5 @@ require("nvim-treesitter.configs").setup({
         ["[]"] = "@class.outer",
       },
     },
-    },
+  },
 })
-
--- Load plugins
-require("neoscroll").setup()
-require("colorizer").setup()
