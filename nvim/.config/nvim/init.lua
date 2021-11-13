@@ -295,11 +295,8 @@ require("nvim-treesitter.configs").setup({
   },
 })
 
--- Set completeopt to have a better completion experience
-vim.o.completeopt = "menuone,noselect"
 
 -- Plugins configs
-
 
 -- Setup lspconfig.
 -- Here is the formatting config
