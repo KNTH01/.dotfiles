@@ -81,7 +81,6 @@ require("packer").startup(function()
     config = [[ require('plugins/cmp') ]],
   })
 
-
   -- Snippets plugin
   use({
     "L3MON4D3/LuaSnip",
@@ -164,6 +163,14 @@ require("packer").startup(function()
 
   -- rust goodness?
   use("simrat39/rust-tools.nvim")
+
+  -- todo: List of plugins to check out
+  -- bufferline
+  -- feline (statusline)
+  -- mundo
+  -- harpoon
+  -- ...
+  --
 end)
 
 -------------
