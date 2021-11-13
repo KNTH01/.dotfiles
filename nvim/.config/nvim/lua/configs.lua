@@ -159,7 +159,6 @@ vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])
 -- op newline continution of comments
 vim.api.nvim_exec([[setlocal formatoptions-=cro]], false)
 
-
 -- 2 spaces for selected filetypes
 -- vim.cmd([[ autocmd FileType xml,html,xhtml,css,scssjavascript,lua,dart setlocal shiftwidth=2 tabstop=2 ]])
 -- 4 spaces for selected filetypes

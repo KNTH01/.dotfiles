@@ -61,6 +61,12 @@ require("packer").startup(function()
     config = [[ require('plugins/lsp_kind') ]],
   })
 
+  -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
+  use({
+    "nvim-lua/lsp-status.nvim",
+    config = [[ require('plugins/lsp_status') ]],
+  })
+
   -- null-ls, for formatting
   use({
     "jose-elias-alvarez/null-ls.nvim",
@@ -119,6 +125,12 @@ require("packer").startup(function()
     "lewis6991/gitsigns.nvim",
     config = [[ require('plugins/gitsigns') ]],
     requires = { "nvim-lua/plenary.nvim" },
+  })
+
+  -- A super powerful autopairs for Neovim. It support multiple character
+  use({
+    "windwp/nvim-autopairs",
+    config = [[ require('plugins/autopairs') ]],
   })
 
   -- nvim notify
