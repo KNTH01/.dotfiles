@@ -29,4 +29,4 @@ require("null-ls").config({
 require("lspconfig")["null-ls"].setup({})
 
 -- the duration in there is to stop timeouts on massive files
-  vim.cmd("autocmd BufWritePost * lua vim.lsp.buf.formatting_seq_sync(nil, 7500)")
+-- vim.cmd("autocmd BufWritePost * lua vim.lsp.buf.formatting_seq_sync(nil, 7500)")
