@@ -122,10 +122,14 @@ require("packer").startup(function()
   })
 
   -- Add git related info in the signs columns and popups
-  use({ "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } })
+  use({
+    "lewis6991/gitsigns.nvim",
+    config = [[ require('plugins/gitsigns') ]],
+    requires = { "nvim-lua/plenary.nvim" },
+  })
 
   -- nvim notify
-  use({
+   use({
     "rcarriga/nvim-notify",
     config = [[ require('plugins/notify') ]],
   })
@@ -171,17 +175,6 @@ require("packer").startup(function()
 end)
 
 -------------
-
--- Gitsigns
-require("gitsigns").setup({
-  signs = {
-    add = { hl = "GitGutterAdd", text = "+" },
-    change = { hl = "GitGutterChange", text = "~" },
-    delete = { hl = "GitGutterDelete", text = "_" },
-    topdelete = { hl = "GitGutterDelete", text = "‾" },
-    changedelete = { hl = "GitGutterChange", text = "~" },
-  },
-})
 
 -- Telescope
 require("telescope").setup({
