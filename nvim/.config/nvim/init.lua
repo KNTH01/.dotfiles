@@ -63,8 +63,9 @@ require("packer").startup(function()
 
   -- null-ls, for formatting
   use({
-    "jose-elias-alvarez/null-ls.nvim",
+          "jose-elias-alvarez/null-ls.nvim",
     requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
+    config = [[ require('plugins/null_ls') ]],
   })
 
   -- Autocompletion plugin
@@ -292,44 +293,8 @@ require("nvim-treesitter.configs").setup({
         ["[]"] = "@class.outer",
       },
     },
-  },
-})
-
-
--- Plugins configs
-
--- Setup lspconfig.
--- Here is the formatting config
-local null_ls = require("null-ls")
-local my_sources = {
-  null_ls.builtins.formatting.prettier.with({
-    filetypes = {
-      "javascript",
-      "typescript",
-      "css",
-      "scss",
-      "html",
-      "json",
-      "yaml",
-      "markdown",
-      "graphql",
-      "md",
-      "txt",
     },
-  }),
-  null_ls.builtins.formatting.stylua.with({
-    args = { "--indent-width", "2", "--indent-type", "Spaces", "-" },
-  }),
-}
-
-require("null-ls").config({
-  sources = my_sources,
 })
-
-require("lspconfig")["null-ls"].setup({})
-
--- the duration in there is to stop timeouts on massive files
-vim.cmd("autocmd BufWritePost * lua vim.lsp.buf.formatting_seq_sync(nil, 7500)")
 
 -- Load plugins
 require("neoscroll").setup()
