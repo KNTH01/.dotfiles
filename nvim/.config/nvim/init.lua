@@ -81,8 +81,6 @@ require("packer").startup(function()
     config = [[ require('plugins/cmp') ]],
   })
 
-  -- todo
-  use("saadparwaiz1/cmp_luasnip")
 
   -- Snippets plugin
   use({
