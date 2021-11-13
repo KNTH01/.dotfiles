@@ -1,5 +1,4 @@
 -- LSP settings
--- local nvim_lsp = require("lspconfig")
 
 -- On_attach is a global... #todo: refact to export the function instead?
 -- Use an on_attach function to only map the following keys
@@ -45,19 +44,7 @@ On_attach = function(_, bufnr)
 end
 
 -- nvim-cmp supports additional completion capabilities
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
--- Enable the following language servers
--- local servers = {
---   "rust_analyzer",
---   "tsserver",
---   "jsonls", -- for json
--- }
-
--- for _, lsp in ipairs(servers) do
---   nvim_lsp[lsp].setup({
---     on_attach = On_attach,
---     capabilities = capabilities,
---   })
--- end
+-- Capabilities is a global here, being exported for lsp_installer_nvim config
+Capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)

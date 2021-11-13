@@ -15,6 +15,7 @@ vim.g.maplocalleader = " "
 require("impatient")
 
 -- Easily speed up your neovim startup time!
+-- can be removed after upgrading to neovim v0.6
 vim.g.did_load_filetypes = 1
 
 require("configs")

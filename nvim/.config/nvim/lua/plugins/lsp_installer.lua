@@ -17,10 +17,11 @@ lsp_installer.settings({
   max_concurrent_installers = 4,
 })
 
-local function make_server_ready(attach)
+local function make_server_ready(attach, capabilities)
   lsp_installer.on_server_ready(function(server)
     local opts = {}
     opts.on_attach = attach
+    opts.capabilities = capabilities
 
     -- for lua
     if server.name == "sumneko_lua" then
@@ -78,7 +79,7 @@ local servers = {
 
 require("plugins.lsp_config")
 
-make_server_ready(On_attach) -- LSP mappings
+make_server_ready(On_attach, Capabilities) -- LSP mappings
 
 -- install the language servers
 for _, server in ipairs(servers) do
