@@ -205,6 +205,8 @@ require("packer").startup({
     -- feline (statusline)
     -- mundo
     -- harpoon
+    -- folke/trouble.nvim
+    -- glepnir/lspsaga.nvim
     -- ...
     --
   end,
