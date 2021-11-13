@@ -76,7 +76,7 @@ local servers = {
   "eslint",
 }
 
-require("plugins.nvim_lspconfig")
+require("plugins.lsp_config")
 
 make_server_ready(On_attach) -- LSP mappings
 

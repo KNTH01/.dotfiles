@@ -9,6 +9,14 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 ---------------❰ Load/Source Configs ❱---------------
+-- plugin config to improve start-up time.
+-- it should be always on top on init.lua file
+-- impatient needs to be setup before any other lua plugin is loaded
+require("impatient")
+
+-- Easily speed up your neovim startup time!
+vim.g.did_load_filetypes = 1
+
 require("configs")
 require("mappings")
 
@@ -20,175 +28,188 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
 end
 
-vim.api.nvim_exec(
-  [[
-  augroup Packer
-    autocmd!
-    autocmd BufWritePost init.lua PackerCompile
-  augroup end
-]],
-  false
-)
+-- runs PackerCompileon write
+-- vim.api.nvim_exec(
+--   [[
+--   augroup Packer
+--     autocmd!
+--     autocmd BufWritePost init.lua PackerCompile
+--   augroup end
+-- ]],
+--   false
+-- )
 
 local use = require("packer").use
-require("packer").startup(function()
-  use("wbthomason/packer.nvim") -- Package manager
+require("packer").startup({
+  function()
+    use("wbthomason/packer.nvim") -- Package manager
 
-  -----------------❰ Plugins listing ❱-------------------
+    -----------------❰ Plugins listing ❱-------------------
 
-  -- checklist todo:
-  -- 'lewis6991/impatient.nvim'
-  -- 'nathom/filetype.nvim'
+    -- checklist todo:
+    -- 'lewis6991/impatient.nvim'
+    -- 'nathom/filetype.nvim'
+    use({ -- Speed up loading Lua modules in Neovim to improve startup time.
+      "lewis6991/impatient.nvim",
+    })
 
-  -- Gruvbox theme
-  use("morhetz/gruvbox")
+    use({ --  Easily speed up your neovim startup time!. A faster version of filetype.vim
+      "nathom/filetype.nvim",
+    })
 
-  -- Collection of common configurations for built-in LSP client
-  use({
-    "neovim/nvim-lspconfig",
-    config = [[ require('plugins/lsp_config') ]],
-  })
+    -- Gruvbox theme
+    use("morhetz/gruvbox")
 
-  -- nvim-lsp-installer to auto install lsp language servers
-  use({
-    "williamboman/nvim-lsp-installer",
-    confg = [[ require('plugins/lsp_installer") ]],
-  })
+    -- Collection of common configurations for built-in LSP client
+    use({
+      "neovim/nvim-lspconfig",
+      config = [[ require('plugins/lsp_config') ]],
+    })
 
-  -- vscode-like pictograms for neovim lsp completion items Topics
-  use({
-    "onsails/lspkind-nvim",
-    config = [[ require('plugins/lsp_kind') ]],
-  })
+    -- nvim-lsp-installer to auto install lsp language servers
+    use({
+      "williamboman/nvim-lsp-installer",
+      config = [[ require('plugins/lsp_installer') ]],
+    })
 
-  -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
-  use({
-    "nvim-lua/lsp-status.nvim",
-    config = [[ require('plugins/lsp_status') ]],
-  })
+    -- vscode-like pictograms for neovim lsp completion items Topics
+    use({
+      "onsails/lspkind-nvim",
+      config = [[ require('plugins/lsp_kind') ]],
+    })
 
-  -- null-ls, for formatting
-  use({
-    "jose-elias-alvarez/null-ls.nvim",
-    requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
-    config = [[ require('plugins/null_ls') ]],
-  })
+    -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
+    use({
+      "nvim-lua/lsp-status.nvim",
+      config = [[ require('plugins/lsp_status') ]],
+    })
 
-  -- Autocompletion plugin
-  use({ -- A completion plugin for neovim coded in Lua.
-    "hrsh7th/nvim-cmp",
-    requires = {
-      "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim builtin LSP client
-      "hrsh7th/cmp-nvim-lua", -- nvim-cmp source for nvim lua
-      "hrsh7th/cmp-buffer", -- nvim-cmp source for buffer words.
-      "hrsh7th/cmp-path", -- nvim-cmp source for filesystem paths.
-      "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
-      "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
-    },
-    config = [[ require('plugins/cmp') ]],
-  })
+    -- null-ls, for formatting
+    use({
+      "jose-elias-alvarez/null-ls.nvim",
+      requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
+      config = [[ require('plugins/null_ls') ]],
+    })
 
-  -- Snippets plugin
-  use({
-    "L3MON4D3/LuaSnip",
-    requires = {
-      -- snippets collection for a set of different programming languages for faster development
-      "rafamadriz/friendly-snippets",
-    },
-  })
+    -- Autocompletion plugin
+    use({ -- A completion plugin for neovim coded in Lua.
+      "hrsh7th/nvim-cmp",
+      requires = {
+        "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim builtin LSP client
+        "hrsh7th/cmp-nvim-lua", -- nvim-cmp source for nvim lua
+        "hrsh7th/cmp-buffer", -- nvim-cmp source for buffer words.
+        "hrsh7th/cmp-path", -- nvim-cmp source for filesystem paths.
+        "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
+        "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
+      },
+      config = [[ require('plugins/cmp') ]],
+    })
 
-  -- Highlight, edit, and navigate code using a fast incremental parsing library
-  use({
-    "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
-    config = [[ require('plugins/treesitter') ]],
-  })
+    -- Snippets plugin
+    use({
+      "L3MON4D3/LuaSnip",
+      requires = {
+        -- snippets collection for a set of different programming languages for faster development
+        "rafamadriz/friendly-snippets",
+      },
+    })
 
-  -- Additional textobjects for treesitter
-  use("nvim-treesitter/nvim-treesitter-textobjects")
+    -- Highlight, edit, and navigate code using a fast incremental parsing library
+    use({
+      "nvim-treesitter/nvim-treesitter",
+      run = ":TSUpdate",
+      config = [[ require('plugins/treesitter') ]],
+    })
 
-  -- UI to select things (files, grep results, open buffers...)
-  use({
-    "nvim-telescope/telescope.nvim",
-    config = [[ require('plugins/telescope') ]],
-    requires = { "nvim-lua/plenary.nvim" },
-  })
+    -- Additional textobjects for treesitter
+    use("nvim-treesitter/nvim-treesitter-textobjects")
 
-  -- Add indentation guides even on blank lines
-  use({
-    "lukas-reineke/indent-blankline.nvim",
-    config = [[ require('plugins/blankline') ]],
-  })
+    -- UI to select things (files, grep results, open buffers...)
+    use({
+      "nvim-telescope/telescope.nvim",
+      config = [[ require('plugins/telescope') ]],
+      requires = { "nvim-lua/plenary.nvim" },
+    })
 
-  -- Add git related info in the signs columns and popups
-  use({
-    "lewis6991/gitsigns.nvim",
-    config = [[ require('plugins/gitsigns') ]],
-    requires = { "nvim-lua/plenary.nvim" },
-  })
+    -- Add indentation guides even on blank lines
+    use({
+      "lukas-reineke/indent-blankline.nvim",
+      config = [[ require('plugins/blankline') ]],
+    })
 
-  -- A super powerful autopairs for Neovim. It support multiple character
-  use({
-    "windwp/nvim-autopairs",
-    config = [[ require('plugins/autopairs') ]],
-  })
+    -- Add git related info in the signs columns and popups
+    use({
+      "lewis6991/gitsigns.nvim",
+      config = [[ require('plugins/gitsigns') ]],
+      requires = { "nvim-lua/plenary.nvim" },
+    })
 
-  -- nvim notify
-  use({
-    "rcarriga/nvim-notify",
-    config = [[ require('plugins/notify') ]],
-  })
+    -- A super powerful autopairs for Neovim. It support multiple character
+    use({
+      "windwp/nvim-autopairs",
+      config = [[ require('plugins/autopairs') ]],
+    })
 
-  -- Better escape
-  use({
-    "max397574/better-escape.nvim",
-    config = [[ require('plugins/better_escape') ]],
-  })
+    -- nvim notify
+    use({
+      "rcarriga/nvim-notify",
+      config = [[ require('plugins/notify') ]],
+    })
 
-  -- AutoSave
-  use({
-    "Pocco81/AutoSave.nvim",
-    config = [[ require('plugins/autosave') ]],
-  })
+    -- Better escape
+    use({
+      "max397574/better-escape.nvim",
+      config = [[ require('plugins/better_escape') ]],
+    })
 
-  -- Smooth scrolling
-  use({
-    "karb94/neoscroll.nvim",
-    config = function()
-      require("neoscroll").setup()
-    end,
-  })
+    -- AutoSave
+    use({
+      "Pocco81/AutoSave.nvim",
+      config = [[ require('plugins/autosave') ]],
+    })
 
-  -- Colorizer
-  use({
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup()
-    end,
-  })
+    -- Smooth scrolling
+    use({
+      "karb94/neoscroll.nvim",
+      config = function()
+        require("neoscroll").setup()
+      end,
+    })
 
-  -- Git commands in nvim
-  use("tpope/vim-fugitive")
+    -- Colorizer
+    use({
+      "norcalli/nvim-colorizer.lua",
+      config = function()
+        require("colorizer").setup()
+      end,
+    })
 
-  -- Fugitive-companion to interact with github
-  use("tpope/vim-rhubarb")
+    -- Git commands in nvim
+    use("tpope/vim-fugitive")
 
-  -- "gc" to comment visual regions/lines
-  use("tpope/vim-commentary")
+    -- Fugitive-companion to interact with github
+    use("tpope/vim-rhubarb")
 
-  -- Fancier statusline
-  use("itchyny/lightline.vim")
+    -- "gc" to comment visual regions/lines
+    use("tpope/vim-commentary")
 
-  -- rust goodness?
-  use("simrat39/rust-tools.nvim")
+    -- Fancier statusline
+    use("itchyny/lightline.vim")
 
-  -- todo: List of plugins to check out
-  -- bufferline
-  -- feline (statusline)
-  -- mundo
-  -- harpoon
-  -- ...
-  --
-end)
+    -- rust goodness?
+    use("simrat39/rust-tools.nvim")
 
--------------
+    -- todo: List of plugins to check out
+    -- bufferline
+    -- feline (statusline)
+    -- mundo
+    -- harpoon
+    -- ...
+    --
+  end,
+
+  config = {
+    -- Move to lua dir so impatient.nvim can cache it
+    compile_path = vim.fn.stdpath("config") .. "/plugin/packer_compiled.lua",
+  },
+})
