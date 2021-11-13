@@ -29,15 +29,15 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 -- runs PackerCompileon write
--- vim.api.nvim_exec(
---   [[
---   augroup Packer
---     autocmd!
---     autocmd BufWritePost init.lua PackerCompile
---   augroup end
--- ]],
---   false
--- )
+vim.api.nvim_exec(
+  [[
+  augroup Packer
+    autocmd!
+    autocmd BufWritePost init.lua PackerCompile
+  augroup end
+]],
+  false
+)
 
 local use = require("packer").use
 require("packer").startup({
