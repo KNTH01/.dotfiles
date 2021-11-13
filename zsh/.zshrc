@@ -99,9 +99,9 @@ fi
 
 ### Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='lvim'
+  export EDITOR='nvim'
 else
-  export EDITOR='lvim'
+  export EDITOR='nvim'
 fi
 
 ### vi-mode
@@ -162,3 +162,5 @@ eval "$(rbenv init -)"
 ### Init z.lua https://github.com/skywind3000/z.lua
 eval "$(lua /usr/share/z.lua/z.lua --init zsh)"
 
+
+alias luamake=/home/knth/.config/nvim/lua-language-server/3rd/luamake/luamake
