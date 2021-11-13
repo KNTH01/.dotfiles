@@ -15,6 +15,13 @@ vim.opt.guifont = "DroidSansMono Nerd Font 12"
 vim.opt.termguicolors = true
 vim.g.gruvbox_terminal_italics = 2
 
+-- Set statusbar
+vim.g.lightline = {
+  colorscheme = "gruvbox",
+  active = { left = { { "mode", "paste" }, { "gitbranch", "readonly", "filename", "modified" } } },
+  component_function = { gitbranch = "fugitive#head" },
+}
+
 -- show whitespace
 vim.opt.list = false
 

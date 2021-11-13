@@ -175,12 +175,6 @@ end)
 
 -------------
 
--- Set statusbar
-vim.g.lightline = {
-  colorscheme = "gruvbox",
-  active = { left = { { "mode", "paste" }, { "gitbranch", "readonly", "filename", "modified" } } },
-  component_function = { gitbranch = "fugitive#head" },
-}
 
 -- Map blankline (Blankline plugin?)
 vim.g.indent_blankline_char = "┊"
