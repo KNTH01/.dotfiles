@@ -1,5 +1,19 @@
 -- LSP settings
 
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    underline = true,
+    signs = true,
+    update_in_insert = true,
+    virtual_text = {
+        true,
+        spacing = 6,
+        --severity_limit='Error'  -- Only show virtual text on error
+    },
+    -- virtual_text = false
+  }
+)
+
 -- On_attach is a global... #todo: refact to export the function instead?
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -32,13 +46,7 @@ On_attach = function(_, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>dq", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
-    "n",
-    "<leader>fo",
-    [[:Telescope lsp_document_symbols<CR>]],
-    opts
-  )
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>fo", [[:Telescope lsp_document_symbols<CR>]], opts)
 
   vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>fm", [[<cmd>Format<CR>]], opts)
