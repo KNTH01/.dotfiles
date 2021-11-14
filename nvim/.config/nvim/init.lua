@@ -188,6 +188,12 @@ require("packer").startup({
       config = [[require('plugins/vista')]],
     })
 
+    -- commenting plugin
+    use({
+      "b3nj5m1n/kommentary",
+      config = [[require('plugins/kommentary')]],
+    })
+
     -- Smooth scrolling
     use({
       "karb94/neoscroll.nvim",
@@ -210,8 +216,11 @@ require("packer").startup({
     -- Fugitive-companion to interact with github
     use("tpope/vim-rhubarb")
 
-    -- "gc" to comment visual regions/lines
-    use("tpope/vim-commentary")
+    -- `]q` and `[q` for QuickFix List navigation
+    use("tpope/vim-unimpaired")
+
+    -- `ds`, `cs`, 'yss' cmds, eg: `cs"'`, `ysiw"`
+    use("tpope/vim-surround")
 
     -- Fancier statusline
     use("itchyny/lightline.vim")
