@@ -170,6 +170,18 @@ require("packer").startup({
       config = [[ require('plugins/autosave') ]],
     })
 
+    -- A File Explorer For Neovim Written In Lua
+    use({
+      "kyazdani42/nvim-tree.lua",
+      config = [[ require('plugins/nvim_tree') ]],
+    })
+
+    -- webdev icons
+    use({
+      "kyazdani42/nvim-web-devicons",
+      config = [[ require('plugins/webdevicons') ]],
+    })
+
     -- Smooth scrolling
     use({
       "karb94/neoscroll.nvim",
