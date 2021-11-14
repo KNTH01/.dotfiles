@@ -35,8 +35,8 @@ On_attach = function(_, bufnr)
   vim.api.nvim_buf_set_keymap(
     bufnr,
     "n",
-    "<leader>so",
-    [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]],
+    "<leader>fo",
+    [[:Telescope lsp_document_symbols<CR>]],
     opts
   )
 
