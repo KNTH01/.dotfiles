@@ -1,6 +1,11 @@
-
 -- Telescope
-require("telescope").setup({
+
+local present, telescope = pcall(require, "telescope")
+if not present then
+  return
+end
+
+telescope.setup({
   defaults = {
     mappings = {
       i = {
@@ -8,65 +13,48 @@ require("telescope").setup({
         ["<C-d>"] = false,
       },
     },
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+    },
+    prompt_prefix = "🔎︎ ",
+    selection_caret = "➤ ",
+    entry_prefix = "  ",
+    winblend = 0,
+    border = {},
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    color_devicons = true,
+    use_less = true,
+    set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
   },
 })
 
---Add leader shortcuts
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader><space>",
-  [[<cmd>lua require('telescope.builtin').buffers()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sf",
-  -- without previewer
-  -- [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]],
-  -- with previewer
-  [[<cmd>lua require('telescope.builtin').find_files()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sb",
-  [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sh",
-  [[<cmd>lua require('telescope.builtin').help_tags()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>st",
-  [[<cmd>lua require('telescope.builtin').tags()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sd",
-  [[<cmd>lua require('telescope.builtin').grep_string()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sp",
-  [[<cmd>lua require('telescope.builtin').live_grep()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>so",
-  [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>?",
-  [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]],
-  { noremap = true, silent = true }
-)
+-- mappings
 
+-- Function for make mapping easier.
+local function map(mode, lhs, rhs, opts)
+  local options = { noremap = true }
+  if opts then
+    options = vim.tbl_extend("force", options, opts)
+  end
+  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+end
+
+map("n", "<Leader>ff", ":Telescope find_files<CR>")
+map("n", "<Leader>fw", ":Telescope live_grep<CR>")
+map("n", "<Leader>fs", ":Telescope grep_string<CR>")
+map("n", "<Leader>fp", ":Telescope media_files<CR>")
+map("n", "<Leader>fb", ":Telescope buffers<CR>")
+map("n", "<Leader>fh", ":Telescope help_tags<CR>")
+map("n", "<Leader>fo", ":Telescope oldfiles<CR>")
+map("n", "<Leader>th", ":Telescope colorscheme<CR>")
+map("n", "<Leader>gs", ":Telescope git_status<CR>")
+map("n", "<Leader>cm", ":Telescope git_commits<CR>")
+map("n", "<Leader><space>", ":Telescope current_buffer_fuzzy_find<CR>")
+-- map("n", "<Leader>ft", ":Telescope tags<CR>")
+-- map("n", "<Leader>ft", [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]])
