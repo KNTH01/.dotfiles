@@ -154,7 +154,7 @@ vim.cmd([[au BufWritePre * :%s/\s\+$//e]])
 -- faster scrolling
 vim.opt.lazyredraw = true
 
--- don't auto commenting new lines -- doesn't work????
+-- don't auto commenting new lines
 vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])
 -- op newline continution of comments
 vim.api.nvim_exec([[setlocal formatoptions-=cro]], false)

@@ -182,6 +182,12 @@ require("packer").startup({
       config = [[ require('plugins/webdevicons') ]],
     })
 
+    -- tagviewer
+    use({
+      "liuchengxu/vista.vim",
+      config = [[require('plugins/vista')]],
+    })
+
     -- Smooth scrolling
     use({
       "karb94/neoscroll.nvim",
