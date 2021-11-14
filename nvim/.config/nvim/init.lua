@@ -113,6 +113,7 @@ require("packer").startup({
         -- snippets collection for a set of different programming languages for faster development
         "rafamadriz/friendly-snippets",
       },
+      config = [[ require('plugins/luasnip') ]],
     })
 
     -- Highlight, edit, and navigate code using a fast incremental parsing library
