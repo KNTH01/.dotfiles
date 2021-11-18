@@ -29,13 +29,6 @@ vim.g.gruvbox_transparent = false
 -- must be set AFTER the theme's config
 vim.cmd([[colorscheme gruvbox-flat]])
 
--- Set statusbar
-vim.g.lightline = {
-  colorscheme = "gruvbox-flat",
-  active = { left = { { "mode", "paste" }, { "gitbranch", "readonly", "filename", "modified" } } },
-  component_function = { gitbranch = "fugitive#head" },
-}
-
 -- show whitespace
 vim.opt.list = false
 

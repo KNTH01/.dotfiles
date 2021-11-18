@@ -134,6 +134,13 @@ require("packer").startup({
       requires = { "nvim-lua/plenary.nvim" },
     })
 
+    -- use for status line
+    use({
+      "nvim-lualine/lualine.nvim",
+      config = [[ require('plugins/lualine') ]],
+      requires = { "kyazdani42/nvim-web-devicons", opt = true },
+    })
+
     -- Add indentation guides even on blank lines
     use({
       "lukas-reineke/indent-blankline.nvim",
@@ -231,9 +238,6 @@ require("packer").startup({
 
     -- `ds`, `cs`, 'yss' cmds, eg: `cs"'`, `ysiw"`
     use("tpope/vim-surround")
-
-    -- Fancier statusline
-    use("itchyny/lightline.vim")
 
     -- rust goodness?
     use("simrat39/rust-tools.nvim")
