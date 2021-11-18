@@ -59,7 +59,8 @@ require("packer").startup({
     })
 
     -- Gruvbox theme
-    use("morhetz/gruvbox")
+    -- https://github.com/eddyekofo94/gruvbox-flat.nvim
+    use("eddyekofo94/gruvbox-flat.nvim")
 
     -- Collection of common configurations for built-in LSP client
     use({
