@@ -35,11 +35,11 @@ alias mv='mv -i'
 alias rm='rm -i'
 
 # changing cat to bat
-alias cat="bat"
+alias cat="bat --theme=gruvbox-dark"
 alias oldcat="/usr/bin/cat"
 
 # changing "ls" to "exa"
-alias ls='exa' # normal listing 
+alias ls='exa' # normal listing
 alias ll='exa -l --color=always --group-directories-first'  # long format
 alias lla='exa -la --color=always --group-directories-first'  # long format with hidden files
 alias lli='exa -l --color=always --group-directories-first --icons'  # long format with icons
