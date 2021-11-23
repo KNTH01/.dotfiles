@@ -33,3 +33,7 @@ vim.api.nvim_set_keymap("n", "<leader>ve", "<cmd>vsplit " .. nvim_config_path ..
 -- easier moving of code blocks by keeping selection in visual mode
 vim.api.nvim_set_keymap("v", "<", "<gv", map_opt)
 vim.api.nvim_set_keymap("v", ">", ">gv", map_opt)
+
+-- quickfix list navigation
+vim.api.nvim_set_keymap("n", "<C-j>", ":cnext<cr>zz", map_opt)
+vim.api.nvim_set_keymap("n", "<C-k>", ":cprev<cr>zz", map_opt)
