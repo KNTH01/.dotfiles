@@ -1,7 +1,10 @@
-
 -- Treesitter configuration
 -- Parsers must be installed manually via :TSInstall
 require("nvim-treesitter.configs").setup({
+  context_commentstring = {
+    -- to be used with 'terrortylor/nvim-comment' and 'JoosepAlviste/nvim-ts-context-commentstring'
+    enable = true,
+  },
   highlight = {
     enable = true, -- false will disable the whole extension
   },

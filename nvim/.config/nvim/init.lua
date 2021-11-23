@@ -193,14 +193,15 @@ require("packer").startup({
     -- tagviewer
     use({
       "liuchengxu/vista.vim",
-      config = [[require('plugins/vista')]],
+      config = [[ require('plugins/vista') ]],
     })
 
     -- commenting plugin
     use({
-      "b3nj5m1n/kommentary",
-      config = [[require('plugins/kommentary')]],
+      "terrortylor/nvim-comment",
+      config = [[ require('plugins/nvim_comment') ]]
     })
+    use("JoosepAlviste/nvim-ts-context-commentstring")
 
     -- Smooth scrolling
     use({
