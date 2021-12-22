@@ -185,3 +185,6 @@ vim.cmd([[ au BufEnter *.lua set ai expandtab shiftwidth=2 tabstop=2 sta fo=croq
 vim.cmd([[ au BufEnter *.vim set ai expandtab shiftwidth=2 tabstop=2 sta fo=croql ]])
 -- json
 vim.cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=croql ]])
+
+-- set kebabcase as word
+vim.cmd [[set iskeyword+=-]]
