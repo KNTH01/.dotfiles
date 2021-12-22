@@ -1,24 +1,40 @@
 -----------------❰ Package Manager ❱-----------------
+
 -- Install packer
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
+  print "Installing Packer... Close and reopen Neovim"
 end
 
--- runs PackerCompileon write
+-- runs PackerCompile on write
 vim.api.nvim_exec(
   [[
   augroup Packer
     autocmd!
-    autocmd BufWritePost init.lua PackerCompile
+    autocmd BufWritePost init.lua source <afile> | PackerCompile
   augroup end
 ]],
   false
 )
 
-local use = require("packer").use
-require("packer").startup({
+-- Use a protected call so we don't error out on first use
+local status_ok, packer = pcall(require, "packer")
+if not status_ok then
+  return
+end
+
+-- Have packer use a popup window
+packer.init {
+  display = {
+    open_fn = function()
+      return require("packer.util").float { border = "rounded" }
+    end,
+  },
+}
+
+return packer.startup({
   function()
     use("wbthomason/packer.nvim") -- Package manager
 
@@ -42,32 +58,32 @@ require("packer").startup({
     -- Collection of common configurations for built-in LSP client
     use({
       "neovim/nvim-lspconfig",
-      config = [[ require('plugins/lsp_config') ]],
+      config = [[ require('knth/plugins/lsp_config') ]],
     })
 
     -- nvim-lsp-installer to auto install lsp language servers
     use({
       "williamboman/nvim-lsp-installer",
-      config = [[ require('plugins/lsp_installer') ]],
+      config = [[ require('knth/plugins/lsp_installer') ]],
     })
 
     -- vscode-like pictograms for neovim lsp completion items Topics
     use({
       "onsails/lspkind-nvim",
-      config = [[ require('plugins/lsp_kind') ]],
+      config = [[ require('knth/plugins/lsp_kind') ]],
     })
 
     -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
     use({
       "nvim-lua/lsp-status.nvim",
-      config = [[ require('plugins/lsp_status') ]],
+      config = [[ require('knth/plugins/lsp_status') ]],
     })
 
     -- null-ls, for formatting
     use({
       "jose-elias-alvarez/null-ls.nvim",
       requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
-      config = [[ require('plugins/null_ls') ]],
+      config = [[ require('knth/plugins/null_ls') ]],
     })
 
     -- Autocompletion plugin
@@ -81,7 +97,7 @@ require("packer").startup({
         "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
         "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
       },
-      config = [[ require('plugins/cmp') ]],
+      config = [[ require('knth/plugins/cmp') ]],
     })
 
     -- Snippets plugin
@@ -91,14 +107,14 @@ require("packer").startup({
         -- snippets collection for a set of different programming languages for faster development
         "rafamadriz/friendly-snippets",
       },
-      config = [[ require('plugins/luasnip') ]],
+      config = [[ require('knth/plugins/luasnip') ]],
     })
 
     -- Highlight, edit, and navigate code using a fast incremental parsing library
     use({
       "nvim-treesitter/nvim-treesitter",
       run = ":TSUpdate",
-      config = [[ require('plugins/treesitter') ]],
+      config = [[ require('knth/plugins/treesitter') ]],
     })
 
     -- Additional textobjects for treesitter
@@ -107,76 +123,76 @@ require("packer").startup({
     -- UI to select things (files, grep results, open buffers...)
     use({
       "nvim-telescope/telescope.nvim",
-      config = [[ require('plugins/telescope') ]],
+      config = [[ require('knth/plugins/telescope') ]],
       requires = { "nvim-lua/plenary.nvim" },
     })
 
     -- use for status line
     use({
       "nvim-lualine/lualine.nvim",
-      config = [[ require('plugins/lualine') ]],
+      config = [[ require('knth/plugins/lualine') ]],
       requires = { "kyazdani42/nvim-web-devicons", opt = true },
     })
 
     -- Add indentation guides even on blank lines
     use({
       "lukas-reineke/indent-blankline.nvim",
-      config = [[ require('plugins/blankline') ]],
+      config = [[ require('knth/plugins/blankline') ]],
     })
 
     -- Add git related info in the signs columns and popups
     use({
       "lewis6991/gitsigns.nvim",
-      config = [[ require('plugins/gitsigns') ]],
+      config = [[ require('knth/plugins/gitsigns') ]],
       requires = { "nvim-lua/plenary.nvim" },
     })
 
     -- A super powerful autopairs for Neovim. It support multiple character
     use({
       "windwp/nvim-autopairs",
-      config = [[ require('plugins/autopairs') ]],
+      config = [[ require('knth/plugins/autopairs') ]],
     })
 
     -- nvim notify
     use({
       "rcarriga/nvim-notify",
-      config = [[ require('plugins/notify') ]],
+      config = [[ require('knth/plugins/notify') ]],
     })
 
     -- Better escape
     use({
       "max397574/better-escape.nvim",
-      config = [[ require('plugins/better_escape') ]],
+      config = [[ require('knth/plugins/better_escape') ]],
     })
 
     -- AutoSave
     use({
       "Pocco81/AutoSave.nvim",
-      config = [[ require('plugins/autosave') ]],
+      config = [[ require('knth/plugins/autosave') ]],
     })
 
     -- A File Explorer For Neovim Written In Lua
     use({
       "kyazdani42/nvim-tree.lua",
-      config = [[ require('plugins/nvim_tree') ]],
+      config = [[ require('knth/plugins/nvim_tree') ]],
     })
 
     -- webdev icons
     use({
       "kyazdani42/nvim-web-devicons",
-      config = [[ require('plugins/webdevicons') ]],
+      config = [[ require('knth/plugins/webdevicons') ]],
     })
 
     -- tagviewer
     use({
       "liuchengxu/vista.vim",
-      config = [[ require('plugins/vista') ]],
+      config = [[ require('knth/plugins/vista') ]],
     })
 
     -- commenting plugin
     use({
       "terrortylor/nvim-comment",
-      config = [[ require('plugins/nvim_comment') ]]
+      config = [[ require('knth/plugins/nvim_comment') ]]
     })
     use("JoosepAlviste/nvim-ts-context-commentstring")
 
@@ -228,7 +244,12 @@ require("packer").startup({
     -- folke/trouble.nvim
     -- glepnir/lspsaga.nvim
     -- ...
-    --
+
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if PACKER_BOOTSTRAP then
+      packer.sync()
+    end
   end,
 
   config = {
