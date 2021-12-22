@@ -5,6 +5,8 @@
 -- vim.wo            -- windows-scoped options
 --
 
+
+-- font
 vim.opt.guifont = "DroidSansMono Nerd Font 12"
 
 -- Enable GUI colors for the terminal to get truecolor
