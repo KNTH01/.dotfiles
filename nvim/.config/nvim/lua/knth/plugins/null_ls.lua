@@ -17,7 +17,7 @@ require("null-ls").config({
   sources = sources,
 })
 
-require("plugins.lsp_config")
+require("knth.plugins.lsp_config")
 require("lspconfig")["null-ls"].setup({
   on_attach = On_attach,
   capabilities = Capabilities,

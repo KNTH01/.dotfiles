@@ -77,7 +77,7 @@ local servers = {
   "eslint",
 }
 
-require("plugins.lsp_config")
+require("knth.plugins.lsp_config")
 
 make_server_ready(On_attach, Capabilities) -- LSP mappings
 
