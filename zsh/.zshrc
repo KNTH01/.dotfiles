@@ -156,8 +156,9 @@ source /home/knth/.config/broot/launcher/bash/br
 ### the fuck https://github.com/nvbn/thefuck
 # eval $(thefuck --alias)
 
-### rbenv https://github.com/rbenv/rbenv
-eval "$(rbenv init -)"
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+source $HOME/.rvm/scripts/rvm
 
 ### Init z.lua https://github.com/skywind3000/z.lua
 eval "$(lua /usr/share/z.lua/z.lua --init zsh)"
