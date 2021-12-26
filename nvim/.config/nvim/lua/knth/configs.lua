@@ -5,12 +5,176 @@
 -- vim.wo            -- windows-scoped options
 --
 
+local options = {
+  -- set term gui colors (most terminals support this)
+  termguicolors = true,
+
+  -- allows neovim to access the system clipboard
+  clipboard = "unnamedplus",
+
+  -- set height for the command input below
+  cmdheight = 1,
+
+  -- mostly just for cmp
+  completeopt = { "menuone", "noselect" },
+
+  -- so that `` is visible in markdown files
+  conceallevel = 0,
+
+  -- the encoding written to a file
+  fileencoding = "utf-8",
+
+  -- incremental search
+  incsearch = true,
+
+  -- highlight all matches on previous search pattern
+  hlsearch = true,
+
+  -- ignore case in search patterns
+  ignorecase = true,
+
+  -- smart case
+  smartcase = true,
+
+  -- allow the mouse to be used in neovim
+  mouse = "a",
+
+  -- pop up menu height
+  pumheight = 10,
+
+  -- we don't need to see things like -- INSERT -- anymore
+  showmode = false,
+
+  -- always show tabs
+  showtabline = 2,
+
+  -- make indenting smarter again
+  smartindent = true,
+
+  -- force all horizontal splits to go below current window
+  splitbelow = true,
+
+  -- force all vertical splits to go to the right of current window
+  splitright = true,
+
+  -- creates a swapfile
+  swapfile = false,
+
+  -- creates a backup file
+  backup = false,
+
+  -- time to wait for a mapped sequence to complete (in milliseconds)
+  timeoutlen = 1000,
+
+  -- enable persistent undo
+  undofile = true,
+
+  -- faster completion (4000ms default)
+  updatetime = 250,
+
+  -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
+  writebackup = false,
+
+  -- convert tabs to spaces
+  expandtab = true,
+
+  -- the number of spaces inserted for each indentation
+  shiftwidth = 2,
+
+  -- insert 2 spaces for a tab
+  tabstop = 2,
+
+  -- highlight the current line
+  cursorline = true,
+
+  -- set numbered lines
+  number = true,
+
+  -- set relative numbered lines
+  relativenumber = true,
+
+  -- set number column width to 2 {default 4}
+  numberwidth = 4,
+
+  -- always show the sign column, otherwise it would shift the text each time
+  signcolumn = "yes",
+
+  -- wrap line
+  wrap = true,
+
+  -- add a nice vertical scroll offset
+  scrolloff = 8,
+
+  -- add a side scroll offset, this is used when wrap is off
+  sidescrolloff = 8,
+
+  -- show whitespace
+  list = false,
+
+  listchars = {
+    nbsp = "⦸", -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
+    extends = "»", -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
+    precedes = "«", -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
+    tab = "▷─", -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
+    trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2)
+    space = "-",
+  },
+
+  fillchars = {
+    diff = "∙", -- BULLET OPERATOR (U+2219, UTF-8: E2 88 99)
+    eob = " ", -- NO-BREAK SPACE (U+00A0, UTF-8: C2 A0) to suppress ~ at EndOfBuffer
+    fold = "·", -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
+    vert = " ", -- remove ugly vertical lines on window division
+  },
+
+  -- case insensitive in `command-line` mode
+  wildignorecase = true,
+
+  -- show the matching part of the pair for [] {} and ()
+  showmatch = true,
+
+  -- make backspace behave like normal again
+  backspace = "indent,start,eol",
+
+  -- tabs
+  softtabstop = 2,
+
+  -- <tab>/<BS> indent/dedent in leading whitespace
+  smarttab = true,
+
+  -- maintain indent of current line
+  autoindent = true,
+
+  -- shiftround?
+  shiftround = true,
+
+  -- always show status line
+  laststatus = 2,
+
+  -- shell to use for `!`, `:!`, `system()` etc.
+  shell = "zsh",
+
+  -- incremental live completion, e.g: the :s command
+  inccommand = "nosplit",
+
+  -- allows user to hide buffers with unsaved changes without being prompted
+  hidden = true,
+
+  --Enable break indent
+  breakindent = true,
+}
+
+-- apply options listed above
+for k, v in pairs(options) do
+  vim.opt[k] = v
+end
+
+--
+-- Theming
+--
 
 -- font
 vim.opt.guifont = "DroidSansMono Nerd Font 12"
-
--- Enable GUI colors for the terminal to get truecolor
-vim.opt.termguicolors = true
 
 -- gruvbox-flat config
 vim.g.gruvbox_flat_style = "dark"
@@ -31,110 +195,9 @@ vim.g.gruvbox_transparent = false
 -- must be set AFTER the theme's config
 vim.cmd([[colorscheme gruvbox-flat]])
 
--- show whitespace
-vim.opt.list = false
-
-vim.opt.listchars = {
-  nbsp = "⦸", -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
-  extends = "»", -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
-  precedes = "«", -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
-  tab = "▷─", -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
-  trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2)
-  space = "-",
-}
-
-vim.opt.fillchars = {
-  diff = "∙", -- BULLET OPERATOR (U+2219, UTF-8: E2 88 99)
-  eob = " ", -- NO-BREAK SPACE (U+00A0, UTF-8: C2 A0) to suppress ~ at EndOfBuffer
-  fold = "·", -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
-  vert = " ", -- remove ugly vertical lines on window division
-}
-
--- show the matching part of the pair for [] {} and ()
-vim.opt.showmatch = true
-
--- make backspace behave like normal again
-vim.opt.backspace = "indent,start,eol"
-
--- tabs
-vim.opt.softtabstop = 2
-vim.opt.shiftwidth = 2 -- spaces per tab (when shifting), when using the >> or << commands, shift lines by 4 spaces
-vim.opt.tabstop = 2 -- spaces per tab
-vim.opt.smarttab = true -- <tab>/<BS> indent/dedent in leading whitespace
-vim.opt.autoindent = true -- maintain indent of current line
-vim.opt.expandtab = true -- convert tabs to spaces
-vim.opt.shiftround = true
-
--- open horizontal splits below current window
-vim.opt.splitbelow = true
--- open vertical splits to the right of the current window
-vim.opt.splitright = true
-
--- always show status line
-vim.opt.laststatus = 2
-
--- shell to use for `!`, `:!`, `system()` etc.
-vim.opt.shell = "zsh"
-
--- incremental live completion, e.g: the :s command
-vim.opt.inccommand = "nosplit"
-
---Set highlight on search
-vim.opt.hlsearch = true
-
--- incremental search
-vim.opt.incsearch = true
-
---Make line numbers default
-vim.opt.number = true
-vim.opt.relativenumber = true
-
--- line wrap
-vim.opt.wrap = true
-
--- highlight current line
-vim.opt.cursorline = false
-
--- allows user to hide buffers with unsaved changes without being prompted
-vim.opt.hidden = true
-
---Enable mouse mode
-vim.opt.mouse = "a"
-
---Enable break indent
-vim.opt.breakindent = true
-
---Save undo history
-vim.opt.undofile = true
-
---Case insensitive searching UNLESS /C or capital in search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
---Decrease update time - CursorHold interval
-vim.opt.updatetime = 250
-
-vim.wo.signcolumn = "yes"
-
--- Add a nice vertical scroll offset
-vim.opt.scrolloff = 8
--- Add a side scroll offset, this is used when wrap is off
-vim.opt.sidescrolloff = 8
-
--- creates a backup file
-vim.opt.backup = false
-
--- allows neovim to access the system clipboard
-vim.opt.clipboard = "unnamedplus"
-
--- set height for the command input below
-vim.opt.cmdheight = 1
-
--- case insensitive in `command-line` mode
-vim.opt.wildignorecase = true
-
-------------------------------------------------
-------------------------------------------------
+--
+-- Command
+--
 
 -- highlight on yank
 vim.api.nvim_exec(
@@ -165,6 +228,7 @@ vim.opt.lazyredraw = true
 
 -- don't auto commenting new lines
 vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])
+
 -- op newline continution of comments
 vim.api.nvim_exec([[setlocal formatoptions-=cro]], false)
 
@@ -189,4 +253,5 @@ vim.cmd([[ au BufEnter *.vim set ai expandtab shiftwidth=2 tabstop=2 sta fo=croq
 vim.cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=croql ]])
 
 -- set kebabcase as word
-vim.cmd [[set iskeyword+=-]]
+vim.cmd([[set iskeyword+=-]])
+
