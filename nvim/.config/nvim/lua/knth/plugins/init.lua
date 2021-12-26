@@ -68,10 +68,7 @@ return packer.startup({
     })
 
     -- vscode-like pictograms for neovim lsp completion items Topics
-    use({
-      "onsails/lspkind-nvim",
-      config = [[ require('knth/plugins/lsp_kind') ]],
-    })
+    use("onsails/lspkind-nvim")
 
     -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
     use({

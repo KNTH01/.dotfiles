@@ -1,59 +1,58 @@
--- Set completeopt to have a better completion experience
-vim.o.completeopt = "menuone,noselect"
-
 -- cmp config
-local cmp = require("cmp")
+--
 
-cmp.setup({
+-- require cmp
+local cmp_status_ok, cmp = pcall(require, "cmp")
+if not cmp_status_ok then
+  return
+end
 
-  completion = {
-    --completeopt = 'menu,menuone,noinsert',
-  },
+-- require luasnip
+local snip_status_ok, luasnip = pcall(require, "luasnip")
+if not snip_status_ok then
+  return
+end
 
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body)
-    end,
-  },
+-- require luasnip
+local lspkind_satus_ok, lspkind = pcall(require, "lspkind")
+if not lspkind_satus_ok then
+  return
+end
 
-  formatting = {
-    format = function(entrysource, vim_item)
-      -- fancy icons and a name of kind
-      vim_item.kind = require("lspkind").presets.default[vim_item.kind]
-
-      -- set a name for each source
-      vim_item.menu = ({
-        buffer = "[Buff]",
-        nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
-        nvim_lua = "[Lua]",
-        latex_symbols = "[Latex]",
-      })[entrysource.name]
-
-      return vim_item
-    end,
-  },
-
-  sources = {
-    { name = "nvim_lsp" },
-    { name = "nvim_lua" },
-    { name = "path" },
-    { name = "luasnip" },
-    { name = "buffer", keyword_length = 1 },
-    { name = "calc" },
-  },
-
-  experimental = {
-    -- ghost_text = true,
-  },
-})
+require("luasnip/loaders/from_vscode").lazy_load()
 
 -- Require function for tab to work with LUA-SNIP
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
-local luasnip = require("luasnip")
+
+local kind_icons = {
+  Text = "",
+  Method = "ƒ",
+  Function = "",
+  Constructor = "",
+  Variable = "",
+  Class = "",
+  Interface = "",
+  Module = "",
+  Property = "",
+  Unit = "",
+  Value = "",
+  Enum = "了",
+  EnumMember = "",
+  Keyword = "",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Folder = "",
+  Constant = "",
+  Struct = "",
+  Reference = "",
+  Event = "",
+  Operator = "",
+  TypeParameter = "",
+}
 
 cmp.setup({
   mapping = {
@@ -62,8 +61,6 @@ cmp.setup({
     ["<C-p>"] = cmp.mapping.select_prev_item(),
     ["<C-n>"] = cmp.mapping.select_next_item(),
     ["<C-e>"] = cmp.mapping.close(),
-    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-d>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
@@ -98,5 +95,51 @@ cmp.setup({
       "i",
       "s",
     }),
+  },
+
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+
+  formatting = {
+    fields = { "kind", "abbr", "menu" },
+    format = lspkind.cmp_format({
+      with_text = false,
+      preset = "codicons",
+      symbol_map = kind_icons,
+      menu = {
+        nvim_lsp = "[LSP]",
+        luasnip = "[Snippet]",
+        buffer = "[Buffer]",
+        path = "[Path]",
+        latex_symbols = "[Latex]",
+        nvim_lua = "[nvim_lua]",
+      },
+    }),
+  },
+
+  sources = {
+    { name = "nvim_lsp" },
+    { name = "nvim_lua" },
+    { name = "path" },
+    { name = "luasnip" },
+    { name = "buffer" },
+    { name = "calc" },
+  },
+
+  confirm_opts = {
+    behavior = cmp.ConfirmBehavior.Replace,
+    select = false,
+  },
+
+  documentation = {
+    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+  },
+
+  experimental = {
+    ghost_text = true,
+    native_menu = false,
   },
 })
