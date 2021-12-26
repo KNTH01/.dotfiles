@@ -5,7 +5,7 @@ local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.n
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
-  print "Installing Packer... Close and reopen Neovim"
+  print("Installing Packer... Close and reopen Neovim")
 end
 
 -- runs PackerCompile on write
@@ -26,13 +26,13 @@ if not status_ok then
 end
 
 -- Have packer use a popup window
-packer.init {
+packer.init({
   display = {
     open_fn = function()
-      return require("packer.util").float { border = "rounded" }
+      return require("packer.util").float({ border = "rounded" })
     end,
   },
-}
+})
 
 return packer.startup({
   function()
@@ -96,6 +96,7 @@ return packer.startup({
         "hrsh7th/cmp-path", -- nvim-cmp source for filesystem paths.
         "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
         "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
+        "hrsh7th/cmp-cmdline", -- cmdline completions
       },
       config = [[ require('knth/plugins/cmp') ]],
     })
@@ -192,7 +193,7 @@ return packer.startup({
     -- commenting plugin
     use({
       "terrortylor/nvim-comment",
-      config = [[ require('knth/plugins/nvim_comment') ]]
+      config = [[ require('knth/plugins/nvim_comment') ]],
     })
     use("JoosepAlviste/nvim-ts-context-commentstring")
 

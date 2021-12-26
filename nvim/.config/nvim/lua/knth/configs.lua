@@ -196,7 +196,7 @@ vim.g.gruvbox_transparent = false
 vim.cmd([[colorscheme gruvbox-flat]])
 
 --
--- Command
+-- Commands
 --
 
 -- highlight on yank
