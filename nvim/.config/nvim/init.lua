@@ -10,4 +10,7 @@ require("impatient")
 -- my configs
 require("knth.configs")
 require("knth.mappings")
+
+-- plugins configs
 require("knth.plugins")
+require("knth.cmp")

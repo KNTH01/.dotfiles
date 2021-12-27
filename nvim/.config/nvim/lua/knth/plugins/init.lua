@@ -94,8 +94,7 @@ return packer.startup({
         "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
         "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
         "hrsh7th/cmp-cmdline", -- cmdline completions
-      },
-      config = [[ require('knth/plugins/cmp') ]],
+      }
     })
 
     -- Snippets plugin
