@@ -115,7 +115,7 @@ return packer.startup({
     use({
       "nvim-telescope/telescope.nvim",
       config = [[ require('knth/plugins/telescope') ]],
-      requires = { "nvim-lua/plenary.nvim" },
+      requires = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-media-files.nvim" },
     })
 
     -- use for status line
