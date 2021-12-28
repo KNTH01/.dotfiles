@@ -1,6 +1,9 @@
 -- nvim-lsp-installer
 
-local lsp_installer = require("nvim-lsp-installer")
+local status_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
+if not status_ok then
+  return
+end
 
 -- Provide settings first!
 lsp_installer.settings({
@@ -19,29 +22,19 @@ lsp_installer.settings({
 
 local function make_server_ready(attach, capabilities)
   lsp_installer.on_server_ready(function(server)
-    local opts = {}
-    opts.on_attach = attach
-    opts.capabilities = capabilities
+    local opts = {
+      on_attach = attach,
+      capabilities = capabilities,
+    }
 
-    -- for lua
+    if server.name == "jsonls" then
+      local jsonls_opts = require("knth.lsp.settings.jsonls")
+      opts = vim.tbl_deep_extend("force", jsonls_opts, opts)
+    end
+
     if server.name == "sumneko_lua" then
-      -- only apply these settings for the "sumneko_lua" server
-      opts.settings = {
-        Lua = {
-          diagnostics = {
-            -- Get the language server to recognize the 'vim', 'use' global
-            globals = { "vim", "use", "require" },
-          },
-          workspace = {
-            -- Make the server aware of Neovim runtime files
-            library = vim.api.nvim_get_runtime_file("", true),
-          },
-          -- Do not send telemetry data containing a randomized but unique identifier
-          telemetry = {
-            enable = false,
-          },
-        },
-      }
+      local sumneko_opts = require("knth.lsp.settings.sumneko_lua")
+      opts = vim.tbl_deep_extend("force", sumneko_opts, opts)
     end
 
     -- This setup() function is exactly the same as lspconfig's setup function (:help lspconfig-quickstart)
@@ -49,6 +42,10 @@ local function make_server_ready(attach, capabilities)
     vim.cmd([[ do User LspAttachBuffers ]])
   end)
 end
+
+-- attach and capabilities from lsp_config
+local lsp_handlers = require("knth.lsp.handlers")
+make_server_ready(lsp_handlers.on_attach, lsp_handlers.capabilities)
 
 local function install_server(server)
   local lsp_installer_servers = require("nvim-lsp-installer.servers")
@@ -60,7 +57,6 @@ local function install_server(server)
   end
 end
 
--- #todo: refact servers variable to be exported from lua/plugins/nvim_lspconfig.lua
 local servers = {
   -- rust
   "rust_analyzer",
@@ -76,10 +72,6 @@ local servers = {
   "cssls",
   "eslint",
 }
-
-require("knth.plugins.lsp_config")
-
-make_server_ready(On_attach, Capabilities) -- LSP mappings
 
 -- install the language servers
 for _, server in ipairs(servers) do

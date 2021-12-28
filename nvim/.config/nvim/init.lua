@@ -14,3 +14,4 @@ require("knth.mappings")
 -- plugins configs
 require("knth.plugins")
 require("knth.cmp")
+require("knth.lsp")

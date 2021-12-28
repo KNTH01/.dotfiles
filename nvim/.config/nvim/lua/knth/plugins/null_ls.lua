@@ -17,10 +17,11 @@ require("null-ls").config({
   sources = sources,
 })
 
-require("knth.plugins.lsp_config")
+lsp_handlers = require("knth.lsp.handlers")
+
 require("lspconfig")["null-ls"].setup({
-  on_attach = On_attach,
-  capabilities = Capabilities,
+  on_attach = lsp_handlers.on_attach,
+  capabilities = lsp_handlers.capabilities,
 })
 
 -- the duration in there is to stop timeouts on massive files

@@ -56,16 +56,10 @@ return packer.startup({
     use("eddyekofo94/gruvbox-flat.nvim")
 
     -- Collection of common configurations for built-in LSP client
-    use({
-      "neovim/nvim-lspconfig",
-      config = [[ require('knth/plugins/lsp_config') ]],
-    })
+    use({ "neovim/nvim-lspconfig" })
 
     -- nvim-lsp-installer to auto install lsp language servers
-    use({
-      "williamboman/nvim-lsp-installer",
-      config = [[ require('knth/plugins/lsp_installer') ]],
-    })
+    use({ "williamboman/nvim-lsp-installer" })
 
     -- vscode-like pictograms for neovim lsp completion items Topics
     use("onsails/lspkind-nvim")
@@ -73,7 +67,7 @@ return packer.startup({
     -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
     use({
       "nvim-lua/lsp-status.nvim",
-      config = [[ require('knth/plugins/lsp_status') ]],
+      config = [[ require('knth/lsp/lsp_status') ]],
     })
 
     -- null-ls, for formatting
@@ -94,7 +88,7 @@ return packer.startup({
         "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
         "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
         "hrsh7th/cmp-cmdline", -- cmdline completions
-      }
+      },
     })
 
     -- Snippets plugin
