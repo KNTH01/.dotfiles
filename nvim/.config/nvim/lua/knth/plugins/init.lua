@@ -187,6 +187,13 @@ return packer.startup({
     })
     use("JoosepAlviste/nvim-ts-context-commentstring")
 
+    -- bufferline
+    use({
+      "akinsho/bufferline.nvim",
+      config = [[ require('knth/plugins/bufferline') ]],
+      requires = { "moll/vim-bbye" },
+    })
+
     -- Smooth scrolling
     use({
       "karb94/neoscroll.nvim",
