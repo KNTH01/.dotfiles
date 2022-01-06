@@ -2,6 +2,7 @@
 alias sourceme="source $HOME/.zshrc"
 alias rezsh="exec zsh"
 alias reshell="exec zsh"
+alias reimwheel="killall imwheel && imwheel"
 
 # dev
 alias dotfiles="cd $HOME/.dotfiles"
