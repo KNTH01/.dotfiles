@@ -98,6 +98,7 @@ local function lsp_keymaps(bufnr)
 
   vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>fm", [[<cmd>Format<CR>]], opts)
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>be", [[<cmd>EslintFixAll<CR>]], opts)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
