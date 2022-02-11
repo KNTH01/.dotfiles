@@ -106,7 +106,6 @@ cmp.setup({
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = lspkind.cmp_format({
-      with_text = false,
       preset = "codicons",
       symbol_map = kind_icons,
       menu = {
