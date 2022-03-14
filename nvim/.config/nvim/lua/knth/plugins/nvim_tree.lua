@@ -32,17 +32,13 @@ vim.g.nvim_tree_icons = {
 }
 
 vim.g.nvim_tree_auto_ignore_ft = { "dashboard" } -- Don't open tree on specific fiypes.
-vim.g.nvim_tree_quit_on_open = 1 -- closes tree when file's opened.
+-- vim.g.nvim_tree_quit_on_open = true -- closes tree when file's opened.
 vim.g.nvim_tree_indent_markers = 1 -- This option shows indent markers when folders are open.
 vim.g.nvim_tree_git_hl = 1 -- Will enable file highlight for git attributes (can be used without the icons).
 vim.g.nvim_tree_highlight_opened_files = 0 -- Will enable folder and file icon highlight for opened files/directories.
 vim.g.nvim_tree_add_trailing = 0 -- Append a trailing slash to folder names. ]]
-vim.g.nvim_tree_window_picker_exclude = {
-  filetype = { "packer", "vista_kind" },
-  buftype = { "terminal" },
-}
 
-nvim_tree.setup {
+nvim_tree.setup({
   disable_netrw = true,
   hijack_netrw = true,
   open_on_setup = false,
@@ -96,9 +92,9 @@ nvim_tree.setup {
       list = {
         { key = "<S-h>", cb = ":call ResizeLeft(3)<CR>" },
         { key = "<C-h>", cb = tree_cb("toggle_dotfiles") },
-        { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
-        { key = "h", cb = tree_cb "close_node" },
-        { key = "v", cb = tree_cb "vsplit" },
+        { key = { "l", "<CR>", "o" }, cb = tree_cb("edit") },
+        { key = "h", cb = tree_cb("close_node") },
+        { key = "v", cb = tree_cb("vsplit") },
       },
     },
     number = false,
@@ -109,6 +105,10 @@ nvim_tree.setup {
   trash = {
     cmd = "trash",
     require_confirm = true,
+  },
+  open_file = {
+    quit_on_open = false,
+    resize_window = false,
   },
   quit_on_open = 0,
   git_hl = 1,
@@ -121,7 +121,7 @@ nvim_tree.setup {
     folder_arrows = 1,
     tree_width = 30,
   },
-}
+})
 
 local map_opt = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "<C-n>", ":NvimTreeToggle<CR>", map_opt)
