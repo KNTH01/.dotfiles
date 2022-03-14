@@ -68,6 +68,9 @@ keymap("n", "<C-k>", ":cprev<cr>zz", opts)
 keymap("n", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
 keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
 
+-- TODO Refact this into something else
+keymap("n", "<leader>x", "<cmd>Bdelete<cr>", opts)
+
 -- VISUAL
 --
 
@@ -88,3 +91,5 @@ keymap("v", "<A-k>", ":m .-2<CR>==", opts)
 -- Move text up and down
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
+
+
