@@ -13,17 +13,10 @@ local diagnostics = null_ls.builtins.diagnostics
 local code_actions = null_ls.builtins.code_actions
 
 local sources = {
-  require("null-ls.helpers").conditional(function(utils)
-    if utils.root_has_file(".eslintrc.js") or utils.root_has_file(".eslintrc") then
-      return formatting.eslint_d
-    else
-      return formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } })
-    end
-  end),
-
   formatting.shfmt,
   formatting.stylua.with({ args = { "--indent-width", "2", "--indent-type", "Spaces", "-" } }),
   formatting.codespell,
+  formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
 
   diagnostics.eslint_d,
   code_actions.gitsigns,
