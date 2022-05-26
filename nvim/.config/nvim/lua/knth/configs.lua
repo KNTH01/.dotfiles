@@ -204,15 +204,17 @@ onedarkpro.load()
 --
 
 -- highlight on yank
-vim.api.nvim_exec(
-  [[
-  augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=500, on_visual=true}
-  augroup end
-]],
-  false
-)
+local augroupYankHighLight = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank({
+      higroup = "IncSearch",
+      timeout = 500,
+      on_visual = true,
+    })
+  end,
+  group = augroupYankHighLight,
+})
 
 -- jump to the last position when reopening a file
 vim.cmd([[
