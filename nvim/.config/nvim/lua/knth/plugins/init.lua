@@ -51,6 +51,10 @@ return packer.startup({
       "nathom/filetype.nvim",
     })
 
+    -- One Dark Pro theme
+    -- https://github.com/olimorris/onedarkpro.nvim
+    use("olimorris/onedarkpro.nvim")
+
     -- Gruvbox theme
     -- https://github.com/eddyekofo94/gruvbox-flat.nvim
     use("eddyekofo94/gruvbox-flat.nvim")

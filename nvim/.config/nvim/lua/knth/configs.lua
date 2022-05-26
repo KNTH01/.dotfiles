@@ -195,6 +195,10 @@ vim.g.gruvbox_transparent = false
 -- must be set AFTER the theme's config
 vim.cmd([[colorscheme gruvbox-flat]])
 
+-- set onedarkpro light theme
+local onedarkpro = require("onedarkpro")
+onedarkpro.load()
+
 --
 -- Commands
 --
@@ -254,4 +258,3 @@ vim.cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=cro
 
 -- set kebabcase as word
 vim.cmd([[set iskeyword+=-]])
-
