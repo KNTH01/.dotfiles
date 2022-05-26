@@ -42,7 +42,7 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
--- @TODO: close buffer?
+keymap("n", "<leader>x", "<cmd>Bdelete<cr>", opts)
 
 -- Remap for dealing with word wrap
 keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
@@ -57,7 +57,8 @@ keymap("n", "<C-s>", "<cmd>w<CR>", opts)
 keymap("n", "<leader>w", "<cmd>w<CR>", opts)
 keymap("n", "<leader>q", "<cmd>q<CR>", opts)
 
--- copy current file path @TODO: create a vim command, cf formatting
+-- copy current file path
+-- @TODO: create a vim command, cf formatting
 keymap("n", "<leader>cp", '<cmd>let @+ = expand("%")<CR>', opts)
 
 -- quickfix list navigation
@@ -65,11 +66,9 @@ keymap("n", "<C-j>", ":cnext<cr>zz", opts)
 keymap("n", "<C-k>", ":cprev<cr>zz", opts)
 
 -- Move text up and down
-keymap("n", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
-keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
+keymap("n", "<A-j>", "<Esc>:m .+1<CR>==", opts)
+keymap("n", "<A-k>", "<Esc>:m .-2<CR>==", opts)
 
--- TODO Refact this into something else
-keymap("n", "<leader>x", "<cmd>Bdelete<cr>", opts)
 
 -- VISUAL
 --
@@ -91,5 +90,3 @@ keymap("v", "<A-k>", ":m .-2<CR>==", opts)
 -- Move text up and down
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
-
-
