@@ -225,7 +225,8 @@ endif
 vim.opt.wildignore = vim.opt.wildignore + "*.o,*.rej,*.so"
 
 -- remove whitespace on save
-vim.cmd([[au BufWritePre * :%s/\s\+$//e]])
+-- disabled for now
+-- vim.cmd([[au BufWritePre * :%s/\s\+$//e]])
 
 -- faster scrolling
 vim.opt.lazyredraw = true
