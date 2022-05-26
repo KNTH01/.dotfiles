@@ -55,6 +55,12 @@ local kind_icons = {
 }
 
 cmp.setup({
+  window = {
+    documentation = {
+      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+    },
+  },
+
   mapping = {
     ["<C-k>"] = cmp.mapping.select_prev_item(),
     ["<C-j>"] = cmp.mapping.select_next_item(),
@@ -132,10 +138,6 @@ cmp.setup({
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
     select = false,
-  },
-
-  documentation = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
   },
 
   experimental = {
