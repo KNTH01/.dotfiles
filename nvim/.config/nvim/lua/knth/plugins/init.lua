@@ -167,10 +167,10 @@ return packer.startup({
     })
 
     -- A File Explorer For Neovim Written In Lua
-    use({
-      "kyazdani42/nvim-tree.lua",
-      config = [[ require('knth/plugins/nvim_tree') ]],
-    })
+    -- use({
+    --   "kyazdani42/nvim-tree.lua",
+    --   config = [[ require('knth/plugins/nvim_tree') ]],
+    -- })
 
     -- webdev icons
     use({
