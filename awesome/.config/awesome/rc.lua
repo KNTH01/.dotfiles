@@ -348,7 +348,7 @@ local globalkeys = my_table.join(
     group = "program launcher",
   }),
   awful.key({ modKey }, "x", function()
-    awful.util.spawn("arcolinux-logout")
+    awful.util.spawn("archlinux-logout")
   end, {
     description = "exit",
     group = "program launcher",
