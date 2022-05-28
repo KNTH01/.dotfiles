@@ -66,7 +66,6 @@ cmp.setup({
     ["<C-j>"] = cmp.mapping.select_next_item(),
     ["<C-p>"] = cmp.mapping.select_prev_item(),
     ["<C-n>"] = cmp.mapping.select_next_item(),
-    ["<C-e>"] = cmp.mapping.close(),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
@@ -87,6 +86,22 @@ cmp.setup({
     end, {
       "i",
       "s",
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-u>"] = cmp.mapping.scroll_docs(4),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<c-space>"] = cmp.mapping({
+      i = cmp.mapping.complete(),
+      c = function(
+        _ --[[fallback]]
+      )
+        if cmp.visible() then
+          if not cmp.confirm({ select = true }) then
+            return
+          end
+        else
+          cmp.complete()
+        end
+      end,
     }),
 
     ["<S-Tab>"] = cmp.mapping(function(fallback)
