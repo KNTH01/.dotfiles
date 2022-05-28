@@ -186,10 +186,9 @@ return packer.startup({
 
     -- commenting plugin
     use({
-      "terrortylor/nvim-comment",
-      config = [[ require('knth/plugins/nvim_comment') ]],
+      "numToStr/Comment.nvim",
+      config = [[ require('knth/plugins/comment') ]],
     })
-    use("JoosepAlviste/nvim-ts-context-commentstring")
 
     -- bufferline
     use({
