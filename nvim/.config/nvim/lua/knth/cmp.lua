@@ -66,12 +66,6 @@ cmp.setup({
     ["<C-j>"] = cmp.mapping.select_next_item(),
     ["<C-p>"] = cmp.mapping.select_prev_item(),
     ["<C-n>"] = cmp.mapping.select_next_item(),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<CR>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      -- todo: select true or false?
-      select = false,
-    }),
 
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -89,6 +83,15 @@ cmp.setup({
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-u>"] = cmp.mapping.scroll_docs(4),
     ["<C-e>"] = cmp.mapping.abort(),
+    ["<CR>"] = cmp.mapping(
+      cmp.mapping.confirm({
+        -- behavior = cmp.ConfirmBehavior.Replace,
+        -- select = false,
+        behavior = cmp.ConfirmBehavior.Insert,
+        select = true,
+      }),
+      { "i", "c" }
+    ),
     ["<c-space>"] = cmp.mapping({
       i = cmp.mapping.complete(),
       c = function(
