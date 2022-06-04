@@ -162,62 +162,6 @@ font:
 #draw_bold_text_with_bright_colors: false
 
 # Colors (ArcoLinux)
-colors:
-  # Default colors
-  primary:
-    # hard contrast: background = '#1d2021'
-    background: '#282828'
-    # soft contrast: background = '#32302f'
-    foreground: '#ebdbb2'
-
-  # Normal colors
-  normal:
-    black: '#282828'
-    red: '#cc241d'
-    green: '#98971a'
-    yellow: '#d79921'
-    blue: '#458588'
-    magenta: '#b16286'
-    cyan: '#689d6a'
-    white: '#a89984'
-
-  # Bright colors
-  bright:
-    black: '#928374'
-    red: '#fb4934'
-    green: '#b8bb26'
-    yellow: '#fabd2f'
-    blue: '#83a598'
-    magenta: '#d3869b'
-    cyan: '#8ec07c'
-    white: '#ebdbb2'
-
-# Alacritty Colors (Rosebox Theme)
-colors:
-  primary:
-    background: '#262626'
-    foreground: '#bab5b7'
-  cursor:
-    text:       '#262626'
-    cursor:     '#bab5b7'
-  normal:
-    black:      '#262626'
-    red:        '#D08770'
-    green:      '#A3BE8C'
-    yellow:     '#a57562'
-    blue:       '#637A8A'
-    magenta:    '#78758A'
-    cyan:       '#877979'
-    white:      '#a3a5aa'
-  bright:
-    black:      '#827e80'
-    red:        '#D08770'
-    green:      '#A3BE8C'
-    yellow:     '#a57562'
-    blue:       '#637A8A'
-    magenta:    '#78758A'
-    cyan:       '#877979'
-    white:      '#a3a5aa'
 
 # Alacritty colors: (gruvbox-flat theme)
 colors:
@@ -255,35 +199,63 @@ colors:
       
 
 # Alacritty colors: night_owlish_light 
-colors:
-  bright:
-    black: '#7a8181'
-    blue: '#5ca7e4'
-    cyan: '#00c990'
-    green: '#49d0c5'
-    magenta: '#697098'
-    red: '#f76e6e'
-    white: '#989fb1'
-    yellow: '#dac26b'
-  cursor:
-    cursor: '#403f53'
-    text: '#fbfbfb'
-  normal:
-    black: '#011627'
-    blue: '#4876d6'
-    cyan: '#08916a'
-    green: '#2aa298'
-    magenta: '#403f53'
-    red: '#d3423e'
-    white: '#7a8181'
-    yellow: '#daaa01'
-  primary:
-    background: '#ffffff'
-    foreground: '#403f53'
-  selection:
-    background: '#f2f2f2'
-    text: '#403f53'
+# colors:
+#   bright:
+#     black: '#7a8181'
+#     blue: '#5ca7e4'
+#     cyan: '#00c990'
+#     green: '#49d0c5'
+#     magenta: '#697098'
+#     red: '#f76e6e'
+#     white: '#989fb1'
+#     yellow: '#dac26b'
+#   cursor:
+#     cursor: '#403f53'
+#     text: '#fbfbfb'
+#   normal:
+#     black: '#011627'
+#     blue: '#4876d6'
+#     cyan: '#08916a'
+#     green: '#2aa298'
+#     magenta: '#403f53'
+#     red: '#d3423e'
+#     white: '#7a8181'
+#     yellow: '#daaa01'
+#   primary:
+#     background: '#ffffff'
+#     foreground: '#403f53'
+#   selection:
+#     background: '#f2f2f2'
+#     text: '#403f53'
 
+colors:
+  # Default colors
+  primary:
+    background: '0x1e2127'
+    foreground: '0xabb2bf'
+
+  # Normal colors
+  normal:
+    black:   '0x1e2127'
+    red:     '0xe06c75'
+    green:   '0x98c379'
+    yellow:  '0xd19a66'
+    blue:    '0x61afef'
+    magenta: '0xc678dd'
+    cyan:    '0x56b6c2'
+    white:   '0xabb2bf'
+
+  # Bright colors
+  bright:
+    black:   '0x5c6370'
+    red:     '0xe06c75'
+    green:   '0x98c379'
+    yellow:  '0xd19a66'
+    blue:    '0x61afef'
+    magenta: '0xc678dd'
+    cyan:    '0x56b6c2'
+    white:   '0xffffff'
+      
 # Bell
 #
 # The bell is rung every time the BEL control character is received.
