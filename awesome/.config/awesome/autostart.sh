@@ -22,7 +22,7 @@ run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 run numlockx on
 run volumeicon
 # run variety
-run conky -c $HOME/.config/awesome/system-overview
+# run conky -c $HOME/.config/awesome/system-overview
 
 ### My runs
 run imwheel
@@ -32,12 +32,10 @@ run portless start
 
 # load the config file from arandr
 #create a weird bug where it display horizontal
-(
-  sleep 1
-  run $HOME/.screenlayout/init.sh
-) &
+(sleep 1; $HOME/.screenlayout/init.sh) &
+
 # run nitrogen after xrandr
 run nitrogen --restore
 
 # polybar
-# (sleep 2; run $HOME/.config/polybar/launch.sh) &
+# (sleep 2; $HOME/.config/polybar/launch.sh) &
