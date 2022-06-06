@@ -329,7 +329,7 @@ local globalkeys = my_table.join(
     description = filemanager,
     group = "program launcher",
   }),
-  awful.key({ modKey }, "c", function()
+  awful.key({ modKey, shiftKey }, "c", function()
     awful.util.spawn("conky-toggle")
   end, {
     description = "conky-toggle",
@@ -412,27 +412,39 @@ local globalkeys = my_table.join(
   -- }),
 
   awful.key({ modKey }, "p", function()
-    awful.util.spawn("rofi -no-lazy-grab -show window -theme '~/.config/rofi/launchers/misc/kde_krunner'")
+    awful.util.spawn("rofi -no-lazy-grab -show window")
   end, {
     description = "rofi show windows",
     group = "menu launcher",
   }),
   awful.key({ modKey }, "Space", function()
-    awful.util.spawn("rofi -no-lazy-grab -show window -theme '~/.config/rofi/launchers/misc/kde_krunner'")
+    awful.util.spawn("rofi -no-lazy-grab -show window")
   end, {
     description = "rofi show windows",
     group = "menu launcher",
   }),
   awful.key({ modKey, shiftKey }, "p", function()
-    awful.util.spawn("rofi -no-lazy-grab -show drun -theme '~/.config/rofi/launchers/misc/kde_simplemenu'")
+    awful.util.spawn("rofi -no-lazy-grab -show drun")
   end, {
     description = "rofi show desktop programs",
     group = "menu launcher",
   }),
   awful.key({ modKey, shiftKey }, "d", function()
-    awful.util.spawn("rofi -no-lazy-grab -show run -theme '~/.config/rofi/launchers/misc/kde_krunner'")
+    awful.util.spawn("rofi -no-lazy-grab -show run")
   end, {
     description = "rofi show runner",
+    group = "menu launcher",
+  }),
+  awful.key({ modKey }, "c", function()
+    awful.util.spawn([[rofi -no-lazy-grab -show calc -no-show-match -no-sort -calc-command "echo -n '{result}' | xclip -selection clipboard"]])
+  end, {
+    description = "rofi show calc",
+    group = "menu launcher",
+  }),
+  awful.key({ modKey }, ".", function()
+    awful.util.spawn("rofi -no-lazy-grab -show emoji")
+  end, {
+    description = "rofi show emoji picker",
     group = "menu launcher",
   }),
 
