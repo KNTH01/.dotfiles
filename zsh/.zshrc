@@ -171,5 +171,7 @@ source $HOME/.rvm/scripts/rvm
 ### Init z.lua https://github.com/skywind3000/z.lua
 eval "$(lua /usr/share/z.lua/z.lua --init zsh)"
 
+### Hook direnv: https://direnv.net/docs/hook.html
+eval "$(direnv hook zsh)"
 
 alias luamake=/home/knth/.config/nvim/lua-language-server/3rd/luamake/luamake
