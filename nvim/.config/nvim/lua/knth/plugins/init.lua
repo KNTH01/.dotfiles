@@ -193,6 +193,7 @@ return packer.startup({
     -- bufferline
     use({
       "akinsho/bufferline.nvim",
+      tag = "v2.*",
       config = [[ require('knth/plugins/bufferline') ]],
       requires = { "moll/vim-bbye" },
     })
@@ -234,7 +235,7 @@ return packer.startup({
     -- `ds`, `cs`, 'yss' cmds, eg: `cs"'`, `ysiw"`
     use("tpope/vim-surround")
 
-    -- rust goodness?
+    -- rust goodness
     use("simrat39/rust-tools.nvim")
 
     -- todo: List of plugins to check out
