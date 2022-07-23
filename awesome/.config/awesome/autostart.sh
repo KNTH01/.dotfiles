@@ -34,6 +34,9 @@ run portless start
 #create a weird bug where it display horizontal
 (sleep 1; $HOME/.screenlayout/init.sh) &
 
+# mouse speed
+$HOME/.config/awesome/scripts/mouse_settings.sh &
+
 # run nitrogen after xrandr
 run nitrogen --restore
 
