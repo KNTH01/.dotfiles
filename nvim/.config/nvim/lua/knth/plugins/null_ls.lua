@@ -22,7 +22,7 @@ local sources = {
   code_actions.gitsigns,
 }
 
-lsp_handlers = require("knth.lsp.handlers")
+local lsp_handlers = require("knth.lsp.handlers")
 
 null_ls.setup({
   debug = false,
