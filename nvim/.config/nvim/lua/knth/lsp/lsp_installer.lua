@@ -19,6 +19,7 @@ local servers = {
   "html",
   "cssls",
   "eslint",
+  "tailwindcss",
 }
 
 local settings = {
