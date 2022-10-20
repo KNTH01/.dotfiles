@@ -64,7 +64,12 @@ return packer.startup({
 
     -- nvim-lsp-installer to auto install lsp language servers
     use({ "williamboman/nvim-lsp-installer" })
-
+    use({
+      "ggandor/leap.nvim",
+      config = function()
+        require("leap").add_default_mappings()
+      end,
+    })
     -- vscode-like pictograms for neovim lsp completion items Topics
     use("onsails/lspkind-nvim")
 
