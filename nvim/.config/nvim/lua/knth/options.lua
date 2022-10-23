@@ -169,7 +169,7 @@ end
 vim.opt.iskeyword:append("-")
 
 -- patterns to ignore during file-navigation
-vim.opt.wildignore:apend("*.o,*.rej,*.so")
+vim.opt.wildignore:append("*.o,*.rej,*.so")
 
 --
 -- Commands
