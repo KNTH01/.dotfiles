@@ -8,7 +8,8 @@
 require("impatient")
 
 -- my configs
-require("knth.configs")
+require("knth.options")
+require("knth.colorscheme")
 require("knth.mappings")
 
 -- plugins configs

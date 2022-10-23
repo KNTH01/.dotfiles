@@ -1,10 +1,3 @@
---
--- vim.fn            -- call Vim functions
--- vim.g             -- global variables
--- vim.bo            -- buffer-scoped options
--- vim.wo            -- windows-scoped options
---
-
 local options = {
   -- set term gui colors (most terminals support this)
   termguicolors = true,
@@ -162,6 +155,9 @@ local options = {
 
   --Enable break indent
   breakindent = true,
+
+  -- faster scrolling
+  lazyredraw = true,
 }
 
 -- apply options listed above
@@ -169,35 +165,11 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
---
--- Theming
---
+-- set kebabcase as word
+vim.opt.iskeyword:append("-")
 
--- font
-vim.opt.guifont = "DroidSansMono Nerd Font 12"
-
--- gruvbox-flat config
-vim.g.gruvbox_flat_style = "dark"
--- make comment italics
-vim.g.gruvbox_italic_functions = true
--- make functions italic
-vim.g.gruvbox_italic_comments = true
--- make keyword italic
-vim.g.gruvbox_italic_keywords = true
--- set a darker background_color for sidebar, e.g: NvimTree
-vim.g.gruvbox_dark_sidebar = true
--- set a darker background_color for float windows, e.g: Notify
-vim.g.gruvbox_dark_float = true
--- set the background to be not transparent
-vim.g.gruvbox_transparent = false
-
--- set gruvbox theme
--- must be set AFTER the theme's config
-vim.cmd([[colorscheme gruvbox-flat]])
-
--- set onedarkpro light theme
-local onedarkpro = require("onedarkpro")
-onedarkpro.load()
+-- patterns to ignore during file-navigation
+vim.opt.wildignore:apend("*.o,*.rej,*.so")
 
 --
 -- Commands
@@ -223,15 +195,9 @@ if has("autocmd")
 endif
 ]])
 
--- patterns to ignore during file-navigation
-vim.opt.wildignore = vim.opt.wildignore + "*.o,*.rej,*.so"
-
 -- remove whitespace on save
 -- disabled for now
 -- vim.cmd([[au BufWritePre * :%s/\s\+$//e]])
-
--- faster scrolling
-vim.opt.lazyredraw = true
 
 -- don't auto commenting new lines
 vim.cmd([[au BufEnter * set fo-=c fo-=r fo-=o]])
@@ -258,6 +224,3 @@ vim.cmd([[ au BufEnter *.lua set ai expandtab shiftwidth=2 tabstop=2 sta fo=croq
 vim.cmd([[ au BufEnter *.vim set ai expandtab shiftwidth=2 tabstop=2 sta fo=croql ]])
 -- json
 vim.cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=croql ]])
-
--- set kebabcase as word
-vim.cmd([[set iskeyword+=-]])
