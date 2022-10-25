@@ -15,7 +15,7 @@ local servers = {
   -- web dev
   "tsserver",
   "jsonls",
-  "vuels",
+  "volar",
   "html",
   "cssls",
   "eslint",
