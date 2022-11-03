@@ -7,62 +7,35 @@ if not status_ok then
 end
 
 treesitter_configs.setup({
-  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
-  ignore_install = { "" }, -- List of parsers to ignore installing
-
-  context_commentstring = {
-    -- to be used with 'terrortylor/nvim-comment' and 'JoosepAlviste/nvim-ts-context-commentstring'
-    enable = true,
-  },
+  -- enable syntax highlighting
   highlight = {
-    enable = true, -- false will disable the whole extension
-    disable = { "" }, -- list of language that will be disabled
-    additional_vim_regex_highlighting = true,
-  },
-  incremental_selection = {
     enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
   },
-  indent = {
-    enable = true,
-    disable = { "yaml" },
+
+  -- enable indentation
+  indent = { enable = true, disable = { "yaml" } },
+
+  -- enable autotagging (w/ nvim-ts-autotag plugin)
+  autotag = { enable = true },
+
+  -- ensure these language parsers are installed
+  ensure_installed = {
+    "json",
+    "javascript",
+    "typescript",
+    "tsx",
+    "yaml",
+    "html",
+    "css",
+    "markdown",
+    "svelte",
+    "graphql",
+    "bash",
+    "lua",
+    "vim",
+    "dockerfile",
+    "gitignore",
   },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-      keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]["] = "@class.outer",
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-        ["[["] = "@class.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[]"] = "@class.outer",
-      },
-    },
-  },
+  -- auto install above language parsers
+  auto_install = true,
 })
