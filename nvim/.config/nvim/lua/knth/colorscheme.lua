@@ -23,3 +23,5 @@ vim.cmd([[colorscheme gruvbox-flat]])
 -- set onedarkpro light theme
 local onedarkpro = require("onedarkpro")
 onedarkpro.load()
+
+-- do not forget to update lualine theme: `lua/{user}/plugins/lualine.lua`
