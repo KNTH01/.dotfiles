@@ -10,7 +10,7 @@ local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 
 -- code action sources
-local code_actions = null_ls.builtins.code_actions
+-- local code_actions = null_ls.builtins.code_actions
 
 local sources = {
   formatting.shfmt,
@@ -19,7 +19,7 @@ local sources = {
   formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
 
   diagnostics.eslint_d,
-  code_actions.gitsigns,
+  -- code_actions.gitsigns,
 }
 
 local lsp_handlers = require("knth.lsp.handlers")
