@@ -3,6 +3,10 @@ if not status_ok then
   return
 end
 
+-- disable netrw at the very start of your init.lua (strongly advised)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 nvim_tree.setup({
   renderer = {
     icons = {
@@ -48,8 +52,7 @@ nvim_tree.setup({
   },
 })
 
-local map_opt = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "<C-n>", ":NvimTreeToggle<CR>", map_opt)
-vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeToggle<CR>", map_opt)
-vim.api.nvim_set_keymap("n", "<leader>r", ":NvimTreeRefresh<CR>", map_opt)
-vim.api.nvim_set_keymap("n", "<leader>p", ":NvimTreeFindFile<CR>", map_opt)
+vim.keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>")
+vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+vim.keymap.set("n", "<leader>r", ":NvimTreeRefresh<CR>")
+vim.keymap.set("n", "<leader>p", ":NvimTreeFindFile<CR>")
