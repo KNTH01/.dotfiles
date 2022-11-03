@@ -15,7 +15,7 @@ vim.api.nvim_exec(
     autocmd!
     autocmd BufWritePost init.lua source <afile> | PackerCompile
   augroup end
-]],
+]] ,
   false
 )
 
@@ -59,19 +59,25 @@ return packer.startup({
     -- https://github.com/eddyekofo94/gruvbox-flat.nvim
     use("eddyekofo94/gruvbox-flat.nvim")
 
+    -- Easily install and manage LSP servers, DAP servers, linters, and formatters.
+    use({
+      "williamboman/mason.nvim",
+      requires = {
+        "williamboman/mason-lspconfig.nvim",
+      },
+      config = [[ require('knth/lsp/mason') ]],
+    })
+
     -- Collection of common configurations for built-in LSP client
     use({ "neovim/nvim-lspconfig" })
 
-    -- nvim-lsp-installer to auto install lsp language servers
-    use({ "williamboman/nvim-lsp-installer" })
+    -- navigation with `s` and `S` in Vim
     use({
       "ggandor/leap.nvim",
       config = function()
         require("leap").add_default_mappings()
       end,
     })
-    -- vscode-like pictograms for neovim lsp completion items Topics
-    use("onsails/lspkind-nvim")
 
     -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
     use({
@@ -85,6 +91,7 @@ return packer.startup({
       requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
       config = [[ require('knth/plugins/null_ls') ]],
     })
+    use({ "jayp0521/mason-null-ls.nvim" })
 
     -- Autocompletion plugin
     use({ -- A completion plugin for neovim coded in Lua.
@@ -99,6 +106,10 @@ return packer.startup({
         "hrsh7th/cmp-cmdline", -- cmdline completions
       },
     })
+    -- enhanced UI to LSP experience
+    use({ "glepnir/lspsaga.nvim", branch = "main", config = [[ require('knth/lsp/lspsaga') ]] })
+    -- vscode-like pictograms for neovim lsp completion items Topics
+    use("onsails/lspkind-nvim")
 
     -- Snippets plugin
     use({
@@ -113,15 +124,20 @@ return packer.startup({
     -- Highlight, edit, and navigate code using a fast incremental parsing library
     use({
       "nvim-treesitter/nvim-treesitter",
-      run = ":TSUpdate",
+      run = function()
+        require("nvim-treesitter.install").update({ with_sync = true })
+      end,
       config = [[ require('knth/plugins/treesitter') ]],
     })
-
     -- Additional textobjects for treesitter
     use("nvim-treesitter/nvim-treesitter-textobjects")
+    -- autoclose tags
+    use({ "windwp/nvim-ts-autotag", after = "nvim-treesitter" })
+    -- A super powerful autopairs for Neovim. It support multiple character
+    use({ "windwp/nvim-autopairs", config = [[ require('knth/plugins/autopairs') ]] })
 
     -- UI to select things (files, grep results, open buffers...)
-    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+    use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
     use({
       "nvim-telescope/telescope.nvim",
       config = [[ require('knth/plugins/telescope') ]],
@@ -146,12 +162,6 @@ return packer.startup({
       "lewis6991/gitsigns.nvim",
       config = [[ require('knth/plugins/gitsigns') ]],
       requires = { "nvim-lua/plenary.nvim" },
-    })
-
-    -- A super powerful autopairs for Neovim. It support multiple character
-    use({
-      "windwp/nvim-autopairs",
-      config = [[ require('knth/plugins/autopairs') ]],
     })
 
     -- nvim notify
@@ -250,7 +260,6 @@ return packer.startup({
     -- mundo
     -- harpoon
     -- folke/trouble.nvim
-    -- glepnir/lspsaga.nvim
     -- ...
 
     -- Automatically set up your configuration after cloning packer.nvim
