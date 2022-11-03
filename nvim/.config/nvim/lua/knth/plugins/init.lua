@@ -121,6 +121,7 @@ return packer.startup({
     use("nvim-treesitter/nvim-treesitter-textobjects")
 
     -- UI to select things (files, grep results, open buffers...)
+    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     use({
       "nvim-telescope/telescope.nvim",
       config = [[ require('knth/plugins/telescope') ]],

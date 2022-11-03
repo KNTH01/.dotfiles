@@ -1,14 +1,14 @@
 -- Telescope
 
-local present, telescope = pcall(require, "telescope")
-if not present then
+local telescope_setup, telescope = pcall(require, "telescope")
+if not telescope_setup then
   return
 end
 
--- load telescope extensions
-telescope.load_extension("media_files")
-
-local actions = require("telescope.actions")
+local actions_setup, actions = pcall(require, "telescope.actions")
+if not actions_setup then
+  return
+end
 
 telescope.setup({
   defaults = {
@@ -35,6 +35,12 @@ telescope.setup({
         -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
         filetypes = { "png", "webp", "jpg", "jpeg" },
         find_cmd = "rg", -- find command (defaults to `fd`)
+      },
+      fzf = {
+        fuzzy = true, -- false will only do exact matching
+        override_generic_sorter = true, -- override the generic sorter
+        override_file_sorter = true, -- override the file sorter
+        case_mode = "smart_case", -- or "ignore_case" or "respect_case"
       },
       -- Your extension configuration goes here:
       -- extension_name = {
@@ -130,35 +136,23 @@ telescope.setup({
   },
 })
 
+-- Load Telescope extensions
+telescope.load_extension("fzf")
+telescope.load_extension("media_files")
+
 -- mappings
 
--- Function for make mapping easier.
-local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true }
-  if opts then
-    options = vim.tbl_extend("force", options, opts)
-  end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sf",
-  [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]],
-  { noremap = true, silent = true }
-)
--- map("n", "<Leader>ff", ":Telescope find_files<CR>")
-map("n", "<Leader>ff", [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]])
-map("n", "<Leader>fg", ":Telescope live_grep<CR>")
-map("n", "<Leader>fw", ":Telescope grep_string<CR>")
-map("n", "<Leader>fp", ":Telescope media_files<CR>")
--- map("n", "<Leader>fb", ":Telescope buffers<CR>")
-map("n", "<Leader>fb", [[<cmd>lua require('telescope.builtin').buffers({previewer = false})<CR>]])
-map("n", "<Leader>fh", ":Telescope help_tags<CR>")
-map("n", "<Leader>fo", ":Telescope oldfiles<CR>")
-map("n", "<Leader>th", ":Telescope colorscheme<CR>")
-map("n", "<Leader>gs", ":Telescope git_status<CR>")
-map("n", "<Leader>cm", ":Telescope git_commits<CR>")
-map("n", "<Leader><space>", ":Telescope current_buffer_fuzzy_find<CR>")
--- map("n", "<Leader>ft", ":Telescope tags<CR>")
--- map("n", "<Leader>ft", [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]])
+vim.keymap.set("n", "<Leader>ff", [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]])
+vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>")
+vim.keymap.set("n", "<Leader>fw", ":Telescope grep_string<CR>")
+vim.keymap.set("n", "<Leader>fp", ":Telescope media_files<CR>")
+-- vim.keymap.set("n", "<Leader>fb", ":Telescope buffers<CR>")
+vim.keymap.set("n", "<Leader>fb", [[<cmd>lua require('telescope.builtin').buffers({previewer = false})<CR>]])
+vim.keymap.set("n", "<Leader>fh", ":Telescope help_tags<CR>")
+vim.keymap.set("n", "<Leader>fo", ":Telescope oldfiles<CR>")
+vim.keymap.set("n", "<Leader>th", ":Telescope colorscheme<CR>")
+vim.keymap.set("n", "<Leader>gs", ":Telescope git_status<CR>")
+vim.keymap.set("n", "<Leader>cm", ":Telescope git_commits<CR>")
+vim.keymap.set("n", "<Leader><space>", ":Telescope current_buffer_fuzzy_find<CR>")
+-- vim.keymap.set("n", "<Leader>ft", ":Telescope tags<CR>")
+-- vim.keymap.set("n", "<Leader>ft", [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]])
