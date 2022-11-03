@@ -3,5 +3,4 @@ if not status_ok then
 	return
 end
 
-require("knth.lsp.lsp_installer")
 require("knth.lsp.handlers").setup()
