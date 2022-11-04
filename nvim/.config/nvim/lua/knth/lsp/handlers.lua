@@ -93,7 +93,7 @@ local function lsp_keymaps(bufnr)
   -- -- vim.keymap.set("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
   -- end old mappings
 
-  vim.keymap.set("n", "gf", "<cmd>Lspsaga lsp_finder<CR>", opts) -- show definition, references
+  vim.keymap.set("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", opts) -- show definition, references
   vim.keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>", opts) -- see definition and make edits in window
   vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts) -- go to declaration
   vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts) -- go to references
@@ -112,8 +112,13 @@ local function lsp_keymaps(bufnr)
   vim.keymap.set("n", "g]", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
   vim.keymap.set("n", "<leader>fs", [[:Telescope lsp_document_symbols<CR>]], opts)
 
-  vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
+  -- Format commands
+  vim.api.nvim_create_user_command("Format", function()
+    vim.lsp.buf.format()
+  end, { nargs = 0 })
   vim.keymap.set("n", "<leader>fm", [[<cmd>Format<CR>]], opts)
+
+  -- EslintFixAll
   vim.keymap.set("n", "<leader>be", [[<cmd>EslintFixAll<CR>]], opts)
 end
 

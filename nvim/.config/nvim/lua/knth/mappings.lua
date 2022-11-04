@@ -65,8 +65,8 @@ keymap.set("n", "<leader>w", "<cmd>w<CR>")
 keymap.set("n", "<leader>q", "<cmd>q<CR>")
 
 -- copy current file path
--- @TODO: create a vim command, cf formatting
 keymap.set("n", "<leader>cp", '<cmd>let @+ = expand("%")<CR>')
+
 
 -- quickfix list navigation
 keymap.set("n", "<C-j>", ":cnext<cr>zz")
