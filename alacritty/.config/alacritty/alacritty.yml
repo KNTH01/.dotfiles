@@ -96,22 +96,22 @@ font:
   normal:
     # family: CaskaydiaCove Nerd Font Mono
     family: JetBrains Mono 
-    style:  semibold
+    style:  regular
 
   # Bold font face
   bold:
     family: JetBrains Mono 
-    style: extrabold
+    style: bold
 
   # Italic font face
   italic:
     family: JetBrains Mono 
-    style: semibold italic
+    style: italic
 
   # Bold italic font face
   bold_italic:
     family: JetBrains Mono 
-    style: extrabold italic
+    style: bold italic
 
   # Point size
   size: 12.5
