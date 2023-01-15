@@ -175,3 +175,14 @@ eval "$(lua /usr/share/z.lua/z.lua --init zsh)"
 eval "$(direnv hook zsh)"
 
 alias luamake=/home/knth/.config/nvim/lua-language-server/3rd/luamake/luamake
+
+### solana-cli
+export PATH="/home/knth/.local/share/solana/install/active_release/bin:$PATH"
+
+
+### Fly.io flyctl
+export FLYCTL_INSTALL="/home/knth/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+### surrealdb
+export PATH=/home/knth/.surrealdb:$PATH
