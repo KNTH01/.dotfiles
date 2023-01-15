@@ -10,7 +10,7 @@ end
 
 local mason_null_ls_status, mason_null_ls = pcall(require, "mason-null-ls")
 if not mason_null_ls_status then
-	return
+  return
 end
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
@@ -21,27 +21,26 @@ end
 local lsp_handlers = require("knth.lsp.handlers")
 
 local servers = {
-    -- rust
-    "rust_analyzer",
+  -- rust
+  "rust_analyzer",
 
-    -- lua
-    "sumneko_lua",
+  -- lua
+  "sumneko_lua",
 
-    -- web dev
-    "tsserver",
-    "jsonls",
-    "volar",
-    "html",
-    "cssls",
-    "eslint",
-    "tailwindcss",
+  -- web dev
+  "tsserver",
+  "jsonls",
+  "volar",
+  "html",
+  "cssls",
+  "eslint",
+  "tailwindcss",
 }
 
 mason.setup()
 mason_lspconfig.setup({
   ensure_installed = servers,
 })
-
 
 local opts = {}
 
@@ -89,12 +88,12 @@ for _, server in pairs(servers) do
 end
 
 mason_null_ls.setup({
-	-- list of formatters & linters for mason to install
-	ensure_installed = {
-		"prettier", -- ts/js formatter
-		"stylua", -- lua formatter
-		"eslint_d", -- ts/js linter
-	},
-	-- auto-install configured formatters & linters (with null-ls)
-	automatic_installation = true,
+  -- list of formatters & linters for mason to install
+  ensure_installed = {
+    "prettier", -- ts/js formatter
+    "stylua", -- lua formatter
+    "eslint_d", -- ts/js linter
+  },
+  -- auto-install configured formatters & linters (with null-ls)
+  automatic_installation = true,
 })
