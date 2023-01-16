@@ -74,3 +74,5 @@ file-decoration-style = none
 # 	keepTemporaries = false
 # 	trustExitCode = false
 # 	keepBackup = false
+[init]
+	defaultBranch = main
