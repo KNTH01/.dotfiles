@@ -4,6 +4,7 @@
 
 # Oh my Zsh setup
 ZSH="$HOME/.oh-my-zsh"
+ZSH_CUSTOM="$ZSH/custom"
 
 # Don't load any Oh my Zsh theme
 ZSH_THEME=""
@@ -32,9 +33,6 @@ COMPLETION_WAITING_DOTS="true"
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -44,7 +42,8 @@ plugins=(
     git
     git-flow
     sudo
-    command-not-found
+    zsh-autosuggestions
+    zsh-syntax-highlighting
     colored-man-pages
 )
 
@@ -69,7 +68,7 @@ export DOTFILES="$HOME/.dotfiles" # my dotfiles
 export FILE_MANAGER="thunar"
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)" # history ignore
 export PATH=$HOME/.npm/bin:$PATH # Path to npm bin
-export VISUAL="nvim" # $VISUAL use Code
+export VISUAL="nvim" # $VISUAL use nvim
 export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH" # RMagick gem
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export VOLTA_HOME="$HOME/.volta" # volta config
@@ -145,10 +144,10 @@ source $HOME/.zsh/me.aliases
 ### Manual plugins install
 
 # https://github.com/zsh-users/zsh-autosuggestions
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+# source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 
 # https://github.com/zsh-users/zsh-syntax-highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 # broot
 source /home/knth/.config/broot/launcher/bash/br
