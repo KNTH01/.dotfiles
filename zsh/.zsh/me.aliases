@@ -106,5 +106,9 @@ alias yta-wav="youtube-dl --extract-audio --audio-format wav "
 alias ytv-best="youtube-dl -f bestvideo+bestaudio "
 
 
+# xclip
+alias setclip="xclip -selection c"
+alias getclip="xclip -selection c -o"
+
 # WSL2
 # alias drop-cache="sudo sh -c \"echo 3 >'/proc/sys/vm/drop_caches' && swapoff -a && swapon -a && printf '\n%s\n' 'Ram-cache and Swap Cleared'\""
