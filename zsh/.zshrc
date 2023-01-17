@@ -185,3 +185,6 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 ### surrealdb
 export PATH=/home/knth/.surrealdb:$PATH
+
+### dotfiles bin
+export PATH=/home/knth/.dotfiles/bin:$PATH
