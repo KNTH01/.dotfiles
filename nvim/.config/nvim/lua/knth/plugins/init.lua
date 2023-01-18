@@ -177,10 +177,7 @@ return packer.startup({
     })
 
     -- AutoSave
-    use({
-      "Pocco81/AutoSave.nvim",
-      config = [[ require('knth/plugins/autosave') ]],
-    })
+    use({ "Pocco81/AutoSave.nvim" })
 
     -- A File Explorer For Neovim Written In Lua
     use({
