@@ -251,6 +251,9 @@ return packer.startup({
     -- rust goodness
     use("simrat39/rust-tools.nvim")
 
+    -- tmux & split window navigation
+    use("christoomey/vim-tmux-navigator")
+
     -- todo: List of plugins to check out
     -- bufferline
     -- feline (statusline)
