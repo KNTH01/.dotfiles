@@ -7,3 +7,5 @@ xmonad/.xmonad/xmonad-x86_64-linux
 
 lvim/.config/lvim/plugin/packer_compiled.lua
 nvim/.config/nvim/plugin
+
+tmux/.tmux
