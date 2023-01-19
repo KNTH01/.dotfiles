@@ -3,11 +3,12 @@ fish_add_path ~/.cargo/bin
 
 starship init fish | source
 
+set -g fish_key_bindings fish_vi_key_bindings
 
 ### ALIAS
 
 # source shell
-alias sourceme="source $HOME/.zshrc"
+alias sourceme="source $HOME/.config/fish/config.fish"
 alias reshell="exec fish"
 
 # restart imwheel
@@ -52,3 +53,6 @@ alias fgrep='fgrep --color=auto'
 # xclip
 alias setclip="xclip -selection c"
 alias getclip="xclip -selection c -o"
+
+# nvim
+alias v="nvim"
