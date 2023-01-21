@@ -7,9 +7,8 @@ if not status_ok then
 end
 
 treesitter_configs.setup({
-  -- enable syntax highlighting
   highlight = {
-    enable = true,
+    enable = true, -- `false` will disable the whole extension
   },
 
   -- enable indentation
@@ -20,22 +19,29 @@ treesitter_configs.setup({
 
   -- ensure these language parsers are installed
   ensure_installed = {
-    "json",
+    "help",
+    "rust", 
     "javascript",
     "typescript",
-    "tsx",
-    "yaml",
     "html",
     "css",
+    "lua",
+    "json",
+    "tsx",
+    "yaml",
     "markdown",
     "svelte",
     "graphql",
     "bash",
-    "lua",
     "vim",
     "dockerfile",
     "gitignore",
   },
-  -- auto install above language parsers
+  
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+  
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = true,
 })
