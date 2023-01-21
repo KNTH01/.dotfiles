@@ -1,4 +1,6 @@
------------------❰ Package Manager ❱-----------------
+-----------------❰ Package Manager ❱-----------------------
+-- IMPORTANT: run :PackerSync after modifying this file ---
+-----------------------------------------------------------
 
 -- Install packer
 local ensure_packer = function()
@@ -99,6 +101,12 @@ return packer.startup(function(use)
   --
   --
 
+  --
+  -- LIST
+  --
+  --
+  --
+  --
   -- TreeSitter
   use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = [[ require('knth.plugins.treesitter') ]] })
   use("nvim-treesitter/nvim-treesitter-textobjects")
@@ -108,13 +116,6 @@ return packer.startup(function(use)
   use({ "windwp/nvim-ts-autotag", after = "nvim-treesitter" })
   -- A super powerful autopairs for Neovim. It support multiple character
   use({ "windwp/nvim-autopairs" })
-
-  --
-  -- LIST
-  --
-  --
-  --
-  --
 
   -- navigation with `s` and `S` in nvim
   use({
@@ -227,14 +228,6 @@ return packer.startup(function(use)
 
   -- tmux & split window navigation
   use("christoomey/vim-tmux-navigator")
-
-  -- todo: List of plugins to check out
-  -- bufferline
-  -- feline (statusline)
-  -- mundo
-  -- harpoon
-  -- folke/trouble.nvim
-  -- ...
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
