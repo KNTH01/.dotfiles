@@ -12,10 +12,16 @@ local ensure_packer = function()
   return false
 end
 local packer_bootstrap = ensure_packer()
+print(packer_bootstrap)
 ----
 
-return require('packer').startup(
-	function(use)
+local status_ok, packer = pcall(require,"packer")
+if not status_ok then
+	print("Fail to load Packer")
+	return
+end
+
+return packer.startup(function(use)
     use("wbthomason/packer.nvim") -- Package manager
 
     -----------------❰ Plugins listing ❱-------------------
@@ -29,17 +35,93 @@ return require('packer').startup(
     use("eddyekofo94/gruvbox-flat.nvim")
 
     -- Easily install and manage LSP servers, DAP servers, linters, and formatters.
-    use({
-      "williamboman/mason.nvim",
-      requires = {
-        "williamboman/mason-lspconfig.nvim",
-      },
-      config = [[ require('knth/lsp/mason') ]],
-    })
+    -- use({
+      -- "williamboman/mason.nvim",
+      -- requires = {
+        -- "williamboman/mason-lspconfig.nvim",
+      -- },
+      -- config = [[ require('knth/lsp/mason') ]],
+    -- })
 
     -- Collection of common configurations for built-in LSP client
-    use({ "neovim/nvim-lspconfig" })
+    -- use({ "neovim/nvim-lspconfig" })
 
+
+    -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
+    -- use({
+      -- "nvim-lua/lsp-status.nvim",
+      -- config = [[ require('knth/lsp/lsp_status') ]],
+    -- })
+
+    -- null-ls, for formatting
+    -- use({
+      -- "jose-elias-alvarez/null-ls.nvim",
+      -- requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
+      -- config = [[ require('knth/plugins/null_ls') ]],
+    -- })
+    -- use({ "jayp0521/mason-null-ls.nvim" })
+
+    -- Autocompletion plugin
+    -- use({ -- A completion plugin for neovim coded in Lua.
+      -- "hrsh7th/nvim-cmp",
+      -- requires = {
+        -- "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim builtin LSP client
+        -- "hrsh7th/cmp-nvim-lua", -- nvim-cmp source for nvim lua
+        -- "hrsh7th/cmp-buffer", -- nvim-cmp source for buffer words.
+        -- "hrsh7th/cmp-path", -- nvim-cmp source for filesystem paths.
+        -- "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
+        -- "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
+        -- "hrsh7th/cmp-cmdline", -- cmdline completions
+      -- },
+    -- })
+    -- enhanced UI to LSP experience
+    -- use({ "glepnir/lspsaga.nvim", branch = "main", config = [[ require('knth/lsp/lspsaga') ]] })
+    -- vscode-like pictograms for neovim lsp completion items Topics
+    -- use("onsails/lspkind-nvim")
+
+    -- Snippets plugin
+    -- use({
+      -- "L3MON4D3/LuaSnip",
+      -- requires = {
+        -- snippets collection for a set of different programming languages for faster development
+        -- "rafamadriz/friendly-snippets",
+      -- },
+      -- config = [[ require('knth/plugins/luasnip') ]],
+    -- })
+
+    -- Highlight, edit, and navigate code using a fast incremental parsing library
+    use({
+      "nvim-treesitter/nvim-treesitter",
+      run = function()
+        require("nvim-treesitter.install").update({ with_sync = true })
+      end,
+      -- config = [[ require('knth/plugins/treesitter') ]],
+    })
+    -- Additional textobjects for treesitter
+    use("nvim-treesitter/nvim-treesitter-textobjects")
+    -- autoclose tags
+    use({ "windwp/nvim-ts-autotag", after = "nvim-treesitter" })
+    -- A super powerful autopairs for Neovim. It support multiple character
+    -- use({ "windwp/nvim-autopairs", config = [[ require('knth/plugins/autopairs') ]] })
+
+    -- UI to select things (files, grep results, open buffers...)
+    use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+    use({
+      "nvim-telescope/telescope.nvim",
+      -- config = [[ require('knth/plugins/telescope') ]],
+      requires = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-media-files.nvim" },
+    })
+   
+    --
+    --
+    --
+    --
+    -- LIST
+    --
+    --
+    --
+    --
+    
     -- navigation with `s` and `S` in nvim
     use({
       "ggandor/leap.nvim",
@@ -48,101 +130,36 @@ return require('packer').startup(
       end,
     })
 
-    -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
-    use({
-      "nvim-lua/lsp-status.nvim",
-      config = [[ require('knth/lsp/lsp_status') ]],
-    })
-
-    -- null-ls, for formatting
-    use({
-      "jose-elias-alvarez/null-ls.nvim",
-      requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
-      config = [[ require('knth/plugins/null_ls') ]],
-    })
-    use({ "jayp0521/mason-null-ls.nvim" })
-
-    -- Autocompletion plugin
-    use({ -- A completion plugin for neovim coded in Lua.
-      "hrsh7th/nvim-cmp",
-      requires = {
-        "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim builtin LSP client
-        "hrsh7th/cmp-nvim-lua", -- nvim-cmp source for nvim lua
-        "hrsh7th/cmp-buffer", -- nvim-cmp source for buffer words.
-        "hrsh7th/cmp-path", -- nvim-cmp source for filesystem paths.
-        "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
-        "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
-        "hrsh7th/cmp-cmdline", -- cmdline completions
-      },
-    })
-    -- enhanced UI to LSP experience
-    use({ "glepnir/lspsaga.nvim", branch = "main", config = [[ require('knth/lsp/lspsaga') ]] })
-    -- vscode-like pictograms for neovim lsp completion items Topics
-    use("onsails/lspkind-nvim")
-
-    -- Snippets plugin
-    use({
-      "L3MON4D3/LuaSnip",
-      requires = {
-        -- snippets collection for a set of different programming languages for faster development
-        "rafamadriz/friendly-snippets",
-      },
-      config = [[ require('knth/plugins/luasnip') ]],
-    })
-
-    -- Highlight, edit, and navigate code using a fast incremental parsing library
-    use({
-      "nvim-treesitter/nvim-treesitter",
-      run = function()
-        require("nvim-treesitter.install").update({ with_sync = true })
-      end,
-      config = [[ require('knth/plugins/treesitter') ]],
-    })
-    -- Additional textobjects for treesitter
-    use("nvim-treesitter/nvim-treesitter-textobjects")
-    -- autoclose tags
-    use({ "windwp/nvim-ts-autotag", after = "nvim-treesitter" })
-    -- A super powerful autopairs for Neovim. It support multiple character
-    use({ "windwp/nvim-autopairs", config = [[ require('knth/plugins/autopairs') ]] })
-
-    -- UI to select things (files, grep results, open buffers...)
-    use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-    use({
-      "nvim-telescope/telescope.nvim",
-      config = [[ require('knth/plugins/telescope') ]],
-      requires = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-media-files.nvim" },
-    })
-
     -- use for status line
     use({
       "nvim-lualine/lualine.nvim",
-      config = [[ require('knth/plugins/lualine') ]],
+      -- config = [[ require('knth/plugins/lualine') ]],
       requires = { "kyazdani42/nvim-web-devicons", opt = true },
     })
 
     -- Add indentation guides even on blank lines
     use({
       "lukas-reineke/indent-blankline.nvim",
-      config = [[ require('knth/plugins/blankline') ]],
+      -- config = [[ require('knth/plugins/blankline') ]],
     })
 
     -- Add git related info in the signs columns and popups
     use({
       "lewis6991/gitsigns.nvim",
-      config = [[ require('knth/plugins/gitsigns') ]],
+      -- config = [[ require('knth/plugins/gitsigns') ]],
       requires = { "nvim-lua/plenary.nvim" },
     })
 
     -- nvim notify
     use({
       "rcarriga/nvim-notify",
-      config = [[ require('knth/plugins/notify') ]],
+      -- config = [[ require('knth/plugins/notify') ]],
     })
 
     -- Better escape
     use({
       "max397574/better-escape.nvim",
-      config = [[ require('knth/plugins/better_escape') ]],
+      -- config = [[ require('knth/plugins/better_escape') ]],
     })
 
     -- AutoSave
@@ -151,32 +168,32 @@ return require('packer').startup(
     -- A File Explorer For Neovim Written In Lua
     use({
       "kyazdani42/nvim-tree.lua",
-      config = [[ require('knth/plugins/nvim_tree') ]],
+      -- config = [[ require('knth/plugins/nvim_tree') ]],
     })
 
     -- webdev icons
     use({
       "kyazdani42/nvim-web-devicons",
-      config = [[ require('knth/plugins/webdevicons') ]],
+      -- config = [[ require('knth/plugins/webdevicons') ]],
     })
 
     -- tagviewer
     use({
       "liuchengxu/vista.vim",
-      config = [[ require('knth/plugins/vista') ]],
+      -- config = [[ require('knth/plugins/vista') ]],
     })
 
     -- commenting plugin
     use({
       "numToStr/Comment.nvim",
-      config = [[ require('knth/plugins/comment') ]],
+      -- config = [[ require('knth/plugins/comment') ]],
     })
 
     -- bufferline
     use({
       "akinsho/bufferline.nvim",
       tag = "v2.*",
-      config = [[ require('knth/plugins/bufferline') ]],
+      -- config = [[ require('knth/plugins/bufferline') ]],
       requires = { "moll/vim-bbye" },
     })
 
@@ -234,7 +251,6 @@ return require('packer').startup(
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if ensure_packer then
-      packer.sync()
+       packer.sync()
     end
-  end
-})
+  end)
