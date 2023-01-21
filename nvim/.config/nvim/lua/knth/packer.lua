@@ -1,55 +1,24 @@
 -----------------❰ Package Manager ❱-----------------
 
 -- Install packer
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
-  print("Installing Packer... Close and reopen Neovim")
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
+local packer_bootstrap = ensure_packer()
+----
 
--- runs PackerCompile on write
-vim.api.nvim_exec(
-  [[
-  augroup Packer
-    autocmd!
-    autocmd BufWritePost init.lua source <afile> | PackerCompile
-  augroup end
-]] ,
-  false
-)
-
--- Use a protected call so we don't error out on first use
-local status_ok, packer = pcall(require, "packer")
-if not status_ok then
-  return
-end
-
--- Have packer use a popup window
-packer.init({
-  display = {
-    open_fn = function()
-      return require("packer.util").float({ border = "rounded" })
-    end,
-  },
-})
-
-return packer.startup({
-  function()
+return require('packer').startup(
+	function(use)
     use("wbthomason/packer.nvim") -- Package manager
 
     -----------------❰ Plugins listing ❱-------------------
-
-    -- checklist todo:
-    -- 'lewis6991/impatient.nvim'
-    -- 'nathom/filetype.nvim'
-    use({ -- Speed up loading Lua modules in Neovim to improve startup time.
-      "lewis6991/impatient.nvim",
-    })
-
-    use({ --  Easily speed up your neovim startup time!. A faster version of filetype.vim
-      "nathom/filetype.nvim",
-    })
 
     -- One Dark Pro theme
     -- https://github.com/olimorris/onedarkpro.nvim
@@ -71,7 +40,7 @@ return packer.startup({
     -- Collection of common configurations for built-in LSP client
     use({ "neovim/nvim-lspconfig" })
 
-    -- navigation with `s` and `S` in Vim
+    -- navigation with `s` and `S` in nvim
     use({
       "ggandor/leap.nvim",
       config = function()
@@ -264,13 +233,8 @@ return packer.startup({
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
-    if PACKER_BOOTSTRAP then
+    if ensure_packer then
       packer.sync()
     end
-  end,
-
-  config = {
-    -- Move to lua dir so impatient.nvim can cache it
-    compile_path = vim.fn.stdpath("config") .. "/plugin/packer_compiled.lua",
-  },
+  end
 })
