@@ -12,7 +12,9 @@ lsp.ensure_installed({
   'tsserver',
   'eslint',
   'sumneko_lua',
+
 })
+
 
 -- don't initialize this language server
 -- we will use rust-tools to setup rust_analyzer
@@ -37,6 +39,17 @@ lsp.configure('tsserver', {
   }
 })
 
+-- Fix Undefined global 'vim'
+lsp.configure('sumneko_lua', {
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim' }
+      }
+    }
+  }
+})
+
 -- share configuration between multiple servers
 -- see :help lsp-zero.setup_servers()
 lsp.setup_servers({
@@ -49,6 +62,31 @@ lsp.setup_servers({
     end
   }
 })
+
+lsp.on_attach(function(client, bufnr)
+  local opts = { buffer = bufnr, remap = false }
+
+  -- LSP actions
+  vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
+  vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+  vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
+  vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
+  vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
+  vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
+  vim.keymap.set('n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
+  vim.keymap.set('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>')
+  vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+  vim.keymap.set('x', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
+  -- Diagnostics
+  vim.keymap.set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
+  vim.keymap.set('n', 'g[', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
+  vim.keymap.set('n', 'g]', '<cmd>lua vim.diagnostic.goto_next()<cr>')
+  -- More stuff
+  vim.keymap.set("n", "<leader>fs", '<cmd>Telescope lsp_document_symbols<cr>', opts)
+  vim.keymap.set("n", "<leader>fm", '<cmd>LspZeroFormat<cr>', opts)
+  vim.keymap.set("n", "<leader>be", '<cmd>EslintFixAll<cr>', opts)
+
+end)
 
 -- (Optional) Configure lua language server for neovim
 -- see :help lsp-zero.nvim_workspace()
@@ -80,17 +118,17 @@ require('rust-tools').setup({ server = rust_lsp })
 --
 local cmp = require('cmp')
 local cmp_mappings = lsp.defaults.cmp_mappings({
-    ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-    ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-    ['<C-d>'] = cmp.mapping.scroll_docs(5),
-    ['<C-u>'] = cmp.mapping.scroll_docs(-5),
-    ["<c-y>"] = cmp.mapping(
-      cmp.mapping.confirm({
-        behavior = cmp.ConfirmBehavior.Insert,
-        select = true,
-      }),
-      { "i", "c" }
-    ),
+  ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+  ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+  ['<C-d>'] = cmp.mapping.scroll_docs(5),
+  ['<C-u>'] = cmp.mapping.scroll_docs(-5),
+  ["<c-y>"] = cmp.mapping(
+    cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    }),
+    { "i", "c" }
+  ),
   -- C-e is to toggle complete by default, use this to C-e abort and C-Space complete
   -- ['<C-e>'] = cmp.mapping.abort(),
   --   ["<c-space>"] = cmp.mapping({
