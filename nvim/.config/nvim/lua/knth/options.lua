@@ -145,7 +145,7 @@ local options = {
   laststatus = 2,
 
   -- shell to use for `!`, `:!`, `system()` etc.
-  shell = "zsh",
+  shell = "fish",
 
   -- incremental live completion, e.g: the :s command
   inccommand = "nosplit",
