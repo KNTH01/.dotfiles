@@ -8,11 +8,20 @@ lsp.preset('lsp-compe')
 -- make sure this servers are installed
 -- see :help lsp-zero.ensure_installed()
 lsp.ensure_installed({
-  'rust_analyzer',
-  'tsserver',
-  'eslint',
-  'sumneko_lua',
+  -- rust
+  "rust_analyzer",
 
+  -- lua
+  "sumneko_lua",
+
+  -- web dev
+  "tsserver",
+  "jsonls",
+  "volar",
+  "html",
+  "cssls",
+  "eslint",
+  "tailwindcss",
 })
 
 
@@ -36,30 +45,6 @@ lsp.configure('tsserver', {
     completions = {
       completeFunctionCalls = true
     }
-  }
-})
-
--- Fix Undefined global 'vim'
-lsp.configure('sumneko_lua', {
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { 'vim' }
-      }
-    }
-  }
-})
-
--- share configuration between multiple servers
--- see :help lsp-zero.setup_servers()
-lsp.setup_servers({
-  'eslint',
-  'angularls',
-  opts = {
-    single_file_support = false,
-    on_attach = function(client, bufnr)
-      print("I'm doing web dev")
-    end
   }
 })
 
