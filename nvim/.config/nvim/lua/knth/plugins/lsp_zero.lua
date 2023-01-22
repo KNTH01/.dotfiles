@@ -67,26 +67,19 @@ lsp.nvim_workspace()
 lsp.setup()
 
 -- initialize rust_analyzer with rust-tools
--- see :help lsp-zero.build_options()
-local rust_lsp = lsp.build_options('rust_analyzer', {
-  single_file_support = false,
-  on_attach = function(client, bufnr)
-    print('Hello from rust-tools')
-  end
-})
-require('rust-tools').setup({ server = rust_lsp })
+require('rust-tools').setup(require("knth.lsp_settings.rust"))
 
 --
 -- After LSP setup
 --
 
+-- enable virtual_text for diagnostic
 vim.diagnostic.config({
   virtual_text = true,
 })
 
 --
 -- cmp config
-
 local cmp = require('cmp')
 local cmp_mappings = lsp.defaults.cmp_mappings({
   ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),

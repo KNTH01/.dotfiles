@@ -1,22 +1,27 @@
-return {
+local lsp = require('lsp-zero')
+
+-- see :help lsp-zero.build_options()
+local rust_lsp = lsp.build_options('rust_analyzer', {
   single_file_support = false,
 
-  server = {
-    on_attach = function()
-      print('Hello from rust-tools')
-    end,
+  on_attach = function()
+    print('Hello from rust-tools')
+  end,
 
-    settings = {
-      ["rust-analyzer"] = {
-        lens = {
-          enable = true,
-        },
-        checkOnSave = {
-          command = "clippy",
-        },
+  settings = {
+    ["rust-analyzer"] = {
+      lens = {
+        enable = true,
+      },
+      checkOnSave = {
+        command = "clippy",
       },
     },
   },
+})
+
+return {
+  server = rust_lsp,
 
   -- rust-tools options
   tools = {
