@@ -24,18 +24,8 @@ lsp.ensure_installed({
   "tailwindcss",
 })
 
-lsp.configure('jsonls', require("knth.deprecated.lsp.settings.jsonls"))
-
-lsp.configure('tsserver', {
-  on_attach = function(client, bufnr)
-    print('hello tsserver')
-  end,
-  settings = {
-    completions = {
-      completeFunctionCalls = true
-    }
-  }
-})
+-- configure jsonls
+lsp.configure('jsonls', require("knth.lsp_settings.jsonls"))
 
 -- the function below will be executed whenever
 -- a language server is attached to a buffer
