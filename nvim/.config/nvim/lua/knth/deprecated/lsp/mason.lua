@@ -72,6 +72,7 @@ for _, server in pairs(servers) do
     goto continue
   end
 
+  -- Deprecated??????
   if server == "volar" then
     opts = vim.tbl_deep_extend("force", {
       init_options = {
