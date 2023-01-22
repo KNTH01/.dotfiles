@@ -27,6 +27,91 @@ return packer.startup(function(use)
 
   -----------------❰ Plugins listing ❱-------------------
 
+  -- -- Easily install and manage LSP servers, DAP servers, linters, and formatters.
+  -- use({
+  --   "williamboman/mason.nvim",
+  --   requires = {
+  --     "williamboman/mason-lspconfig.nvim",
+  --   },
+  --   config = [[ require('knth/lsp/mason') ]],
+  -- })
+  --
+  -- -- Collection of common configurations for built-in LSP client
+  -- use({ "neovim/nvim-lspconfig" })
+  --
+  -- -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
+  -- use({
+  --   "nvim-lua/lsp-status.nvim",
+  --   config = [[ require('knth/lsp/lsp_status') ]],
+  -- })
+  --
+  -- -- null-ls, for formatting
+  -- use({
+  --   "jose-elias-alvarez/null-ls.nvim",
+  --   requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
+  --   config = [[ require('knth/plugins/null_ls') ]],
+  -- })
+  -- use({ "jayp0521/mason-null-ls.nvim" })
+  --
+  -- -- Autocompletion plugin
+  -- use({ -- A completion plugin for neovim coded in Lua.
+  --   "hrsh7th/nvim-cmp",
+  --   requires = {
+  --     "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim builtin LSP client
+  --     "hrsh7th/cmp-nvim-lua", -- nvim-cmp source for nvim lua
+  --     "hrsh7th/cmp-buffer", -- nvim-cmp source for buffer words.
+  --     "hrsh7th/cmp-path", -- nvim-cmp source for filesystem paths.
+  --     "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
+  --     "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
+  --     "hrsh7th/cmp-cmdline", -- cmdline completions
+  --   },
+  -- })
+  --
+  -- -- enhanced UI to LSP experience
+  -- use({ "glepnir/lspsaga.nvim", branch = "main" })
+  -- -- vscode-like pictograms for neovim lsp completion items Topics
+  -- use("onsails/lspkind-nvim")
+  --
+  -- -- Snippets plugin
+  -- use({
+  --   "L3MON4D3/LuaSnip",
+  --   requires = {
+  --     -- snippets collection for a set of different programming languages for faster development
+  --     "rafamadriz/friendly-snippets",
+  --   },
+  --   config = [[ require('knth/plugins/luasnip') ]],
+  -- })
+
+  --
+  --
+  use({
+    "VonHeikemen/lsp-zero.nvim",
+    branch = "v1.x",
+    requires = {
+      -- LSP Support
+      { "neovim/nvim-lspconfig" }, -- Required
+      { "williamboman/mason.nvim" }, -- Optional
+      { "williamboman/mason-lspconfig.nvim" }, -- Optional
+
+      -- Autocompletion
+      { "hrsh7th/nvim-cmp" }, -- Required
+      { "hrsh7th/cmp-nvim-lsp" }, -- Required
+      { "hrsh7th/cmp-buffer" }, -- Optional
+      { "hrsh7th/cmp-path" }, -- Optional
+      { "saadparwaiz1/cmp_luasnip" }, -- Optional
+      { "hrsh7th/cmp-nvim-lua" }, -- Optional
+
+      -- Snippets
+      { "L3MON4D3/LuaSnip" }, -- Required
+      { "rafamadriz/friendly-snippets" }, -- Optional
+    },
+    config = [[ require("knth.plugins.lsp_zero") ]]
+  })
+  --
+  -- LIST
+  --
+  --
+
   -- One Dark Pro theme
   -- https://github.com/olimorris/onedarkpro.nvim
   use("olimorris/onedarkpro.nvim")
@@ -34,61 +119,6 @@ return packer.startup(function(use)
   -- Gruvbox theme
   -- https://github.com/eddyekofo94/gruvbox-flat.nvim
   use("eddyekofo94/gruvbox-flat.nvim")
-
-  -- Easily install and manage LSP servers, DAP servers, linters, and formatters.
-  use({
-    "williamboman/mason.nvim",
-    requires = {
-      "williamboman/mason-lspconfig.nvim",
-    },
-    config = [[ require('knth/lsp/mason') ]],
-  })
-
-  -- Collection of common configurations for built-in LSP client
-  use({ "neovim/nvim-lspconfig" })
-
-  -- Utility functions for getting diagnostic status and progress messages from LSP servers, for use in the Neovim statusline
-  use({
-    "nvim-lua/lsp-status.nvim",
-    config = [[ require('knth/lsp/lsp_status') ]],
-  })
-
-  -- null-ls, for formatting
-  use({
-    "jose-elias-alvarez/null-ls.nvim",
-    requires = { "nvim-lua/plenary.nvim", "nvim-lspconfig" },
-    config = [[ require('knth/plugins/null_ls') ]],
-  })
-  use({ "jayp0521/mason-null-ls.nvim" })
-
-  -- Autocompletion plugin
-  use({ -- A completion plugin for neovim coded in Lua.
-    "hrsh7th/nvim-cmp",
-    requires = {
-      "hrsh7th/cmp-nvim-lsp", -- nvim-cmp source for neovim builtin LSP client
-      "hrsh7th/cmp-nvim-lua", -- nvim-cmp source for nvim lua
-      "hrsh7th/cmp-buffer", -- nvim-cmp source for buffer words.
-      "hrsh7th/cmp-path", -- nvim-cmp source for filesystem paths.
-      "hrsh7th/cmp-calc", -- nvim-cmp source for math calculation.
-      "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
-      "hrsh7th/cmp-cmdline", -- cmdline completions
-    },
-  })
-
-  -- enhanced UI to LSP experience
-  use({ "glepnir/lspsaga.nvim", branch = "main" })
-  -- vscode-like pictograms for neovim lsp completion items Topics
-  use("onsails/lspkind-nvim")
-
-  -- Snippets plugin
-  use({
-    "L3MON4D3/LuaSnip",
-    requires = {
-      -- snippets collection for a set of different programming languages for faster development
-      "rafamadriz/friendly-snippets",
-    },
-    config = [[ require('knth/plugins/luasnip') ]],
-  })
 
   -- UI to select things (files, grep results, open buffers...)
   use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
@@ -98,14 +128,6 @@ return packer.startup(function(use)
     requires = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-media-files.nvim" },
   })
 
-  --
-  --
-
-  --
-  -- LIST
-  --
-  --
-  --
   --
   -- TreeSitter
   use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = [[ require('knth.plugins.treesitter') ]] })
