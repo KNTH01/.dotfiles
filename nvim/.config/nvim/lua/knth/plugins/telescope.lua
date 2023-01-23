@@ -151,7 +151,7 @@ vim.keymap.set("n", "<Leader>fb", [[<cmd>lua require('telescope.builtin').buffer
 vim.keymap.set("n", "<Leader>fh", ":Telescope help_tags<CR>")
 vim.keymap.set("n", "<Leader>fo", ":Telescope oldfiles<CR>")
 vim.keymap.set("n", "<Leader>th", ":Telescope colorscheme<CR>")
-vim.keymap.set("n", "<Leader>gs", ":Telescope git_status<CR>")
+-- vim.keymap.set("n", "<Leader>gs", ":Telescope git_status<CR>") -- conflict with vim fugitive knth.plugins.vim-fugitive
 vim.keymap.set("n", "<Leader>cm", ":Telescope git_commits<CR>")
 vim.keymap.set("n", "<Leader><space>", ":Telescope current_buffer_fuzzy_find<CR>")
 -- vim.keymap.set("n", "<Leader>ft", ":Telescope tags<CR>")
