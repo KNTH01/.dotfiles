@@ -1,9 +1,9 @@
+set -g fish_key_bindings fish_vi_key_bindings
 
 fish_add_path ~/.cargo/bin
 
 starship init fish | source
-
-set -g fish_key_bindings fish_vi_key_bindings
+zoxide init fish | source
 
 ### ALIAS
 
@@ -24,7 +24,7 @@ alias mv='mv -i'
 alias rm='rm -i'
 
 # changing cat to bat
-alias cat="batcat --theme=gruvbox-dark"
+alias cat="bat --theme=gruvbox-dark"
 alias oldcat="/usr/bin/cat"
 
 # changing "ls" to "exa"

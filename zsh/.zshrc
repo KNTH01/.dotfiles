@@ -167,9 +167,6 @@ zvm_after_init_commands+=(init_zsh_vi_mode)
 export PATH="$PATH:$HOME/.rvm/bin"
 source $HOME/.rvm/scripts/rvm
 
-### Init z.lua https://github.com/skywind3000/z.lua
-eval "$(lua /usr/share/z.lua/z.lua --init zsh)"
-
 ### Hook direnv: https://direnv.net/docs/hook.html
 eval "$(direnv hook zsh)"
 
