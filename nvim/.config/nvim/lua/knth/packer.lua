@@ -195,6 +195,11 @@ return packer.startup(function(use)
   -- tmux & split window navigation
   use("christoomey/vim-tmux-navigator")
 
+  use({
+    'mbbill/undotree',
+    config = function() vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle) end
+  })
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
