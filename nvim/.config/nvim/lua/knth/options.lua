@@ -63,7 +63,7 @@ local options = {
   undofile = true,
 
   -- faster completion (4000ms default)
-  updatetime = 250,
+  updatetime = 50,
 
   -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
   writebackup = false,

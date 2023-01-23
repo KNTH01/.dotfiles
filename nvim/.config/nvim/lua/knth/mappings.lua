@@ -33,6 +33,13 @@ keymap.set("n", "<leader>+", "<C-a>")
 keymap.set("n", "<leader>-", "<C-x>")
 
 -- Better window navigation
+vim.keymap.set("n", "J", "mzJ`z") -- do not move the cursor while joining line
+vim.keymap.set("n", "<C-d>", "<C-d>zz") -- down
+vim.keymap.set("n", "<C-u>", "<C-u>zz") -- up
+vim.keymap.set("n", "n", "nzzzv") -- search
+vim.keymap.set("n", "N", "Nzzzv") -- search
+
+-- setup by christoomey/vim-tmux-navigator plugin
 -- keymap.set("n", "<C-h>", "<C-w>h")
 -- keymap.set("n", "<C-j>", "<C-w>j")
 -- keymap.set("n", "<C-k>", "<C-w>k")
@@ -64,10 +71,6 @@ keymap.set("n", "<C-s>", "<cmd>w<CR>")
 keymap.set("n", "<leader>w", "<cmd>w<CR>")
 keymap.set("n", "<leader>q", "<cmd>q<CR>")
 
--- copy current file path
-keymap.set("n", "<leader>cp", '<cmd>let @+ = expand("%")<CR>')
-
-
 -- quickfix list navigation
 keymap.set("n", "<C-j>", ":cnext<cr>zz")
 keymap.set("n", "<C-k>", ":cprev<cr>zz")
@@ -96,3 +99,10 @@ keymap.set("v", "<A-k>", ":m .-2<CR>==")
 -- Move text up and down
 keymap.set("x", "<A-j>", ":move '>+1<CR>gv-gv")
 keymap.set("x", "<A-k>", ":move '<-2<CR>gv-gv")
+
+
+-- MISC
+keymap.set("n", "<leader>cp", '<cmd>let @+ = expand("%")<CR>') -- copy current file path
+-- keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+-- keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })

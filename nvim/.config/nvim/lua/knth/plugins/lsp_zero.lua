@@ -82,8 +82,8 @@ vim.diagnostic.config({
 -- cmp config
 local cmp = require('cmp')
 local cmp_mappings = lsp.defaults.cmp_mappings({
-  ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-  ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+  ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+  ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
   ['<C-d>'] = cmp.mapping.scroll_docs(5),
   ['<C-u>'] = cmp.mapping.scroll_docs(-5),
   ["<c-y>"] = cmp.mapping(
