@@ -1,6 +1,11 @@
 set -g fish_key_bindings fish_vi_key_bindings
 
+# cargo and rust
 fish_add_path ~/.cargo/bin
+
+# volta
+set -U VOLTA_HOME $HOME/.volta
+fish_add_path $VOLTA_HOME/bin
 
 starship init fish | source
 zoxide init fish | source
