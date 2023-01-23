@@ -81,7 +81,7 @@ return packer.startup(function(use)
   -- autoclose tags
   use({ "windwp/nvim-ts-autotag", after = "nvim-treesitter" })
   -- A super powerful autopairs for Neovim. It support multiple character
-  use({ "windwp/nvim-autopairs" })
+  use({ "windwp/nvim-autopairs", config = [[ require('knth.plugins.autopairs') ]] })
 
   -- navigation with `s` and `S` in nvim
   use({
@@ -105,6 +105,7 @@ return packer.startup(function(use)
   -- Add git related info in the signs columns and popups
   use({
     "lewis6991/gitsigns.nvim",
+    config= [[ require('knth.plugins.gitsigns') ]],
     requires = { "nvim-lua/plenary.nvim" },
   })
 
