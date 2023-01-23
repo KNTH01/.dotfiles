@@ -59,7 +59,7 @@ return packer.startup(function(use)
       { "L3MON4D3/LuaSnip" },
       { "rafamadriz/friendly-snippets" },
     },
-    config = [[ require("knth.plugins.lsp_zero") ]]
+    config = [[ require("knth.plugins.lsp-zero") ]]
   })
 
   -- Rust LSP
@@ -178,7 +178,10 @@ return packer.startup(function(use)
   })
 
   -- Git commands in nvim
-  use("tpope/vim-fugitive")
+  use({
+    "tpope/vim-fugitive",
+    config = [[ require('knth.plugins.vim-fugitive') ]]
+  })
 
   -- Fugitive-companion to interact with github
   use("tpope/vim-rhubarb")
