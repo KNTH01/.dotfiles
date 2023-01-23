@@ -27,6 +27,18 @@ lsp.ensure_installed({
 -- configure jsonls
 lsp.configure('jsonls', require("knth.lsp_settings.jsonls"))
 
+lsp.setup_servers({
+  'volar',
+  'tsserver',
+  opts = {
+    on_init = function(client)
+      -- Format using Prettier
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentFormattingRangeProvider = false
+    end,
+  }
+})
+
 -- the function below will be executed whenever
 -- a language server is attached to a buffer
 lsp.on_attach(function(client, bufnr)
@@ -123,3 +135,22 @@ cmp.setup(
     },
   })
 )
+
+--
+-- Configure Prettier to format code
+--
+local null_ls = require('null-ls')
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.formatting.prettierd,
+  }
+})
+
+-- See mason-null-ls.nvim's documentation for more details:
+-- https://github.com/jay-babu/mason-null-ls.nvim#setup
+require('mason-null-ls').setup({
+  ensure_installed = nil,
+  automatic_installation = true,
+  automatic_setup = false,
+})

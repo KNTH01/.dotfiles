@@ -47,6 +47,10 @@ return packer.startup(function(use)
       { "williamboman/mason.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
 
+      -- null-ls
+      { "jose-elias-alvarez/null-ls.nvim" },
+      { "jay-babu/mason-null-ls.nvim" },
+
       -- Autocompletion
       { "hrsh7th/nvim-cmp" },
       { "hrsh7th/cmp-nvim-lsp" },
@@ -105,7 +109,7 @@ return packer.startup(function(use)
   -- Add git related info in the signs columns and popups
   use({
     "lewis6991/gitsigns.nvim",
-    config= [[ require('knth.plugins.gitsigns') ]],
+    config = [[ require('knth.plugins.gitsigns') ]],
     requires = { "nvim-lua/plenary.nvim" },
   })
 
