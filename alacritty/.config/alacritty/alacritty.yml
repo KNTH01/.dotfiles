@@ -123,12 +123,14 @@ font:
   offset:
     x: 0
     y: 4
+      
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the
   # right, increasing `y` moves the glyph upward.
-  # glyph_offset:
-  #   x: 0
-  #   y: 0
+  glyph_offset:
+    x: 0
+    y: 0
+ 
   # Thin stroke font rendering (macOS only)
   #
   # Thin strokes are suitable for retina displays, but for non-retina screens
@@ -184,6 +186,6 @@ opacity: 0.95
 import:
   # uncomment the flavour you want below:
   # - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
-#  - ~/.config/alacritty/catppuccin/catppuccin-macchiato.yml
-#  - ~/.config/alacritty/catppuccin/catppuccin-frappe.yml
- - ~/.config/alacritty/catppuccin/catppuccin-latte.yml
+  # - ~/.config/alacritty/catppuccin/catppuccin-macchiato.yml
+  # - ~/.config/alacritty/catppuccin/catppuccin-frappe.yml
+  - ~/.config/alacritty/catppuccin/catppuccin-latte.yml
