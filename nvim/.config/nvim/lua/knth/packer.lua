@@ -31,9 +31,9 @@ return packer.startup(function(use)
   -- https://github.com/olimorris/onedarkpro.nvim
   use("olimorris/onedarkpro.nvim")
 
-  -- Gruvbox theme
-  -- https://github.com/eddyekofo94/gruvbox-flat.nvim
-  use("eddyekofo94/gruvbox-flat.nvim")
+  -- Catppuccin
+  -- https://github.com/catppuccin/nvim
+  use { "catppuccin/nvim", as = "catppuccin" }
 
   -----------------❰ Plugins listing ❱-------------------
 

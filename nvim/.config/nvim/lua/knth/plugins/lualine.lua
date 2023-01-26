@@ -7,6 +7,7 @@ lualine.setup({
   options = {
     -- theme = "gruvbox-flat",
     -- theme = "onedarkpro",
+    theme = "catppuccin",
     section_separators = "",
     component_separators = "",
   },
