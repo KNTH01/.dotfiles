@@ -10,11 +10,19 @@ fish_add_path $VOLTA_HOME/bin
 starship init fish | source
 zoxide init fish | source
 
+
+# Set Catppuccin-mocha theme to bat
+set -U BAT_THEME "Catppuccin-mocha"
+# changing cat to bat
+alias cat="bat" 
+alias oldcat="/usr/bin/cat"
+
 ### ALIAS
 
 # source shell
 alias sourceme="source $HOME/.config/fish/config.fish"
 alias reshell="exec fish"
+alias remap="setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_toggle'"
 
 # restart imwheel
 alias reimwheel="killall imwheel && imwheel"
@@ -27,10 +35,6 @@ alias ls="exa"
 alias cp="cp -i"
 alias mv='mv -i'
 alias rm='rm -i'
-
-# changing cat to bat
-alias cat="bat --theme=gruvbox-dark"
-alias oldcat="/usr/bin/cat"
 
 # changing "ls" to "exa"
 alias ls='exa' # normal listing
