@@ -142,8 +142,8 @@ telescope.load_extension("media_files")
 
 -- mappings
 
-vim.keymap.set("n", "<Leader>FF", [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]])
-vim.keymap.set("n", "<Leader>ff", [[<cmd>lua require('telescope.builtin').git_files({previewer = false})<CR>]])
+vim.keymap.set("n", "<Leader>FF", [[<cmd>lua require('telescope.builtin').git_files({previewer = false})<CR>]])
+vim.keymap.set("n", "<Leader>ff", [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]])
 vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>")
 vim.keymap.set("n", "<Leader>fw", ":Telescope grep_string<CR>")
 vim.keymap.set("n", "<Leader>fp", ":Telescope media_files<CR>")
