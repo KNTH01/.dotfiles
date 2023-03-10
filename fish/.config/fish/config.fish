@@ -65,3 +65,8 @@ alias getclip="xclip -selection c -o"
 
 # nvim
 alias v="nvim"
+
+# pnpm
+set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
+set -gx PATH "$PNPM_HOME" $PATH
+# pnpm end
