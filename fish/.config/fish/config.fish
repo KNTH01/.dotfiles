@@ -3,13 +3,15 @@ set -g fish_key_bindings fish_vi_key_bindings
 # cargo and rust
 fish_add_path ~/.cargo/bin
 
-# volta
-set -U VOLTA_HOME $HOME/.volta
-fish_add_path $VOLTA_HOME/bin
 
 starship init fish | source
 zoxide init fish | source
 
+# pnpm
+set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
+set -gx PATH "$PNPM_HOME" $PATH
+alias pn=pnpm
+# pnpm end
 
 # Set Catppuccin-mocha theme to bat
 set -U BAT_THEME "Catppuccin-mocha"
@@ -66,7 +68,3 @@ alias getclip="xclip -selection c -o"
 # nvim
 alias v="nvim"
 
-# pnpm
-set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
-set -gx PATH "$PNPM_HOME" $PATH
-# pnpm end
