@@ -40,7 +40,7 @@ return
         "rust_analyzer",
 
         -- lua
-        "sumneko_lua",
+        -- "sumneko_lua",
 
         -- web dev
         "tsserver",
