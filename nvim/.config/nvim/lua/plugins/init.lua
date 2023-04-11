@@ -1,13 +1,10 @@
 return {
-  -----------------❰ Themes listing ❱-------------------
-
-  -- One Dark Pro theme
-  -- https://github.com/olimorris/onedarkpro.nvim
-  "olimorris/onedarkpro.nvim",
-
   -- Catppuccin
   -- https://github.com/catppuccin/nvim
-  { "catppuccin/nvim",      as = "catppuccin" },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin"
+  },
 
   -----------------❰ Plugins listing ❱-------------------
 
