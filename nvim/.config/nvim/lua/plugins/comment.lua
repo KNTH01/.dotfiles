@@ -1,4 +1,8 @@
--- https://github.com/numToStr/Comment.nvim
-
--- load default config
-require('Comment').setup()
+return {
+  -- commenting plugin
+  "numToStr/Comment.nvim",
+  config = function()
+    -- load default config
+    require('Comment').setup()
+  end
+}
