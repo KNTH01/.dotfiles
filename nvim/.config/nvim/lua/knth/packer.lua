@@ -1,47 +1,40 @@
------------------❰ Package Manager ❱-----------------------
--- IMPORTANT: run :PackerSync after modifying this file ---
------------------------------------------------------------
-
--- Install packer
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-    vim.cmd([[packadd packer.nvim]])
-    return true
-  end
-  return false
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
-local packer_bootstrap = ensure_packer()
-----
+vim.opt.rtp:prepend(lazypath)
 
-local status_ok, packer = pcall(require, "packer")
+local status_ok, lazy = pcall(require, "lazy")
 if not status_ok then
   print("Fail to load Packer")
   return
 end
 
-return packer.startup(function(use)
-  use("wbthomason/packer.nvim") -- Package manager
-
+return lazy.setup({
   -----------------❰ Themes listing ❱-------------------
 
   -- One Dark Pro theme
   -- https://github.com/olimorris/onedarkpro.nvim
-  use("olimorris/onedarkpro.nvim")
+  "olimorris/onedarkpro.nvim",
 
   -- Catppuccin
   -- https://github.com/catppuccin/nvim
-  use { "catppuccin/nvim", as = "catppuccin" }
+  { "catppuccin/nvim",                          as = "catppuccin" },
 
   -----------------❰ Plugins listing ❱-------------------
 
   -- lsp-zero
-  use({
+  {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v1.x",
-    requires = {
+    dependencies = {
       -- LSP Support
       { "neovim/nvim-lspconfig" },
       { "williamboman/mason.nvim" },
@@ -64,150 +57,152 @@ return packer.startup(function(use)
       { "rafamadriz/friendly-snippets" },
     },
     config = [[ require("knth.plugins.lsp-zero") ]]
-  })
+  },
 
   -- Rust LSP
-  use("simrat39/rust-tools.nvim")
+  "simrat39/rust-tools.nvim",
 
   -- Telescope
-  use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-  use({
+  { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+  {
     "nvim-telescope/telescope.nvim",
     config = [[ require('knth/plugins/telescope') ]],
-    requires = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-media-files.nvim" },
-  })
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-media-files.nvim" },
+  },
 
   -- TreeSitter
-  use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = [[ require('knth.plugins.treesitter') ]] })
-  use("nvim-treesitter/nvim-treesitter-textobjects")
-  use("nvim-treesitter/playground")
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config =
+    [[ require('knth.plugins.treesitter') ]],
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      -- autoclose tags
+      "windwp/nvim-ts-autotag",
+      -- A super powerful autopairs for Neovim. It support multiple character
+      { "windwp/nvim-autopairs", config = [[ require('knth.plugins.autopairs') ]] },
+    }
+  },
+  "nvim-treesitter/playground",
 
-  -- autoclose tags
-  use({ "windwp/nvim-ts-autotag", after = "nvim-treesitter" })
-  -- A super powerful autopairs for Neovim. It support multiple character
-  use({ "windwp/nvim-autopairs", config = [[ require('knth.plugins.autopairs') ]] })
 
   -- navigation with `s` and `S` in nvim
-  use({
+  {
     "ggandor/leap.nvim",
     config = function()
       require("leap").add_default_mappings()
     end,
-  })
+  },
 
   -- use for status line
-  use({
+  {
     "nvim-lualine/lualine.nvim",
-    requires = { "kyazdani42/nvim-web-devicons", opt = true },
-  })
+    dependencies = { "kyazdani42/nvim-web-devicons", opt = true },
+  },
 
   -- Add indentation guides even on blank lines
-  use({
+  {
     "lukas-reineke/indent-blankline.nvim",
-  })
+  },
 
   -- Add git related info in the signs columns and popups
-  use({
+  {
     "lewis6991/gitsigns.nvim",
     config = [[ require('knth.plugins.gitsigns') ]],
-    requires = { "nvim-lua/plenary.nvim" },
-  })
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
 
   -- nvim notify
-  use({ "rcarriga/nvim-notify" })
+  { "rcarriga/nvim-notify" },
 
   -- Better escape
-  use({
+  {
     "max397574/better-escape.nvim",
     config = [[ require('knth/plugins/better_escape') ]],
-  })
+  },
 
   -- AutoSave
-  use({ "Pocco81/AutoSave.nvim" })
+  { "Pocco81/AutoSave.nvim" },
 
   -- A File Explorer For Neovim Written In Lua
-  use({
+  {
     "kyazdani42/nvim-tree.lua",
     config = [[ require('knth/plugins/nvim_tree') ]],
-  })
+  },
 
   -- webdev icons
-  use({
+  {
     "kyazdani42/nvim-web-devicons",
     config = [[ require('knth/plugins/webdevicons') ]],
-  })
+  },
 
   -- tagviewer
-  use({
+  {
     "liuchengxu/vista.vim",
     config = [[ require('knth/plugins/vista') ]],
-  })
+  },
 
   -- commenting plugin
-  use({
+  {
     "numToStr/Comment.nvim",
     config = [[ require('knth/plugins/comment') ]],
-  })
+  },
 
   -- bufferline
-  use({
+  {
     "akinsho/bufferline.nvim",
     tag = "v2.*",
     config = [[ require('knth/plugins/bufferline') ]],
-    requires = { "moll/vim-bbye" },
-  })
+    dependencies = { "moll/vim-bbye" },
+  },
 
   -- Smooth scrolling
-  use({
+  {
     "karb94/neoscroll.nvim",
     config = function()
       require("neoscroll").setup()
     end,
-  })
+  },
 
   -- Trying NeoGit
-  use({
+  {
     "TimUntersberger/neogit",
-    requires = "nvim-lua/plenary.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
     config = function()
       require("neogit").setup({})
     end,
-  })
+  },
 
   -- Colorizer
-  use({
+  {
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup()
     end,
-  })
+  },
 
   -- Git commands in nvim
-  use({
+  {
     "tpope/vim-fugitive",
     config = [[ require('knth.plugins.vim-fugitive') ]]
-  })
+  },
 
   -- Fugitive-companion to interact with github
-  use("tpope/vim-rhubarb")
+  "tpope/vim-rhubarb",
 
   -- `]q` and `[q` for QuickFix List navigation
-  use("tpope/vim-unimpaired")
+  "tpope/vim-unimpaired",
 
   -- `ds`, `cs`, 'yss' cmds, eg: `cs"'`, `ysiw"`
-  use("tpope/vim-surround")
+  "tpope/vim-surround",
 
   -- tmux & split window navigation
-  use("christoomey/vim-tmux-navigator")
+  "christoomey/vim-tmux-navigator",
 
-  use({
+  {
     'mbbill/undotree',
     config = function() vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle) end
-  })
+  },
 
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then
-    packer.sync()
-  end
-end)
+})
