@@ -9,8 +9,10 @@ zoxide init fish | source
 
 # pnpm
 set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
-set -gx PATH "$PNPM_HOME" $PATH
-alias pn=pnpm
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+alias pn="pnpm"
 # pnpm end
 
 # Set Catppuccin-mocha theme to bat
