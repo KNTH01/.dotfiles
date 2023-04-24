@@ -25,6 +25,7 @@ return {
       local stat = vim.loop.fs_stat(vim.fn.argv(0))
       if stat and stat.type == "directory" then
         require('neo-tree').setup({
+          popup_border_style = "rounded",
           filesystem = {
             bind_to_cwd = false,
             follow_current_file = true,
@@ -52,8 +53,10 @@ return {
                 --".null-ls_*",
               },
             },
+            hijack_netrw_behavior = "disabled",
           },
           window = {
+            position = "right",
             mappings = {
               ["<space>"] = "none",
             },
