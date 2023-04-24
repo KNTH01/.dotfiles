@@ -30,7 +30,6 @@ return {
     end
   },
 
-
   -- nvim notify
   -- {
   --   "rcarriga/nvim-notify",
