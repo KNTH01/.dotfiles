@@ -1,10 +1,4 @@
 return {
-  -- Catppuccin
-  -- https://github.com/catppuccin/nvim
-  {
-    "catppuccin/nvim",
-    name = "catppuccin"
-  },
 
   -----------------❰ Plugins listing ❱-------------------
 
