@@ -9,7 +9,8 @@ return {
       require("catppuccin").setup({
         integration = {
           bufferline = true,
-          nvimtree = true
+          nvimtree = true,
+          illuminate = true,
         }
       })
     end
