@@ -43,8 +43,6 @@ return {
   -- },
 
 
-  -- AutoSave
-  { "Pocco81/AutoSave.nvim" },
 
   -- Smooth scrolling
   {
