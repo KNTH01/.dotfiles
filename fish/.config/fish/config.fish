@@ -3,9 +3,16 @@ set -g fish_key_bindings fish_vi_key_bindings
 # cargo and rust
 fish_add_path ~/.cargo/bin
 
+# flyctl
+fish_add_path ~/.fly/bin
 
-starship init fish | source
-zoxide init fish | source
+if test -x (command -v starship)
+  starship init fish | source
+end
+
+if test -x (command -v zoxide)
+  zoxide init fish | source
+end
 
 # pnpm
 set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
@@ -17,11 +24,18 @@ alias pn="pnpm"
 
 # Set Catppuccin-mocha theme to bat
 set -U BAT_THEME "Catppuccin-mocha"
+
 # changing cat to bat
-alias cat="bat" 
+if string match -rq "Debian" (uname -a); or string match -rq "WSL2" (uname -a)
+    # Alias for Debian or WSL2
+  alias cat="batcat" 
+else
+  alias cat="bat" 
+end
 alias oldcat="/usr/bin/cat"
 
 ### ALIAS
+alias pn="pnpm"
 
 # source shell
 alias sourceme="source $HOME/.config/fish/config.fish"
