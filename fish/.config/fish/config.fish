@@ -6,11 +6,12 @@ fish_add_path ~/.cargo/bin
 # flyctl
 fish_add_path ~/.fly/bin
 
-if command -v starship >/dev/null
+if not type -q tide
+  and type -q starship 
   starship init fish | source
 end
 
-if command -v zoxide >/dev/null
+if type -q zoxide 
   zoxide init fish | source
 end
 
