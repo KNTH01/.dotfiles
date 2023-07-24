@@ -1,4 +1,4 @@
-set -U fisher_path ~/.config/fish/fisher/
+set -U fisher_path ~/.config/fish/fisher
  
 set --query fisher_path || exit
 
