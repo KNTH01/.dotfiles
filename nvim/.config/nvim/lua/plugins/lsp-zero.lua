@@ -8,6 +8,8 @@ return
       { "neovim/nvim-lspconfig" },
       { "williamboman/mason.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
+      { "jay-babu/mason-nvim-dap.nvim" },
+
 
       -- null-ls
       { "jose-elias-alvarez/null-ls.nvim" },
@@ -180,6 +182,13 @@ return
         ensure_installed = nil,
         automatic_installation = true,
         automatic_setup = false,
+      })
+
+      require('mason-nvim-dap').setup({
+        ensure_installed = {
+          "codelldb",
+          "js-debug-adapter"
+        }
       })
     end
   },

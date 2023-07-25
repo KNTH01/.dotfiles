@@ -52,15 +52,6 @@ return {
     end,
   },
 
-  -- Trying NeoGit
-  {
-    "TimUntersberger/neogit",
-    dependencies = "nvim-lua/plenary.nvim",
-    config = function()
-      require("neogit").setup({})
-    end,
-  },
-
   -- Colorizer
   {
     "norcalli/nvim-colorizer.lua",
