@@ -155,6 +155,9 @@ return
       cmp_mappings['<S-Tab>'] = nil
       cmp_mappings['<CR>'] = nil
 
+
+      local default_sources = { { name = "crates" }, unpack(lsp.defaults.cmp_config().sources) } -- kind of unshift
+
       cmp.setup(
         lsp.defaults.cmp_config({
           mapping = cmp_mappings,
@@ -162,6 +165,12 @@ return
             ghost_text = true,
             native_menu = false,
           },
+
+          -- unshift `crates` in the sources
+          sources = {
+            { name = "crates" },
+            unpack(lsp.defaults.cmp_config().sources)
+          }
         })
       )
 
