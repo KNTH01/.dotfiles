@@ -3,12 +3,12 @@ return {
   -----------------❰ Plugins listing ❱-------------------
 
   -- navigation with `s` and `S` in nvim
-  {
-    "ggandor/leap.nvim",
-    config = function()
-      require("leap").add_default_mappings()
-    end,
-  },
+  -- {
+  --   "ggandor/leap.nvim",
+  --   config = function()
+  --     require("leap").add_default_mappings()
+  --   end,
+  -- },
 
 
   -- Add indentation guides even on blank lines
