@@ -15,6 +15,10 @@ local rust_lsp = lsp.build_options('rust_analyzer', {
     vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
     vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
     vim.keymap.set("n", "J", rt.join_lines.join_lines, { buffer = bufnr })
+
+
+    vim.keymap.set("n", "<leader>ie", rt.inlay_hints.set, { buffer = bufnr })
+    vim.keymap.set("n", "<leader>id", rt.inlay_hints.unset, { buffer = bufnr })
   end,
 
   settings = {
