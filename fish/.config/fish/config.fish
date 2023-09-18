@@ -16,6 +16,12 @@ if type -q zoxide
 end
 
 # pnpm
+set -gx NPM_HOME "/home/knth/.npm/bin"
+if not string match -q -- $NPM_HOME $PATH
+  set -gx PATH "$NPM_HOME" $PATH
+end
+
+# pnpm
 set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
   set -gx PATH "$PNPM_HOME" $PATH
