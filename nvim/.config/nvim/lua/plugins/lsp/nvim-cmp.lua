@@ -14,7 +14,7 @@ return {
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim",         -- vs-code like pictograms
     -- checking this?
-    -- "hrsh7th/cmp-nvim-lsp",
+    -- "hrsh7th/cmp-nvim-lsp", // importedd in p/l/lspconfig.lua
     -- "hrsh7th/cmp-nvim-lua",
   },
   config = function()
