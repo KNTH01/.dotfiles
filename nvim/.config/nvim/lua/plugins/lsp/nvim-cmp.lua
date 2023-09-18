@@ -50,22 +50,13 @@ return {
         ["<S-Tab>"] = cmp.config.disable,
         ["<CR>"] = cmp.config.disable,
 
-        -- C-e is to toggle complete by default, use this to C-e abort and C-Space complete
-        -- ['<C-e>'] = cmp.mapping.abort(),
-        --   ["<c-space>"] = cmp.mapping({
-        --     i = cmp.mapping.complete(),
-        --     c = function(
-        --       _ --[[fallback]]
-        --     )
-        --       if cmp.visible() then
-        --         if not cmp.confirm({ select = true }) then
-        --           return
-        --         end
-        --       else
-        --         cmp.complete()
-        --       end
-        --     end,
-        --   }),
+        ['<C-e>'] = function(fallback)
+          if cmp.visible() then
+            cmp.abort()
+          else
+            cmp.complete()
+          end
+        end,
       }),
 
       -- sources for autocompletion
