@@ -35,8 +35,7 @@ return {
         end,
       },
       mapping = cmp.mapping.preset.insert({
-
-        ["<C-o>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+        ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<C-d>"] = cmp.mapping.scroll_docs(5),
         ["<C-u>"] = cmp.mapping.scroll_docs(-5),
