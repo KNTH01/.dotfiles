@@ -18,7 +18,7 @@ if not status_ok then
 end
 
 return lazy.setup(
-  "plugins",
+  { { import = "plugins" }, { import = "plugins.lsp" } },
   {
     change_detection = {
       enabled = false,
