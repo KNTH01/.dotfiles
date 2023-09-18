@@ -1,67 +1,49 @@
 return {
-  "williamboman/mason.nvim",
-  dependencies = {
-    "williamboman/mason-lspconfig.nvim",
-    "jayp0521/mason-null-ls.nvim",
-  },
-  config = function()
-    -- import mason
-    local mason = require("mason")
+	"williamboman/mason.nvim",
+	dependencies = {
+		"williamboman/mason-lspconfig.nvim",
+		"jayp0521/mason-null-ls.nvim",
+	},
+	config = function()
+		-- import mason
+		local mason = require("mason")
 
-    -- import mason-lspconfig
-    local mason_lspconfig = require("mason-lspconfig")
+		-- import mason-lspconfig
+		local mason_lspconfig = require("mason-lspconfig")
 
-    -- import mason-null-ls
-    local mason_null_ls = require("mason-null-ls")
+		-- import mason-null-ls
+		local mason_null_ls = require("mason-null-ls")
 
-    -- enable mason and configure icons
-    mason.setup({
-      ui = {
-        icons = {
-          package_installed = "✓",
-          package_pending = "➜",
-          package_uninstalled = "✗"
-        }
-      }
-    })
+		-- enable mason and configure icons
+		mason.setup({
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+			},
+		})
 
-    mason_lspconfig.setup({
-      -- list of servers for mason to install
-      -- Replace the language servers listed here
-      -- with the ones you want to install
-      ensure_installed = {
-        -- rust
-        "rust_analyzer",
+		mason_lspconfig.setup({
+			-- list of servers for mason to install
+			-- Replace the language servers listed here
+			-- with the ones you want to install
+			ensure_installed = require("knth.lsp_settings._ensure_installed"),
 
-        -- lua
-        "lua_ls",
+			-- auto-install configured servers (with lspconfig)
+			automatic_installation = true, -- not the same as ensure_installed
+		})
 
-        -- web dev
-        "tsserver",
-        "html",
-        "cssls",
-        "jsonls",
-
-        -- misc
-        "volar",
-        "emmet_ls",
-        "tailwindcss",
-        "graphql",
-      },
-
-      -- auto-install configured servers (with lspconfig)
-      automatic_installation = true, -- not the same as ensure_installed
-    })
-
-    mason_null_ls.setup({
-      -- list of formatters & linters for mason to install
-      ensure_installed = {
-        "prettier", -- ts/js formatter
-        "stylua",   -- lua formatter
-        "eslint_d", -- ts/js linter
-      },
-      -- auto-install configured servers (with lspconfig)
-      automatic_installation = true,
-    })
-  end,
+		mason_null_ls.setup({
+			-- list of formatters & linters for mason to install
+			ensure_installed = {
+				"prettier", -- ts/js formatter
+				"stylua", -- lua formatter
+				"eslint_d", -- ts/js linter
+			},
+			-- auto-install configured servers (with lspconfig)
+			automatic_installation = true,
+		})
+	end,
 }
