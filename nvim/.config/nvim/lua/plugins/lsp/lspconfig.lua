@@ -1,6 +1,5 @@
 return {
 	{
-
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
@@ -15,9 +14,7 @@ return {
 
 			local on_attach = function(_, bufnr)
 				local keymap = vim.keymap -- for conciseness
-				local opts = { noremap = true, silent = true }
-
-				opts.buffer = bufnr
+				local opts = { noremap = true, silent = true, buffer = bufnr }
 
 				-- LSP custom bindings
 				opts.desc = "Show LSP definitions"
@@ -37,7 +34,6 @@ return {
 
 				opts.desc = "See available code actions"
 				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
-				keymap.set("x", "<leader>ca", vim.lsp.buf.range_code_action, opts)
 
 				opts.desc = "Smart rename"
 				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
@@ -83,13 +79,6 @@ return {
 
 			-- used to enable autocompletion (assign to every lsp server config)
 			local capabilities = cmp_nvim_lsp.default_capabilities()
-
-			-- Change the Diagnostic symbols in the sign column (gutter)
-			local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-			for type, icon in pairs(signs) do
-				local hl = "DiagnosticSign" .. type
-				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-			end
 
 			for _, server in ipairs(require("knth.lsp_settings._ensure_installed")) do
 				local opts = {
@@ -146,10 +135,16 @@ return {
 				--   end,
 				-- })
 
-				print(server)
 				lspconfig[server].setup(opts)
 
 				::continue::
+			end
+
+			-- Change the Diagnostic symbols in the sign column (gutter)
+			local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+			for type, icon in pairs(signs) do
+				local hl = "DiagnosticSign" .. type
+				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 			end
 		end,
 	},
