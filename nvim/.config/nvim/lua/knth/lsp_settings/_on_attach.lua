@@ -56,7 +56,6 @@ return {
 
     opts.desc = "Format buffer"
     keymap.set("n", "<leader>fm", function()
-      print("hey")
       vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
     end, opts)
 

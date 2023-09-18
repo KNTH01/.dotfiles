@@ -28,6 +28,7 @@ return {
         end
 
         if server == "volar" or server == "tsserver" then
+          -- FIXME: .vue doesn't work!
           opts = vim.tbl_extend("force", opts, {
             on_init = function(client)
               -- Format using Prettier
@@ -94,7 +95,6 @@ return {
     },
     config = function()
       local rt = require("rust-tools")
-      -- fix on_attach that doesn't work!
       rt.setup(require("knth.lsp_settings.rust"))
     end,
   },
