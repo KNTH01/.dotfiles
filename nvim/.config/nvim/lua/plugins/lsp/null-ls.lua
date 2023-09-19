@@ -4,9 +4,7 @@ return {
 	config = function()
 		local null_ls = require("null-ls")
 		local null_ls_utils = require("null-ls.utils")
-
 		local formatting = null_ls.builtins.formatting -- to setup formatters
-		local diagnostics = null_ls.builtins.diagnostics -- to setup linters
 
 		-- configure null_ls
 		null_ls.setup({
@@ -18,11 +16,6 @@ return {
 				formatting.stylua,
 				formatting.prettier.with({
 					extra_filetypes = { "svelte" },
-				}),
-				diagnostics.eslint_d.with({
-					condition = function(utils)
-						return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs" }) -- only enable if root has .eslintrc.js or .eslintrc.cjs
-					end,
 				}),
 			},
 		})

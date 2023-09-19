@@ -13,6 +13,7 @@ return {
 
 	-- misc
 	"volar",
+	"eslint",
 	"emmet_ls",
 	"tailwindcss",
 	"graphql",

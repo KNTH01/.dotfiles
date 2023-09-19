@@ -29,7 +29,6 @@ return {
 				end
 
 				if server == "volar" or server == "tsserver" then
-					-- FIXME: .vue doesn't work!
 					opts = vim.tbl_extend("force", opts, {
 						on_init = function(client)
 							-- Format using Prettier
