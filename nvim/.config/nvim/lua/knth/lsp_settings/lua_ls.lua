@@ -14,4 +14,10 @@ return {
 			},
 		},
 	},
+
+	on_init = function(client)
+		-- disable lua_ls formatter and use stylua's one
+		client.server_capabilities.documentFormattingProvider = false
+		client.server_capabilities.documentFormattingRangeProvider = false
+	end,
 }
