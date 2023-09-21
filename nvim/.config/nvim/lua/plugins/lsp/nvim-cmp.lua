@@ -54,25 +54,21 @@ return {
 					{ "i", "c" }
 				),
 
-				["<C-j>"] = cmp.mapping(function(fallback)
+				["<C-j>"] = cmp.mapping(function()
 					if cmp.visible() then
 						cmp.select_next_item()
 					elseif luasnip.expand_or_jumpable() then
 						luasnip.expand_or_jump()
 					elseif has_words_before() then
 						cmp.complete()
-					else
-						fallback()
 					end
 				end, { "i", "s" }),
 
-				["<C-k>"] = cmp.mapping(function(fallback)
+				["<C-k>"] = cmp.mapping(function()
 					if cmp.visible() then
 						cmp.select_prev_item()
 					elseif luasnip.jumpable(-1) then
 						luasnip.jump(-1)
-					else
-						fallback()
 					end
 				end, { "i", "s" }),
 
@@ -109,6 +105,20 @@ return {
 					ellipsis_char = "...",
 				}),
 			},
+		})
+
+		local ls = require("luasnip")
+		-- local types = require("luasnip.util.types")
+
+		ls.config.set_config({
+			-- jump back into it even if we move outside of the selection
+			history = true,
+
+			-- update dynamic snippets as we type
+			updateevents = "TextChanged,TextChangedI",
+
+			-- Autosnippets:
+			enable_autosnippets = true,
 		})
 	end,
 }
