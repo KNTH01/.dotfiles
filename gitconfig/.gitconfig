@@ -76,3 +76,5 @@ file-decoration-style = none
 # 	keepBackup = false
 [init]
 	defaultBranch = main
+[rerere]
+	enabled = 1

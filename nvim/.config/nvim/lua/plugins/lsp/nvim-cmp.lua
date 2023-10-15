@@ -138,6 +138,7 @@ return {
 -- 	-- Autosnippets:
 -- 	enable_autosnippets = true,
 --
+-- TODO:
 -- 	-- Crazy highlights!!
 -- 	-- #vid3
 -- 	-- ext_opts = nil,
