@@ -6,6 +6,9 @@ fish_add_path ~/.cargo/bin
 # flyctl
 fish_add_path ~/.fly/bin
 
+# my bin
+fish_add_path ~/.dotfiles/bin
+
 if not type -q tide
   and type -q starship 
   starship init fish | source
@@ -91,3 +94,6 @@ alias getclip="xclip -selection c -o"
 # nvim
 alias v="nvim"
 
+# x server for wsl2
+set -Ux DISPLAY (awk "/nameserver / {print \$2; exit}" /etc/resolv.conf 2>/dev/null):0
+set -Ux LIBGL_ALWAYS_INDIRECT 1
