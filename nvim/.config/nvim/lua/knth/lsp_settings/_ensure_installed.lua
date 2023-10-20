@@ -1,6 +1,6 @@
 return {
 	-- rust
-	"rust_analyzer",
+	-- "rust_analyzer",
 
 	-- lua
 	"lua_ls",
