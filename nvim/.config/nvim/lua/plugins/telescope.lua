@@ -1,7 +1,7 @@
 -- Telescope
 
 return {
-  { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+  -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   {
     "nvim-telescope/telescope.nvim",
     config = function()
@@ -125,7 +125,7 @@ return {
       })
 
       -- Load Telescope extensions
-      telescope.load_extension("fzf")
+      -- telescope.load_extension("fzf")
       telescope.load_extension("media_files")
 
       -- mappings
