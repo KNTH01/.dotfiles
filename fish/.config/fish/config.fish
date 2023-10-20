@@ -18,6 +18,10 @@ if type -q zoxide
   zoxide init fish | source
 end
 
+if type -q atuin
+  atuin init fish | source
+end
+
 # pnpm
 set -gx NPM_HOME "/home/knth/.npm/bin"
 if not string match -q -- $NPM_HOME $PATH
