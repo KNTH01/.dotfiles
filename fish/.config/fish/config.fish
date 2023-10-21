@@ -37,15 +37,15 @@ alias pn="pnpm"
 # pnpm end
 
 # Set Catppuccin-mocha theme to bat
-set -U BAT_THEME "Catppuccin-mocha"
+# set -U BAT_THEME "Catppuccin-mocha"
 
 # changing cat to bat
-if string match -rq "Debian" (uname -a); or string match -rq "WSL2" (uname -a)
-    # Alias for Debian or WSL2
-  alias cat="batcat" 
-else
-  alias cat="bat" 
-end
+# if string match -rq "Debian" (uname -a); or string match -rq "WSL2" (uname -a)
+#     # Alias for Debian or WSL2
+#   alias cat="batcat" 
+# else
+# end
+alias cat="bat" 
 alias oldcat="/usr/bin/cat"
 
 ### ALIAS
