@@ -37,10 +37,11 @@ return {
 					})
 				end
 
-				if server == "rust_analyzer" then
-					-- skip setting up rust_analyzer because we will setup below using rust-tools
-					goto continue
-				end
+        -- I removed rust_analyzer from mason...
+				-- if server == "rust_analyzer" then
+				-- 	-- skip setting up rust_analyzer because we will setup below using rust-tools
+				-- 	goto continue
+				-- end
 
 				if server == "lua_ls" then
 					opts = vim.tbl_deep_extend("force", opts, require("knth.lsp_settings.lua_ls"))

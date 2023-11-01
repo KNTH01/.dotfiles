@@ -1,13 +1,16 @@
 return {
 	-- rust
 	-- "rust_analyzer",
+  
+  -- nix
+  "rnix",
 
 	-- lua
 	"lua_ls",
 
 	-- web dev
+  "html",
 	"tsserver",
-	"html",
 	"cssls",
 	"jsonls",
 
