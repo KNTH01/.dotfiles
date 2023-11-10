@@ -13,5 +13,10 @@ return {
     -- vim.api.nvim_command(string.format('highlight IlluminatedWordText guibg=%s gui=NONE', frappe.surface0))
     -- vim.api.nvim_command(string.format('highlight IlluminatedWordText guibg=%s gui=NONE', frappe.surface0))
     -- vim.api.nvim_command(string.format('highlight IlluminatedWordText guibg=%s gui=NONE', frappe.surface0))
+    --
+    -- latte
+    -- vim.api.nvim_command('highlight IlluminatedWordText guibg=#ccd0da gui=NONE')
+    -- vim.api.nvim_command('highlight IlluminatedWordRead guibg=#ccd0da gui=NONE')
+    -- vim.api.nvim_command('highlight IlluminatedWordWrite guibg=#ccd0da gui=NONE')
   end
 }
