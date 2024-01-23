@@ -1,0 +1,45 @@
+import = ["/home/knth/.config/alacritty/catppuccin/catppuccin-frappe.toml"]
+opacity = 0.95
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 12.5
+
+[font.bold]
+family = "JetBrainsMono Nerd Font Mono"
+style = "bold"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font Mono"
+style = "bold italic"
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.italic]
+family = "JetBrainsMono Nerd Font Mono"
+style = "italic"
+
+[font.normal]
+family = "JetBrainsMono Nerd Font Mono"
+style = "regular"
+
+[font.offset]
+x = 0
+y = 0
+
+[scrolling]
+history = 50000
+
+[shell]
+program = "/home/knth/.nix-profile/bin/fish"
+
+[window]
+dynamic_padding = true
+
+[window.padding]
+x = 0
+y = 0
