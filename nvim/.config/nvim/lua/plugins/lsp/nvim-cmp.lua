@@ -88,10 +88,10 @@ return {
 
 			-- sources for autocompletion
 			sources = cmp.config.sources({
+        { name = "path" }, -- file system paths
 				{ name = "crates" },
 				{ name = "nvim_lsp" },
 				{ name = "nvim_lua" },
-				{ name = "path" }, -- file system paths
 				{ name = "luasnip" }, -- snippets
 				{ name = "buffer" }, -- text within current buffer
 			}),
