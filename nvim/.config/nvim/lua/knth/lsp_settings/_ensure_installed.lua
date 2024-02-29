@@ -14,8 +14,11 @@ return {
 	"cssls",
 	"jsonls",
 
+  -- vue & astro
+  "volar",
+  "astro",
+
 	-- misc
-	"volar",
 	"eslint",
 	"emmet_ls",
 	"tailwindcss",
