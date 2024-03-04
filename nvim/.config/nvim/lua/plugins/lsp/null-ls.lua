@@ -13,7 +13,7 @@ return {
 
 			-- setup formatters & linters
 			sources = {
-				formatting.stylua,
+				-- formatting.stylua,
 				formatting.prettier.with({
 					extra_filetypes = { "svelte" },
 				}),

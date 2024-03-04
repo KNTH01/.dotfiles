@@ -1,12 +1,9 @@
 return {
-	-- rust
-	-- "rust_analyzer",
-  
   -- nix
   "rnix",
 
 	-- lua
-	"lua_ls",
+	-- "lua_ls",
 
 	-- web dev
   "html",

@@ -1,4 +1,4 @@
-local rt = require("rust-tools")
+-- local rt = require("rust-tools")
 -- local mason_registry = require("mason-registry")
 -- local codelldb = mason_registry.get_package("codelldb")
 -- local extension_path = codelldb:get_install_path() .. "/extension/"
@@ -20,12 +20,12 @@ return {
     on_attach = function(client, bufnr)
       require("knth.lsp_settings._on_attach").on_attach(client, bufnr)
 
-      vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
-      vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
-      vim.keymap.set("n", "J", rt.join_lines.join_lines, { buffer = bufnr })
-
-      vim.keymap.set("n", "<leader>ie", rt.inlay_hints.set, { buffer = bufnr })
-      vim.keymap.set("n", "<leader>id", rt.inlay_hints.unset, { buffer = bufnr })
+      -- vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
+      -- vim.keymap.set("n", "J", rt.join_lines.join_lines, { buffer = bufnr })
+      --
+      -- vim.keymap.set("n", "<leader>ie", rt.inlay_hints.set, { buffer = bufnr })
+      -- vim.keymap.set("n", "<leader>id", rt.inlay_hints.unset, { buffer = bufnr })
     end,
 
     settings = {

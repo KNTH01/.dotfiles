@@ -17,7 +17,11 @@ return {
 			-- used to enable autocompletion (assign to every lsp server config)
 			local capabilities = cmp_nvim_lsp.default_capabilities()
 
-			for _, server in ipairs(require("knth.lsp_settings._ensure_installed")) do
+      local lsps = require("knth.lsp_settings._ensure_installed")
+      
+      table.insert(lsps, "lua_ls")
+      
+			for _, server in ipairs(lsps) do
 				local opts = {
 					capabilities = capabilities,
 					on_attach = on_attach,
@@ -36,12 +40,6 @@ return {
 						end,
 					})
 				end
-
-        -- I removed rust_analyzer from mason...
-				-- if server == "rust_analyzer" then
-				-- 	-- skip setting up rust_analyzer because we will setup below using rust-tools
-				-- 	goto continue
-				-- end
 
 				if server == "lua_ls" then
 					opts = vim.tbl_deep_extend("force", opts, require("knth.lsp_settings.lua_ls"))
@@ -87,15 +85,32 @@ return {
 		end,
 	},
 
-	{
-		-- Rust LSP
-		"simrat39/rust-tools.nvim",
-		dependencies = {
-			"neovim/nvim-lspconfig",
-		},
-		config = function()
-			local rt = require("rust-tools")
-			rt.setup(require("knth.lsp_settings.rust"))
-		end,
-	},
+	-- {
+	-- 	-- Rust LSP
+	-- 	"simrat39/rust-tools.nvim",
+	-- 	dependencies = {
+	-- 		"neovim/nvim-lspconfig",
+	-- 	},
+	-- 	config = function()
+	-- 		local rt = require("rust-tools")
+	-- 		rt.setup(require("knth.lsp_settings.rust"))
+	-- 	end,
+	-- },
+
+
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^4', -- Recommended
+    ft = { 'rust' },
+
+    config = function() 
+      print("rustaceanvim config")
+
+      local my_config = require("knth.lsp_settings.rust")
+
+      vim.g.rustaceanvim = {
+        server = my_config.server
+      } 
+    end,
+  }
 }
