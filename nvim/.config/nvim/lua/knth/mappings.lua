@@ -10,6 +10,7 @@
 
 -- alias for keymap fn
 local keymap = vim.keymap
+
 -- local keymap = vim.api.nvim_set_keymap
 
 -- remap space as leader key

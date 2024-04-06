@@ -1,9 +1,9 @@
 return {
   settings = { -- custom settings for lua
     Lua = {
-			diagnostics = {
-				globals = { "vim" },
-			},
+      diagnostics = {
+        globals = { "vim" },
+      },
       runtime = { version = 'LuaJIT' },
       workspace = {
         checkThirdParty = false,
@@ -26,6 +26,7 @@ return {
   },
 
   on_init = function(client)
+    print("abc abc")
     -- disable lua_ls formatter and use stylua's one
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentFormattingRangeProvider = false
