@@ -35,7 +35,7 @@ return {
       local lsps =
       {
         -- nix
-        "rnix",
+        "nixd",
 
         -- lua
         "lua_ls",
