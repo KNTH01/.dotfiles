@@ -1,29 +1,18 @@
--- local rt = require("rust-tools")
--- local mason_registry = require("mason-registry")
--- local codelldb = mason_registry.get_package("codelldb")
--- local extension_path = codelldb:get_install_path() .. "/extension/"
--- local codelldb_path = extension_path .. "adapter/codelldb"
--- local liblldb_path = extension_path .. "lldb/lib/liblldb.dylib"
-
--- hardcode port because of this following error: Couldn't connect to 127.0.0.1:${port}: ECONNREFUSED
--- local rt_codelldb_adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
--- rt_codelldb_adapter.port = 13000
--- then i got: Couldn't connect to 127.0.0.1:13000: ECONNREFUSED lol
-
-
-
 return {
   server = {
     -- standalone file support ; setting it to false may improve startup time
     standalone = true,
 
     on_attach = function(client, bufnr)
+      print("bonjour!")
       require("knth.lsp_settings._on_attach").on_attach(client, bufnr)
 
-      -- vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
-      -- vim.keymap.set("n", "J", rt.join_lines.join_lines, { buffer = bufnr })
-      --
+      vim.keymap.set("n", "<Leader>K", function() vim.cmd.RustLsp({ "hover", "actions" }) end, { buffer = bufnr })
+      vim.keymap.set("n", "<Leader>ca", function() vim.cmd.RustLsp("codeAction") end, { buffer = bufnr })
+      vim.keymap.set("n", "<Leader>J", function() vim.cmd.RustLsp("joinLines") end, { buffer = bufnr })
+      vim.keymap.set("n", "gl", function() vim.cmd.RustLsp('renderDiagnostic') end, { buffer = bufnr })
+
+      -- this is deprecated, as rustaceanvim will use native nvim inlays from v0.10.0
       -- vim.keymap.set("n", "<leader>ie", rt.inlay_hints.set, { buffer = bufnr })
       -- vim.keymap.set("n", "<leader>id", rt.inlay_hints.unset, { buffer = bufnr })
     end,
