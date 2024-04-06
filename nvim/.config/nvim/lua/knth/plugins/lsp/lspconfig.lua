@@ -1,11 +1,24 @@
 return {
   {
     "neovim/nvim-lspconfig",
+
     event = { "BufReadPre", "BufNewFile" },
+
     dependencies = {
       { "antosha417/nvim-lsp-file-operations", config = true },
-      { "folke/neodev.nvim",                   config = true }
+      {
+        "folke/neodev.nvim",
+        opts = {
+          --   override = function(root_dir, library)
+          --     if root_dir:find("/etc/nixos", 1, true) == 1 then
+          --       library.enabled = true
+          --       library.plugins = true
+          --     end
+          --   end,
+        },
+      }
     },
+
     config = function()
       -- import lspconfig plugin
       local lspconfig = require("lspconfig")
@@ -18,9 +31,31 @@ return {
       -- used to enable autocompletion (assign to every lsp server config)
       local capabilities = cmp_nvim_lsp.default_capabilities()
 
-      local lsps = require("knth.lsp_settings._ensure_installed")
+      -- Make sure these tools are configured in nix home-manager
+      local lsps =
+      {
+        -- nix
+        "rnix",
 
-      table.insert(lsps, "lua_ls")
+        -- lua
+        "lua_ls",
+
+        -- web dev
+        "html",
+        "tsserver",
+        "cssls",
+        "jsonls",
+
+        -- vue & astro
+        "volar",
+        "astro",
+
+        -- misc
+        "eslint",
+        "emmet_ls",
+        "tailwindcss",
+        "graphql",
+      }
 
       for _, server in ipairs(lsps) do
         local opts = {
@@ -42,10 +77,6 @@ return {
           })
         end
 
-        -- if server == "lua_ls" then
-        -- 	opts = vim.tbl_deep_extend("force", opts, require("knth.lsp_settings.lua_ls"))
-        -- end
-
         if server == "graphql" then
           opts.filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" }
         end
@@ -55,26 +86,7 @@ return {
           { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" }
         end
 
-        -- configure svelte server if one day i'll need it
-        -- lspconfig["svelte"].setup({
-        --   capabilities = capabilities,
-        --   on_attach = function(client, bufnr)
-        --     on_attach(client, bufnr)
-        --
-        --     vim.api.nvim_create_autocmd("BufWritePost", {
-        --       pattern = { "*.js", "*.ts" },
-        --       callback = function(ctx)
-        --         if client.name == "svelte" then
-        --           client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-        --         end
-        --       end,
-        --     })
-        --   end,
-        -- })
-
         lspconfig[server].setup(opts)
-
-        ::continue::
       end
 
       -- Change the Diagnostic symbols in the sign column (gutter)
@@ -85,19 +97,6 @@ return {
       end
     end,
   },
-
-  -- {
-  -- 	-- Rust LSP
-  -- 	"simrat39/rust-tools.nvim",
-  -- 	dependencies = {
-  -- 		"neovim/nvim-lspconfig",
-  -- 	},
-  -- 	config = function()
-  -- 		local rt = require("rust-tools")
-  -- 		rt.setup(require("knth.lsp_settings.rust"))
-  -- 	end,
-  -- },
-
 
   {
     'mrcjkb/rustaceanvim',
@@ -114,18 +113,4 @@ return {
       }
     end,
   },
-
-  {
-    "folke/neodev.nvim",
-    opts = {
-      override = function(root_dir, library)
-        if root_dir:find("/etc/nixos", 1, true) == 1 then
-          library.enabled = true
-          library.plugins = true
-        end
-      end,
-    }
-
-
-  }
 }
