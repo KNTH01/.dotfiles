@@ -1,29 +1,29 @@
 return {
-  -- Add git related info in the signs columns and popups
-  "lewis6991/gitsigns.nvim",
-  config = function()
-    -- Gitsigns
-    local status_ok, gitsigns = pcall(require, "gitsigns")
-    if not status_ok then
-      return
-    end
+	-- Add git related info in the signs columns and popups
+	"lewis6991/gitsigns.nvim",
+	event = { "BufReadPre", "BufNewFile" },
+	dependencies = { "nvim-lua/plenary.nvim" },
+	opts = {
+		on_attach = function(bufnr)
+			local gs = package.loaded.gitsigns
 
-    gitsigns.setup({
-      -- signs = {
-      --   add = { hl = "GitGutterAdd", text = "+" },
-      --   change = { hl = "GitGutterChange", text = "~" },
-      --   delete = { hl = "GitGutterDelete", text = "_" },
-      --   topdelete = { hl = "GitGutterDelete", text = "‾" },
-      --   changedelete = { hl = "GitGutterChange", text = "~" },
-      -- },
-      -- signs = {
-      --   add = { hl = "GitSignsAdd", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
-      --   change = { hl = "GitSignsChange", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-      --   delete = { hl = "GitSignsDelete", text = "契", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-      --   topdelete = { hl = "GitSignsDelete", text = "契", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-      --   changedelete = { hl = "GitSignsChange", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-      -- },
-    })
-  end,
-  dependencies = { "nvim-lua/plenary.nvim" },
+			local function map(mode, l, r, desc)
+				vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
+			end
+
+			-- Navigation
+			map("n", "]h", gs.next_hunk, "Next Hunk")
+			map("n", "[h", gs.prev_hunk, "Prev Hunk")
+
+			map("n", "<leader>gb", function()
+				gs.blame_line({ full = true })
+			end, "Blame line")
+			map("n", "<leader>gB", gs.toggle_current_line_blame, "Toggle line blame")
+
+			map("n", "<leader>gd", gs.diffthis, "Diff this")
+			map("n", "<leader>gD", function()
+				gs.diffthis("~")
+			end, "Diff this ~")
+		end,
+	},
 }
