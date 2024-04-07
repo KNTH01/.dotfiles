@@ -5,7 +5,7 @@ return {
 
     on_attach = function(client, bufnr)
       print("bonjour!")
-      require("knth.lsp_settings._on_attach").on_attach(client, bufnr)
+      require("knth.lsp_settings.on-attach").on_attach(client, bufnr)
 
       vim.keymap.set("n", "<Leader>K", function() vim.cmd.RustLsp({ "hover", "actions" }) end, { buffer = bufnr })
       vim.keymap.set("n", "<Leader>ca", function() vim.cmd.RustLsp("codeAction") end, { buffer = bufnr })

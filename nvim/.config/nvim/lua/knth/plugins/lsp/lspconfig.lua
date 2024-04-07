@@ -26,7 +26,7 @@ return {
       -- import cmp-nvim-lsp plugin
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-      local on_attach = require("knth.lsp_settings._on_attach").on_attach
+      local on_attach = require("knth.lsp_settings.on-attach").on_attach
 
       -- used to enable autocompletion (assign to every lsp server config)
       local capabilities = cmp_nvim_lsp.default_capabilities()

@@ -13,6 +13,6 @@ return {
 
 	config = function()
 		local logsitter = require("logsitter")
-		logsitter.register(require("knth.logsitter.rust_logger"), { "rust" })
+		logsitter.register(require("knth.logsitter.rust-logger"), { "rust" })
 	end,
 }
