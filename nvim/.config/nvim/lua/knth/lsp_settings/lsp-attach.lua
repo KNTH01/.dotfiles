@@ -1,6 +1,5 @@
 return {
   attach = function(evt)
-    print("LspAttach")
     local keymap = vim.keymap
     local opts = { noremap = true, silent = true, buffer = evt.buf }
 
@@ -54,11 +53,6 @@ return {
 
     -- More stuff
     keymap.set("n", "<leader>be", "<cmd>EslintFixAll<cr>", opts)
-
-    opts.desc = "Format buffer"
-    keymap.set("n", "<leader>fm", function()
-      vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
-    end, opts)
 
     opts.desc = "Restart LSP"
     keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
