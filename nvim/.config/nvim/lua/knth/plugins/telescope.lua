@@ -146,8 +146,12 @@ return {
       -- vim.keymap.set("n", "<Leader>ft", ":Telescope tags<CR>")
       -- vim.keymap.set("n", "<Leader>ft", [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]])
     end,
-    
+
     dependencies = {
-      "nvim-lua/plenary.nvim", "nvim-telescope/telescope-media-files.nvim" },
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-media-files.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "folke/todo-comments.nvim",
+    },
   },
 }
