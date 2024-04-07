@@ -10,7 +10,4 @@ return {
 
   -- `]q` and `[q` for QuickFix List navigation
   "tpope/vim-unimpaired",
-
-  -- `ds`, `cs`, 'yss' cmds, eg: `cs"'`, `ysiw"`
-  "tpope/vim-surround",
 }
