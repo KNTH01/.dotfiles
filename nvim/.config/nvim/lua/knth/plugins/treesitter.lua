@@ -1,7 +1,9 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
+
     config = function()
       -- Treesitter configuration
       -- Parsers must be installed manually via :TSInstall
