@@ -108,8 +108,6 @@ return {
     ft = { 'rust' },
 
     config = function()
-      print("rustaceanvim config")
-
       local my_config = require("knth.lsp_settings.rust")
 
       vim.g.rustaceanvim = {
