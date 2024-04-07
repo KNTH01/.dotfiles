@@ -20,6 +20,10 @@ end
 return lazy.setup(
   { { import = "knth.plugins" }, { import = "knth.plugins.lsp" } },
   {
+    checker = {
+      enabled = true,
+      notify = false
+    },
     change_detection = {
       enabled = false,
       notify = false
