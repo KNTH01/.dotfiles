@@ -26,7 +26,12 @@ return {
       -- import cmp-nvim-lsp plugin
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-      local on_attach = require("knth.lsp_settings.on-attach").on_attach
+      local lsp_attach = require("knth.lsp_settings.lsp-attach").attach
+
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+        callback = lsp_attach
+      })
 
       -- used to enable autocompletion (assign to every lsp server config)
       local capabilities = cmp_nvim_lsp.default_capabilities()
@@ -60,7 +65,6 @@ return {
       for _, server in ipairs(lsps) do
         local opts = {
           capabilities = capabilities,
-          on_attach = on_attach,
         }
 
         if server == "jsonls" then

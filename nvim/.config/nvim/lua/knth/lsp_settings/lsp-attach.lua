@@ -1,7 +1,8 @@
 return {
-  on_attach = function(client, bufnr)
-    local keymap = vim.keymap -- for conciseness
-    local opts = { noremap = true, silent = true, buffer = bufnr }
+  attach = function(evt)
+    print("LspAttach")
+    local keymap = vim.keymap
+    local opts = { noremap = true, silent = true, buffer = evt.buf }
 
     -- LSP custom bindings
     opts.desc = "Show LSP definitions"
