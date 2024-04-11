@@ -57,7 +57,7 @@ return {
 
         -- misc
         "eslint",
-        "emmet_ls",
+        "emmet_language_server",
         "tailwindcss",
         "graphql",
       }
@@ -85,7 +85,7 @@ return {
           opts.filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" }
         end
 
-        if server == "emmet_ls" then
+        if server == "emmet_language_server" then
           opts.filetypes =
           { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" }
         end
