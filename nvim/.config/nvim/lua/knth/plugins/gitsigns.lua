@@ -18,12 +18,14 @@ return {
 			map("n", "<leader>gb", function()
 				gs.blame_line({ full = true })
 			end, "Blame line")
-			map("n", "<leader>gB", gs.toggle_current_line_blame, "Toggle line blame")
 
-			map("n", "<leader>gd", gs.diffthis, "Diff this")
-			map("n", "<leader>gD", function()
-				gs.diffthis("~")
-			end, "Diff this ~")
+      -- Doesn't work for now, is it because I don't have inlay?
+			-- map("n", "<leader>gB", gs.toggle_current_line_blame, "Toggle line blame")
+
+			-- map("n", "<leader>gd", gs.diffthis, "Diff this")
+			-- map("n", "<leader>gD", function()
+			-- 	gs.diffthis("~")
+			-- end, "Diff this ~")
 		end,
 	},
 }
