@@ -1,169 +1,169 @@
 local options = {
-  -- set term gui colors (most terminals support this)
-  termguicolors = true,
+	-- set term gui colors (most terminals support this)
+	termguicolors = true,
 
-  -- allows neovim to access the system clipboard
-  clipboard = "unnamedplus",
+	-- allows neovim to access the system clipboard
+	clipboard = "unnamedplus",
 
-  -- set height for the command input below
-  cmdheight = 1,
+	-- set height for the command input below
+	cmdheight = 1,
 
-  -- mostly just for cmp
-  completeopt = { "menuone", "noselect" },
+	-- mostly just for cmp
+	completeopt = { "menuone", "noselect" },
 
-  -- so that `` is visible in markdown files
-  conceallevel = 0,
+	-- so that `` is visible in markdown files
+	conceallevel = 0,
 
-  -- the encoding written to a file
-  fileencoding = "utf-8",
+	-- the encoding written to a file
+	fileencoding = "utf-8",
 
-  -- incremental search
-  incsearch = true,
+	-- incremental search
+	incsearch = true,
 
-  -- highlight all matches on previous search pattern
-  hlsearch = true,
+	-- highlight all matches on previous search pattern
+	hlsearch = true,
 
-  -- ignore case in search patterns
-  ignorecase = true,
+	-- ignore case in search patterns
+	ignorecase = true,
 
-  -- smart case
-  smartcase = true,
+	-- smart case
+	smartcase = true,
 
-  -- allow the mouse to be used in neovim
-  mouse = "a",
+	-- allow the mouse to be used in neovim
+	mouse = "a",
 
-  -- pop up menu height
-  pumheight = 10,
+	-- pop up menu height
+	pumheight = 10,
 
-  -- we don't need to see things like -- INSERT -- anymore
-  showmode = false,
+	-- we don't need to see things like -- INSERT -- anymore
+	showmode = false,
 
-  -- always show tabs
-  showtabline = 2,
+	-- always show tabs
+	showtabline = 2,
 
-  -- make indenting smarter again
-  smartindent = true,
+	-- make indenting smarter again
+	smartindent = true,
 
-  -- force all horizontal splits to go below current window
-  splitbelow = true,
+	-- force all horizontal splits to go below current window
+	splitbelow = true,
 
-  -- force all vertical splits to go to the right of current window
-  splitright = true,
+	-- force all vertical splits to go to the right of current window
+	splitright = true,
 
-  -- creates a swapfile
-  swapfile = false,
+	-- creates a swapfile
+	swapfile = false,
 
-  -- creates a backup file
-  backup = false,
+	-- creates a backup file
+	backup = false,
 
-  -- time to wait for a mapped sequence to complete (in milliseconds)
-  timeoutlen = 1000,
+	-- time to wait for a mapped sequence to complete (in milliseconds)
+	timeoutlen = 1000,
 
-  -- enable persistent undo
-  undofile = true,
+	-- enable persistent undo
+	undofile = true,
 
-  -- faster completion (4000ms default)
-  updatetime = 50,
+	-- faster completion (4000ms default)
+	updatetime = 50,
 
-  -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
-  writebackup = false,
+	-- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
+	writebackup = false,
 
-  -- convert tabs to spaces
-  expandtab = true,
+	-- convert tabs to spaces
+	expandtab = true,
 
-  -- the number of spaces inserted for each indentation
-  shiftwidth = 2,
+	-- the number of spaces inserted for each indentation
+	shiftwidth = 2,
 
-  -- insert 2 spaces for a tab
-  tabstop = 2,
+	-- insert 2 spaces for a tab
+	tabstop = 2,
 
-  -- highlight the current line
-  cursorline = true,
+	-- highlight the current line
+	cursorline = true,
 
-  -- set numbered lines
-  number = true,
+	-- set numbered lines
+	number = true,
 
-  -- set relative numbered lines
-  relativenumber = true,
+	-- set relative numbered lines
+	relativenumber = true,
 
-  -- set number column width to 2 {default 4}
-  numberwidth = 4,
+	-- set number column width to 2 {default 4}
+	numberwidth = 4,
 
-  -- always show the sign column, otherwise it would shift the text each time
-  signcolumn = "yes",
+	-- always show the sign column, otherwise it would shift the text each time
+	signcolumn = "yes",
 
-  -- wrap line
-  wrap = true,
+	-- wrap line
+	wrap = true,
 
-  -- add a nice vertical scroll offset
-  scrolloff = 8,
+	-- add a nice vertical scroll offset
+	scrolloff = 8,
 
-  -- add a side scroll offset, this is used when wrap is off
-  sidescrolloff = 8,
+	-- add a side scroll offset, this is used when wrap is off
+	sidescrolloff = 8,
 
-  -- show whitespace
-  list = false,
+	-- show whitespace
+	list = false,
 
-  listchars = {
-    nbsp = "⦸", -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
-    extends = "»", -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
-    precedes = "«", -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
-    tab = "▷─", -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
-    trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2)
-    space = "-",
-  },
+	listchars = {
+		nbsp = "⦸", -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
+		extends = "»", -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
+		precedes = "«", -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
+		tab = "▷─", -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
+		trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2)
+		space = "-",
+	},
 
-  fillchars = {
-    diff = "∙", -- BULLET OPERATOR (U+2219, UTF-8: E2 88 99)
-    eob = " ", -- NO-BREAK SPACE (U+00A0, UTF-8: C2 A0) to suppress ~ at EndOfBuffer
-    fold = "·", -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
-    vert = " ", -- remove ugly vertical lines on window division
-  },
+	fillchars = {
+		diff = "∙", -- BULLET OPERATOR (U+2219, UTF-8: E2 88 99)
+		eob = " ", -- NO-BREAK SPACE (U+00A0, UTF-8: C2 A0) to suppress ~ at EndOfBuffer
+		fold = "·", -- MIDDLE DOT (U+00B7, UTF-8: C2 B7)
+		vert = " ", -- remove ugly vertical lines on window division
+	},
 
-  -- case insensitive in `command-line` mode
-  wildignorecase = true,
+	-- case insensitive in `command-line` mode
+	wildignorecase = true,
 
-  -- show the matching part of the pair for [] {} and ()
-  showmatch = true,
+	-- show the matching part of the pair for [] {} and ()
+	showmatch = true,
 
-  -- make backspace behave like normal again
-  backspace = "indent,start,eol",
+	-- make backspace behave like normal again
+	backspace = "indent,start,eol",
 
-  -- tabs
-  softtabstop = 2,
+	-- tabs
+	softtabstop = 2,
 
-  -- <tab>/<BS> indent/dedent in leading whitespace
-  smarttab = true,
+	-- <tab>/<BS> indent/dedent in leading whitespace
+	smarttab = true,
 
-  -- maintain indent of current line
-  autoindent = true,
+	-- maintain indent of current line
+	autoindent = true,
 
-  -- shiftround?
-  shiftround = true,
+	-- shiftround?
+	shiftround = true,
 
-  -- always show status line
-  laststatus = 2,
+	-- always show status line
+	laststatus = 2,
 
-  -- shell to use for `!`, `:!`, `system()` etc.
-  shell = "fish",
+	-- shell to use for `!`, `:!`, `system()` etc.
+	shell = "fish",
 
-  -- incremental live completion, e.g: the :s command
-  inccommand = "nosplit",
+	-- incremental live completion, e.g: the :s command
+	inccommand = "nosplit",
 
-  -- allows user to hide buffers with unsaved changes without being prompted
-  hidden = true,
+	-- allows user to hide buffers with unsaved changes without being prompted
+	hidden = true,
 
-  --Enable break indent
-  breakindent = true,
+	--Enable break indent
+	breakindent = true,
 
-  -- faster scrolling
-  -- disabled because conflict with noice.nvim
-  -- lazyredraw = true,
+	-- faster scrolling
+	-- disabled because conflict with noice.nvim
+	-- lazyredraw = true,
 }
 
 -- apply options listed above
 for k, v in pairs(options) do
-  vim.opt[k] = v
+	vim.opt[k] = v
 end
 
 -- set kebabcase as word
@@ -179,14 +179,14 @@ vim.opt.wildignore:append("*.o,*.rej,*.so")
 -- highlight on yank
 local augroupYankHighLight = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    vim.highlight.on_yank({
-      higroup = "IncSearch",
-      timeout = 500,
-      on_visual = true,
-    })
-  end,
-  group = augroupYankHighLight,
+	callback = function()
+		vim.highlight.on_yank({
+			higroup = "IncSearch",
+			timeout = 500,
+			on_visual = true,
+		})
+	end,
+	group = augroupYankHighLight,
 })
 
 -- jump to the last position when reopening a file
@@ -226,3 +226,16 @@ vim.cmd([[ au BufEnter *.vim set ai expandtab shiftwidth=2 tabstop=2 sta fo=croq
 -- json
 vim.cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=croql ]])
 
+
+
+-- Open quickfixlist in the rightmost window instead of at the bottom
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	pattern = "*",
+	callback = function()
+		if vim.bo.buftype == "quickfix" then
+			vim.cmd("wincmd L") -- move the window to the right
+			-- vim.cmd("vertical resize 40") -- set the width to 40 columns
+			vim.cmd("vertical resize 30%") -- set the width to 30% columns
+		end
+	end,
+})
