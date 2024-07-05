@@ -226,16 +226,21 @@ vim.cmd([[ au BufEnter *.vim set ai expandtab shiftwidth=2 tabstop=2 sta fo=croq
 -- json
 vim.cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=croql ]])
 
-
-
 -- Open quickfixlist in the rightmost window instead of at the bottom
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	pattern = "*",
 	callback = function()
 		if vim.bo.buftype == "quickfix" then
 			vim.cmd("wincmd L") -- move the window to the right
-			-- vim.cmd("vertical resize 40") -- set the width to 40 columns
-			vim.cmd("vertical resize 30%") -- set the width to 30% columns
+			vim.cmd("vertical resize 80") -- set the width to 40 columns
+			-- vim.cmd("vertical resize 40%") -- set the width to 30% columns
 		end
 	end,
+})
+
+vim.diagnostic.config({
+	float = {
+		source = "always",
+		border = "rounded",
+	},
 })
