@@ -34,7 +34,8 @@ y = 0
 history = 50000
 
 [shell]
-program = "/home/knth/.nix-profile/bin/fish"
+# program = "/home/knth/.nix-profile/bin/fish"
+program = "/usr/bin/fish"
 
 [window]
 dynamic_padding = true
