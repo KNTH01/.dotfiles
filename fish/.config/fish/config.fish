@@ -91,17 +91,3 @@ abbr -a remap setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_togg
 abbr -a v nvim
 abbr -a lg lazygit
 abbr -a lk lazydocker 
-
-
-#### functions
-function fish_greeting
-  echo Hello friend!
-  echo The time is (set_color yellow; date +%T; set_color normal) and this machine is called $hostname
-end
-
-function fish_user_key_bindings 
-  for mode in insert default visual
-    bind -M $mode \cY accept-autosuggestion
-    bind -M $mode \cE complete
-  end
-end 
