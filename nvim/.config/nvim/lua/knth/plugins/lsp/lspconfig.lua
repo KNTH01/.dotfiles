@@ -23,18 +23,16 @@ return {
 			local util = require("lspconfig.util")
 
 			local function get_typescript_server_path(root_dir)
-				local global_ts = "/home/knth/.nix-profile/lib/node_modules/typescript/lib"
-				--
-				-- Alternative location if installed as root:
-				-- local global_ts = '/usr/local/lib/node_modules/typescript/lib'
-
+				local global_ts = "/home/knth/.local/share/pnpm/global/5/node_modules/typescript/lib"
 				local found_ts = ""
+
 				local function check_dir(path)
 					found_ts = util.path.join(path, "node_modules", "typescript", "lib")
 					if util.path.exists(found_ts) then
-						return path
+						return found_ts
 					end
 				end
+
 				if util.search_ancestors(root_dir, check_dir) then
 					return found_ts
 				else
