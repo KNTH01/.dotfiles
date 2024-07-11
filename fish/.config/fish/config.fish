@@ -30,11 +30,9 @@ end
 # alias oldcat="/usr/bin/cat"
 
 # x server for wsl2
-set -Ux DISPLAY (awk "/nameserver / {print \$2; exit}" /etc/resolv.conf 2>/dev/null):0
-set -Ux LIBGL_ALWAYS_INDIRECT 1
+# set -Ux DISPLAY (awk "/nameserver / {print \$2; exit}" /etc/resolv.conf 2>/dev/null):0
+# set -Ux LIBGL_ALWAYS_INDIRECT 1
 
-# npm
-fish_add_path ~/.npm-global/bin
 
 # cargo and rust
 # fish_add_path ~/.cargo/bin
@@ -44,6 +42,20 @@ fish_add_path ~/.npm-global/bin
 
 # my bin
 fish_add_path ~/.dotfiles/bin
+
+
+# pnpm + npm
+set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+
+# npm config set prefix '/home/knth/.local/share/npm'
+set -gx NPM_HOME "/home/knth/.local/share/npm"
+if not string match -q -- $NPM_HOME $PATH
+  set -gx PATH "$NPM_HOME/bin" $PATH
+end
+# pnpm end
 
 #### aliases
 
@@ -91,3 +103,4 @@ abbr -a remap setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_togg
 abbr -a v nvim
 abbr -a lg lazygit
 abbr -a lk lazydocker 
+
