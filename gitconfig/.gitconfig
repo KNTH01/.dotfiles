@@ -37,7 +37,7 @@ plus-style = syntax "#003800"
 minus-style = syntax "#3f0001"
 navigate = true
 line-numbers = true
-side-by-side = false
+side-by-side = true
 
 features = side-by-side line-numbers decorations
 whitespace-error-style = 22 reverse
