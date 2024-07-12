@@ -8,19 +8,21 @@ set -g fish_key_bindings fish_vi_key_bindings
 bind \ee edit_command_buffer
 
 # added by Nix installer
-if test -e /home/knth/.nix-profile/etc/profile.d/nix.fish; . /home/knth/.nix-profile/etc/profile.d/nix.fish; end
-
-if not type -q tide
-  and type -q starship 
-  starship init fish | source
+if test -e /home/knth/.nix-profile/etc/profile.d/nix.fish
+    . /home/knth/.nix-profile/etc/profile.d/nix.fish
 end
 
-if type -q zoxide 
-  zoxide init --cmd cd fish | source
+if not type -q tide
+    and type -q starship
+    starship init fish | source
+end
+
+if type -q zoxide
+    zoxide init --cmd cd fish | source
 end
 
 if type -q atuin
-  atuin init fish | source
+    atuin init fish | source
 end
 
 # changing cat to bat
@@ -50,13 +52,13 @@ fish_add_path ~/.dotfiles/bin
 # pnpm + npm
 set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
 end
 
 # npm config set prefix '/home/knth/.local/share/npm'
 set -gx NPM_HOME "/home/knth/.local/share/npm"
 if not string match -q -- $NPM_HOME $PATH
-  set -gx PATH "$NPM_HOME/bin" $PATH
+    set -gx PATH "$NPM_HOME/bin" $PATH
 end
 # pnpm end
 
@@ -105,7 +107,7 @@ abbr -a remap setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_togg
 # nvim
 abbr -a v nvim
 abbr -a lg lazygit
-abbr -a lk lazydocker 
+abbr -a lk lazydocker
 
 alias fix-key='sudo rm /var/lib/pacman/sync/* && sudo rm -rf /etc/pacman.d/gnupg/* && sudo pacman-key --init && sudo pacman-key --populate && sudo pacman -Sy --noconfirm archlinux-keyring && sudo pacman --noconfirm -Su'
 alias update-arch='paru'
