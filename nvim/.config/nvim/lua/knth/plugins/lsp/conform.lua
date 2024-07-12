@@ -21,6 +21,7 @@ return {
 				liquid = { "prettier" },
 				lua = { "stylua" },
 				nix = { "nixfmt" },
+				fish = { "fish_indent" },
 			},
 
 			-- format_on_save = {
