@@ -64,7 +64,13 @@ end
 
 #### aliases
 
-alias cat="bat"
+# alias cat="bat"
+if command -v batcat > /dev/null
+    alias cat='batcat'
+else if command -v bat > /dev/null
+    alias cat='bat'
+end
+
 alias oldcat="/usr/bin/cat"
 alias oldls="/usr/bin/ls"
 
