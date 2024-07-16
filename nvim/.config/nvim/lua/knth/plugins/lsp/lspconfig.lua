@@ -85,6 +85,12 @@ return {
 							client.server_capabilities.documentFormattingProvider = false
 							client.server_capabilities.documentFormattingRangeProvider = false
 						end,
+						filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+						-- init_options = {
+						-- 	vue = {
+						-- 		hybridMode = false,
+						-- 	},
+						-- },
 						on_new_config = function(new_config, new_root_dir)
 							new_config.init_options = {
 								typescript = {
@@ -99,6 +105,9 @@ return {
 				end,
 
 				["tsserver"] = function()
+					-- local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
+					-- local volar_path = mason_packages .. "/vue-language-server/node_modules/@vue/language-server"
+
 					lspconfig["tsserver"].setup({
 						capabilities = capabilities,
 						on_init = function(client)
@@ -106,6 +115,15 @@ return {
 							client.server_capabilities.documentFormattingProvider = false
 							client.server_capabilities.documentFormattingRangeProvider = false
 						end,
+						-- 	init_options = {
+						-- 		plugins = {
+						-- 			{
+						-- 				name = "@vue/typescript-plugin",
+						-- 				location = volar_path,
+						-- 				languages = { "vue" },
+						-- 			},
+						-- 		},
+						-- },
 					})
 				end,
 
