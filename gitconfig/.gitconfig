@@ -32,7 +32,7 @@ show = delta
 diffFilter = delta --color-only
 
 [delta]
-syntax-theme = Dracula
+syntax-theme = Catpuccin
 plus-style = syntax "#003800"
 minus-style = syntax "#3f0001"
 navigate = true
