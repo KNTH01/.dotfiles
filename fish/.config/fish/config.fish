@@ -98,6 +98,7 @@ alias reshell="exec fish"
 #### Abbr
 abbr -a pn pnpm
 abbr -a remap setxkbmap -layout us,us -variant ,intl -option 'grp:alt_space_toggle'
+abbr -a cl clear
 
 # restart imwheel;
 # reimwheel = "killall imwheel && imwheel";
