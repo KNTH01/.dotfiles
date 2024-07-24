@@ -72,10 +72,6 @@ keymap.set("n", "<C-s>", "<cmd>w<CR>")
 keymap.set("n", "<leader>w", "<cmd>w<CR>")
 keymap.set("n", "<leader>q", "<cmd>q<CR>")
 
--- quickfix list navigation
-keymap.set("n", "<C-j>", ":cnext<cr>zz")
-keymap.set("n", "<C-k>", ":cprev<cr>zz")
-
 -- Move text up and down
 keymap.set("n", "<A-j>", "<Esc>:m .+1<CR>==")
 keymap.set("n", "<A-k>", "<Esc>:m .-2<CR>==")
@@ -100,7 +96,6 @@ keymap.set("v", "<A-k>", ":m .-2<CR>==")
 -- Move text up and down
 keymap.set("x", "<A-j>", ":move '>+1<CR>gv-gv")
 keymap.set("x", "<A-k>", ":move '<-2<CR>gv-gv")
-
 
 -- MISC
 keymap.set("n", "<leader>cp", '<cmd>let @+ = expand("%")<CR>') -- copy current file path
