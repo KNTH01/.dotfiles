@@ -65,9 +65,9 @@ end
 #### aliases
 
 # alias cat="bat"
-if command -v batcat > /dev/null
+if command -v batcat >/dev/null
     alias cat='batcat'
-else if command -v bat > /dev/null
+else if command -v bat >/dev/null
     alias cat='bat'
 end
 
