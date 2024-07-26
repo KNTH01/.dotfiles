@@ -41,6 +41,13 @@ return {
 					},
 					opts = { skip = true },
 				},
+				{
+					view = "notify",
+					filter = {
+						find = "No ESLint configuration found in",
+					},
+					opts = { skip = true },
+				},
 			},
 		})
 	end,
