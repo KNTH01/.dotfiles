@@ -16,10 +16,6 @@ return {
 			vim.keymap.set("n", "gl", function()
 				vim.cmd.RustLsp("renderDiagnostic")
 			end, { buffer = bufnr })
-
-			-- this is deprecated, as rustaceanvim will use native nvim inlays from v0.10.0
-			-- vim.keymap.set("n", "<leader>ie", rt.inlay_hints.set, { buffer = bufnr })
-			-- vim.keymap.set("n", "<leader>id", rt.inlay_hints.unset, { buffer = bufnr })
 		end,
 
 		settings = {
