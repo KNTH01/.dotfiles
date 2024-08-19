@@ -244,3 +244,9 @@ vim.diagnostic.config({
 		border = "rounded",
 	},
 })
+
+-- configure luarocks paths
+local lua_rocks_path = "/home/knth/.luarocks/share/lua/5.1/?.lua"
+local lua_rocks_cpath = "/home/knth/.luarocks/lib/lua/5.1/?.so"
+package.path = package.path .. ";" .. lua_rocks_path
+package.cpath = package.cpath .. ";" .. lua_rocks_cpath
