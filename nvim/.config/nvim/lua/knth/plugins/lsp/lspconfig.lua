@@ -115,14 +115,44 @@ return {
 							client.server_capabilities.documentFormattingProvider = false
 							client.server_capabilities.documentFormattingRangeProvider = false
 						end,
-						-- 	init_options = {
-						-- 		plugins = {
-						-- 			{
-						-- 				name = "@vue/typescript-plugin",
-						-- 				location = volar_path,
-						-- 				languages = { "vue" },
-						-- 			},
-						-- 		},
+
+						settings = {
+							typescript = {
+								inlayHints = {
+									-- You can set this to 'all' or 'literals' to enable more hints
+									includeInlayParameterNameHints = "literals", -- 'none' | 'literals' | 'all'
+									includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+									includeInlayFunctionParameterTypeHints = false,
+									includeInlayVariableTypeHints = false,
+									includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+									includeInlayPropertyDeclarationTypeHints = false,
+									includeInlayFunctionLikeReturnTypeHints = true,
+									includeInlayEnumMemberValueHints = true,
+								},
+							},
+							javascript = {
+								inlayHints = {
+									-- You can set this to 'all' or 'literals' to enable more hints
+									includeInlayParameterNameHints = "literals", -- 'none' | 'literals' | 'all'
+									includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+									includeInlayVariableTypeHints = false,
+									includeInlayFunctionParameterTypeHints = false,
+									includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+									includeInlayPropertyDeclarationTypeHints = false,
+									includeInlayFunctionLikeReturnTypeHints = true,
+									includeInlayEnumMemberValueHints = true,
+								},
+							},
+						},
+
+						-- init_options = {
+						-- plugins = {
+						-- 	{
+						-- 		name = "@vue/typescript-plugin",
+						-- 		location = volar_path,
+						-- 		languages = { "vue" },
+						-- 	},
+						-- },
 						-- },
 					})
 				end,

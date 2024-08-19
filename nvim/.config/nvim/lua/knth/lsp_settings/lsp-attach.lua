@@ -52,7 +52,8 @@ return {
 		keymap.set("n", "g]", vim.diagnostic.goto_next, opts)
 
 		-- inlay hints toggle
-		keymap.set("n", "<leader>ie", function()
+    opts.desc = "Toggle inlay hints"
+		keymap.set("n", "<leader>i", function()
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 		end, opts)
 
