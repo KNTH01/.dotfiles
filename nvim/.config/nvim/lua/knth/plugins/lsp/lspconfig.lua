@@ -182,7 +182,13 @@ return {
 				["graphql"] = function()
 					lspconfig["graphql"].setup({
 						capabilities = capabilities,
-						filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+						filetypes = {
+							"graphql",
+							"gql",
+							"svelte",
+							"typescriptreact",
+							"javascriptreact",
+						},
 					})
 				end,
 
