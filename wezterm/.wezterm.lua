@@ -21,4 +21,12 @@ config.window_padding = {
 	bottom = 0,
 }
 
+config.ssh_domains = {
+	{
+		name = "pixel-pirate",
+		remote_address = "192.168.1.44",
+		username = "knth",
+	},
+}
+
 return config
