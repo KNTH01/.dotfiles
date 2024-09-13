@@ -28,7 +28,7 @@ return {
 			ensure_installed = {
 				-- web dev
 				"html",
-				"tsserver",
+				"ts_ls",
 				"cssls",
 				"jsonls",
 				"emmet_ls",
