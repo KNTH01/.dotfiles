@@ -37,5 +37,14 @@ return {
 		ui = {
 			enable = false,
 		},
+		mappings = {
+			-- Overrides the 'gd' mapping to work on markdown/wiki links within your vault.
+			["gd"] = {
+				action = function()
+					return require("obsidian").util.gf_passthrough()
+				end,
+				opts = { noremap = false, expr = true, buffer = true },
+			},
+		},
 	},
 }
