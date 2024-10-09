@@ -21,9 +21,16 @@ if type -q zoxide
     zoxide init --cmd cd fish | source
 end
 
+if type -q fzf
+    fzf --fish | source
+end
+
+
 if type -q atuin
+    # call this after fzf for CTRL + R
     atuin init fish | source
 end
+
 
 # changing cat to bat
 # if string match -rq "Debian" (uname -a); or string match -rq "WSL2" (uname -a)
@@ -131,3 +138,13 @@ function yy
     end
     rm -f -- "$tmp"
 end
+
+
+# nvm
+function nvm
+    bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
+end
+
+set -x NVM_DIR ~/.nvm
+nvm use default --silent
+# end nvm
