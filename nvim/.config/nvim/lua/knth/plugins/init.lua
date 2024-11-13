@@ -7,4 +7,7 @@ return {
 
 	-- Fugitive-companion to interact with github
 	"tpope/vim-rhubarb",
+
+	-- Detect tabstop and shiftwidth automatically
+	"tpope/vim-sleuth",
 }
