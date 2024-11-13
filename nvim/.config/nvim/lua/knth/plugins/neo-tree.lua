@@ -5,7 +5,6 @@ return {
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
 		"echasnovski/mini.nvim", -- mini.icons
-		-- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 	},
 
 	config = function()

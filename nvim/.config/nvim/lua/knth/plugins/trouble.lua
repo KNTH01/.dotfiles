@@ -2,8 +2,7 @@ return {
 	"folke/trouble.nvim",
 	dependencies = {
 		"folke/todo-comments.nvim",
-		"echasnovski/mini.nvim",
-		-- "nvim-tree/nvim-web-devicons",
+		"echasnovski/mini.nvim", -- mini.icons
 	},
 	keys = {
 		{ "<leader>tt", "<cmd>TroubleToggle<CR>", desc = "Open/close trouble list" },
