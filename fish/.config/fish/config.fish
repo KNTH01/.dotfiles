@@ -50,7 +50,7 @@ end
 # fish_add_path ~/.cargo/bin
 
 # flyctl
-# fish_add_path ~/.fly/bin
+fish_add_path ~/.fly/bin
 
 # my bin
 fish_add_path ~/.dotfiles/bin
