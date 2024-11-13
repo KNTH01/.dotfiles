@@ -122,196 +122,195 @@ return {
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-			local util = require("lspconfig.util")
+			-- Enable the following language servers
+			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+			--
+			--  Add any additional override configuration in the following tables. Available keys are:
+			--  - cmd (table): Override the default command used to start the server
+			--  - filetypes (table): Override the default list of associated filetypes for the server
+			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+			--  - settings (table): Override the default settings passed when initializing the server.
+			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 
-			local function get_typescript_server_path(root_dir)
-				local global_ts = "/home/knth/.local/share/pnpm/global/5/node_modules/typescript/lib"
-				local found_ts = ""
+			local servers = {
+				-- clangd = {},
+				-- gopls = {},
+				-- pyright = {},
+				-- rust_analyzer = {},
+				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+				--
+				-- Some languages (like typescript) have entire language plugins that can be useful:
+				--    https://github.com/pmizio/typescript-tools.nvim
+				--
+				-- But for many setups, the LSP (`ts_ls`) will work just fine
+				-- ts_ls = {},
+				--
 
-				local function check_dir(path)
-					found_ts = util.path.join(path, "node_modules", "typescript", "lib")
-					if util.path.exists(found_ts) then
-						return found_ts
-					end
-				end
+				html = {},
+				cssls = {},
+				tailwindcss = {},
+				rnix = {},
+				astro = {},
+				jsonls = require("knth.lsp_settings.jsonls"),
 
-				if util.search_ancestors(root_dir, check_dir) then
-					return found_ts
-				else
-					return global_ts
-				end
-			end
+				ts_ls = {
+					on_init = function(client)
+						-- Format using Prettier
+						client.server_capabilities.documentFormattingProvider = false
+						client.server_capabilities.documentFormattingRangeProvider = false
+					end,
 
-			local lspconfig = require("lspconfig")
+					settings = {
+						typescript = {
+							inlayHints = {
+								-- You can set this to 'all' or 'literals' to enable more hints
+								includeInlayParameterNameHints = "literals", -- 'none' | 'literals' | 'all'
+								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+								includeInlayFunctionParameterTypeHints = false,
+								includeInlayVariableTypeHints = false,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+								includeInlayPropertyDeclarationTypeHints = false,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
+							},
+						},
+						javascript = {
+							inlayHints = {
+								-- You can set this to 'all' or 'literals' to enable more hints
+								includeInlayParameterNameHints = "literals", -- 'none' | 'literals' | 'all'
+								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+								includeInlayVariableTypeHints = false,
+								includeInlayFunctionParameterTypeHints = false,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+								includeInlayPropertyDeclarationTypeHints = false,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayEnumMemberValueHints = true,
+							},
+						},
+					},
 
-			local mason_lspconfig = require("mason-lspconfig")
+					-- init_options = {
+					-- plugins = {
+					-- 	{
+					-- 		name = "@vue/typescript-plugin",
+					-- 		location = volar_path,
+					-- 		languages = { "vue" },
+					-- 	},
+					-- },
+					-- },
+				},
 
-			mason_lspconfig.setup_handlers({
+				emmet_ls = {
+					filetypes = {
+						"html",
+						"typescriptreact",
+						"javascriptreact",
+						"css",
+						"sass",
+						"scss",
+						"less",
+						"svelte",
+					},
+				},
 
-				-- default handler for installed servers
-				function(server_name)
-					lspconfig[server_name].setup({
-						capabilities = capabilities,
-					})
-				end,
+				graphql = {
+					filetypes = {
+						"graphql",
+						"gql",
+						"svelte",
+						"typescriptreact",
+						"javascriptreact",
+					},
+				},
 
-				["jsonls"] = function()
-					local opts = {
-						capabilities = capabilities,
-					}
-
-					vim.tbl_deep_extend("force", opts, require("knth.lsp_settings.jsonls"))
-
-					lspconfig["jsonls"].setup(opts)
-				end,
-
-				["volar"] = function()
-					lspconfig["volar"].setup({
-						capabilities = capabilities,
-						on_init = function(client)
-							-- Format using Prettier
-							client.server_capabilities.documentFormattingProvider = false
-							client.server_capabilities.documentFormattingRangeProvider = false
-						end,
-						filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-						-- init_options = {
-						-- 	vue = {
-						-- 		hybridMode = false,
-						-- 	},
-						-- },
-						on_new_config = function(new_config, new_root_dir)
-							new_config.init_options = {
-								typescript = {
-									tsdk = get_typescript_server_path(new_root_dir),
-								},
-								vue = {
-									hybridMode = false,
-								},
-							}
-						end,
-						settings = {
+				["volar@1.8.27"] = {
+					on_init = function(client)
+						-- Format using Prettier
+						client.server_capabilities.documentFormattingProvider = false
+						client.server_capabilities.documentFormattingRangeProvider = false
+					end,
+					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+					-- init_options = {
+					-- 	vue = {
+					-- 		hybridMode = false,
+					-- 	},
+					-- },
+					on_new_config = function(new_config, new_root_dir)
+						new_config.init_options = {
 							typescript = {
-								inlayHints = {
-									enumMemberValues = {
-										enabled = true,
-									},
-									functionLikeReturnTypes = {
-										enabled = true,
-									},
-									propertyDeclarationTypes = {
-										enabled = true,
-									},
-									parameterTypes = {
-										enabled = true,
-										suppressWhenArgumentMatchesName = true,
-									},
-									variableTypes = {
-										enabled = true,
-									},
+								tsdk = get_typescript_server_path(new_root_dir),
+							},
+							vue = {
+								hybridMode = false,
+							},
+						}
+					end,
+					settings = {
+						typescript = {
+							inlayHints = {
+								enumMemberValues = {
+									enabled = true,
+								},
+								functionLikeReturnTypes = {
+									enabled = true,
+								},
+								propertyDeclarationTypes = {
+									enabled = true,
+								},
+								parameterTypes = {
+									enabled = true,
+									suppressWhenArgumentMatchesName = true,
+								},
+								variableTypes = {
+									enabled = true,
 								},
 							},
 						},
-					})
-				end,
+					},
+				},
 
-				["ts_ls"] = function()
-					-- local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
-					-- local volar_path = mason_packages .. "/vue-language-server/node_modules/@vue/language-server"
-
-					lspconfig["ts_ls"].setup({
-						capabilities = capabilities,
-						on_init = function(client)
-							-- Format using Prettier
-							client.server_capabilities.documentFormattingProvider = false
-							client.server_capabilities.documentFormattingRangeProvider = false
-						end,
-
-						settings = {
-							typescript = {
-								inlayHints = {
-									-- You can set this to 'all' or 'literals' to enable more hints
-									includeInlayParameterNameHints = "literals", -- 'none' | 'literals' | 'all'
-									includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-									includeInlayFunctionParameterTypeHints = false,
-									includeInlayVariableTypeHints = false,
-									includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-									includeInlayPropertyDeclarationTypeHints = false,
-									includeInlayFunctionLikeReturnTypeHints = true,
-									includeInlayEnumMemberValueHints = true,
-								},
+				lua_ls = {
+					-- cmd = {...},
+					-- filetypes = { ...},
+					-- capabilities = {},
+					settings = {
+						Lua = {
+							completion = {
+								callSnippet = "Replace",
 							},
-							javascript = {
-								inlayHints = {
-									-- You can set this to 'all' or 'literals' to enable more hints
-									includeInlayParameterNameHints = "literals", -- 'none' | 'literals' | 'all'
-									includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-									includeInlayVariableTypeHints = false,
-									includeInlayFunctionParameterTypeHints = false,
-									includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-									includeInlayPropertyDeclarationTypeHints = false,
-									includeInlayFunctionLikeReturnTypeHints = true,
-									includeInlayEnumMemberValueHints = true,
-								},
-							},
+							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+							-- diagnostics = { disable = { 'missing-fields' } },
 						},
+					},
+				},
+			}
 
-						-- init_options = {
-						-- plugins = {
-						-- 	{
-						-- 		name = "@vue/typescript-plugin",
-						-- 		location = volar_path,
-						-- 		languages = { "vue" },
-						-- 	},
-						-- },
-						-- },
-					})
-				end,
+			-- Ensure the servers and tools above are installed
+			--  To check the current status of installed tools and/or manually install
+			--  other tools, you can run :Mason
+			require("mason").setup()
 
-				["graphql"] = function()
-					lspconfig["graphql"].setup({
-						capabilities = capabilities,
-						filetypes = {
-							"graphql",
-							"gql",
-							"svelte",
-							"typescriptreact",
-							"javascriptreact",
-						},
-					})
-				end,
+			-- You can add other tools here that you want Mason to install
+			-- for you, so that they are available from within Neovim.
+			local ensure_installed = vim.tbl_keys(servers or {})
+			vim.list_extend(ensure_installed, {
+				"prettier", -- prettier formatter
+				"stylua", -- lua formatter
+				"eslint_d", -- js linter
+			})
+			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-				["emmet_ls"] = function()
-					lspconfig["emmet_ls"].setup({
-						capabilities = capabilities,
-						filetypes = {
-							"html",
-							"typescriptreact",
-							"javascriptreact",
-							"css",
-							"sass",
-							"scss",
-							"less",
-							"svelte",
-						},
-					})
-				end,
-
-				["lua_ls"] = function()
-					lspconfig["lua_ls"].setup({
-						capabilities = capabilities,
-						settings = {
-							Lua = {
-								-- make the language server recognize "vim" global
-								diagnostics = {
-									globals = { "vim" },
-								},
-								completion = {
-									callSnippet = "Replace",
-								},
-							},
-						},
-					})
-				end,
+			require("mason-lspconfig").setup({
+				handlers = {
+					function(server_name)
+						local server = servers[server_name] or {}
+						-- This handles overriding only values explicitly passed
+						-- by the server configuration above. Useful when disabling
+						-- certain features of an LSP (for example, turning off formatting for ts_ls)
+						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+						require("lspconfig")[server_name].setup(server)
+					end,
+				},
 			})
 
 			-- Change the Diagnostic symbols in the sign column (gutter)
@@ -324,17 +323,17 @@ return {
 		end,
 	},
 
-	{
-		"mrcjkb/rustaceanvim",
-		version = "^4", -- Recommended
-		ft = { "rust" },
-
-		config = function()
-			local my_config = require("knth.lsp_settings.rust")
-
-			vim.g.rustaceanvim = {
-				server = my_config.server,
-			}
-		end,
-	},
+	-- {
+	-- 	"mrcjkb/rustaceanvim",
+	-- 	version = "^4", -- Recommended
+	-- 	ft = { "rust" },
+	--
+	-- 	config = function()
+	-- 		local my_config = require("knth.lsp_settings.rust")
+	--
+	-- 		vim.g.rustaceanvim = {
+	-- 			server = my_config.server,
+	-- 		}
+	-- 	end,
+	-- },
 }
