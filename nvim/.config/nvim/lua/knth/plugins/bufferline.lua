@@ -2,9 +2,8 @@ return {
 	"akinsho/bufferline.nvim",
 	version = "v4.*",
 	dependencies = {
-		-- 'nvim-tree/nvim-web-devicons',
-		"echasnovski/mini.nvim",
 		"moll/vim-bbye",
+		"echasnovski/mini.nvim", -- mini.icons
 	},
 	config = function()
 		local status_ok, bufferline = pcall(require, "bufferline")
@@ -21,7 +20,7 @@ return {
 				left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"
 				middle_mouse_command = nil, -- can be a string | function, see "Mouse actions"
 				separator_style = "slope", -- | "thick" | "thin" | "slant" | "slope" :h bufferline-styling
-				show_buffer_icons = false,
+				show_buffer_icons = true,
 			},
 		})
 	end,
