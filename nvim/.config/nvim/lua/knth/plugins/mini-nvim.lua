@@ -10,5 +10,6 @@ return {
 		require("mini.bracketed").setup()
 
 		require("mini.icons").setup()
+		MiniIcons.mock_nvim_web_devicons() -- see: :h MiniIcons.mock_nvim_web_devicons()
 	end,
 }

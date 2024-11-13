@@ -4,9 +4,10 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
-		"echasnovski/mini.nvim",
+		"echasnovski/mini.nvim", -- mini.icons
 		-- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 	},
+
 	config = function()
 		vim.g.neo_tree_remove_legacy_commands = 1
 
