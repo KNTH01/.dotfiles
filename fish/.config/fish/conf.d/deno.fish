@@ -1,0 +1,1 @@
+source "/home/knth/.deno/env.fish"
