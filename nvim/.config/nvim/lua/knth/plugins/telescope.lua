@@ -39,12 +39,36 @@ local function obsidian_commands_picker()
 	})
 end
 
--- Telescope config
 return {
 	-- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	{
 		"nvim-telescope/telescope.nvim",
+
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			{
+				-- If encountering errors, see telescope-fzf-native README for installation instructions
+				"nvim-telescope/telescope-fzf-native.nvim",
+
+				-- `build` is used to run some command when the plugin is installed/updated.
+				-- This is only run then, not every time Neovim starts up.
+				build = "make",
+
+				-- `cond` is a condition used to determine whether this plugin should be
+				-- installed and loaded.
+				cond = function()
+					return vim.fn.executable("make") == 1
+				end,
+			},
+
+			"nvim-telescope/telescope-ui-select.nvim", -- sets vim.ui.select to telescope
+			"nvim-telescope/telescope-media-files.nvim",
+			"echasnovski/mini.nvim", -- mini.icons
+			"folke/todo-comments.nvim",
+		},
+
 		config = function()
+			-- Telescope config
 			-- Telescope
 
 			local telescope_setup, telescope = pcall(require, "telescope")
@@ -80,11 +104,16 @@ return {
 							filetypes = { "png", "webp", "jpg", "jpeg" },
 							find_cmd = "rg", -- find command (defaults to `fd`)
 						},
+
 						fzf = {
 							fuzzy = true, -- false will only do exact matching
 							override_generic_sorter = true, -- override the generic sorter
 							override_file_sorter = true, -- override the file sorter
 							case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+						},
+
+						["ui-select"] = {
+							require("telescope.themes").get_dropdown(),
 						},
 						-- Your extension configuration goes here:
 						-- extension_name = {
@@ -164,36 +193,30 @@ return {
 				},
 			})
 
-			-- Load Telescope extensions
-			-- telescope.load_extension("fzf")
-			telescope.load_extension("media_files")
+			-- Enable Telescope extensions if they are installed
+			pcall(require("telescope").load_extension, "media_files")
+			pcall(require("telescope").load_extension, "fzf")
+			pcall(require("telescope").load_extension, "ui-select")
 
 			-- mappings
+			local builtin = require("telescope.builtin")
 
+			vim.keymap.set("n", "<Leader>FF", builtin.git_files, { desc = "[F]ind [F]iles" })
+			vim.keymap.set("n", "<Leader>ff", builtin.find_files, { desc = "[f]ind [f]iles" })
+			vim.keymap.set("n", "<Leader>fg", builtin.live_grep, { desc = "[f]ind [g]rep" })
+			vim.keymap.set("n", "<Leader>fw", builtin.grep_string, { desc = "[f]ind [w]ord" })
+			vim.keymap.set("n", "<Leader>fb", builtin.git_branches, { desc = "[f]ind Git [b]ranches" })
+			vim.keymap.set("n", "<Leader>fh", builtin.help_tags, { desc = "[f]ind [h]elp" })
+			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[f]ind Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>th", builtin.colorscheme, { desc = 'find ColorScheme ("th" for theme)' })
+			vim.keymap.set("n", "<leader>th", builtin.git_commits, { desc = 'find Git commits ("ci" for commit)' })
 			vim.keymap.set(
 				"n",
-				"<Leader>FF",
-				[[<cmd>lua require('telescope.builtin').git_files({previewer = false})<CR>]]
+				"<Leader><space>",
+				builtin.current_buffer_fuzzy_find,
+				{ desc = "Fuzzy Find in Current Buffer" }
 			)
-			vim.keymap.set(
-				"n",
-				"<Leader>ff",
-				[[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]]
-			)
-			vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>")
-			vim.keymap.set("n", "<Leader>fw", ":Telescope grep_string<CR>")
-			vim.keymap.set("n", "<Leader>fp", ":Telescope media_files<CR>")
-			vim.keymap.set(
-				"n",
-				"<Leader>fB",
-				[[<cmd>lua require('telescope.builtin').buffers({previewer = false})<CR>]]
-			)
-			vim.keymap.set("n", "<Leader>fb", ":Telescope git_branches<CR>", { desc = "Find Git branches" })
-			vim.keymap.set("n", "<Leader>fh", ":Telescope help_tags<CR>")
-			vim.keymap.set("n", "<Leader>fo", ":Telescope oldfiles<CR>")
-			vim.keymap.set("n", "<Leader>th", ":Telescope colorscheme<CR>")
-			vim.keymap.set("n", "<Leader>cm", ":Telescope git_commits<CR>")
-			vim.keymap.set("n", "<Leader><space>", ":Telescope current_buffer_fuzzy_find<CR>")
+			vim.keymap.set("n", "<Leader>fp", ":Telescope media_files<CR>", { desc = "[f]ind media" })
 
 			-- Set up keybinding to open the Obsidian commands picker for Markdown files only
 			vim.api.nvim_create_autocmd("FileType", {
@@ -208,12 +231,5 @@ return {
 				end,
 			})
 		end,
-
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope-media-files.nvim",
-			-- "nvim-tree/nvim-web-devicons",
-			"folke/todo-comments.nvim",
-		},
 	},
 }
