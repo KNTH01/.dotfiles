@@ -1,4 +1,4 @@
--- DEPRECATED
+-- TODO: DEPRECATED, to be deleted
 
 return {
 	attach = function(evt)

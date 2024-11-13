@@ -208,7 +208,9 @@ return {
 			vim.keymap.set("n", "<Leader>fb", builtin.git_branches, { desc = "[F]ind Git [B]ranches" })
 			vim.keymap.set("n", "<Leader>fh", builtin.help_tags, { desc = "[F]ind [h]elp" })
 			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
-			vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
+			vim.keymap.set("n", "<leader>fd", function()
+				builtin.diagnostics({ bufnr = 0 })
+			end, { desc = "[F]ind [D]iagnostics" })
 			vim.keymap.set("n", "<leader>th", builtin.colorscheme, { desc = 'find ColorScheme ("th" for theme)' })
 			vim.keymap.set("n", "<leader>ci", builtin.git_commits, { desc = 'find Git commits ("ci" for commit)' })
 			vim.keymap.set(
