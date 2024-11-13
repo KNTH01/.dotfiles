@@ -8,5 +8,7 @@ return {
 		require("mini.surround").setup()
 
 		require("mini.bracketed").setup()
+
+		require("mini.icons").setup()
 	end,
 }
