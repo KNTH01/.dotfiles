@@ -72,6 +72,7 @@ return {
 
 					map("gk", vim.lsp.buf.hover, "Show documentation under cursor")
 					map("K", vim.lsp.buf.signature_help, "Show signature help")
+					map("gl", vim.diagnostic.open_float, "Show line diagnostics")
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
