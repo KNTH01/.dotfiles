@@ -176,19 +176,6 @@ vim.opt.wildignore:append("*.o,*.rej,*.so")
 -- Commands
 --
 
--- highlight on yank
-local augroupYankHighLight = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
-	callback = function()
-		vim.highlight.on_yank({
-			higroup = "IncSearch",
-			timeout = 500,
-			on_visual = true,
-		})
-	end,
-	group = augroupYankHighLight,
-})
-
 -- jump to the last position when reopening a file
 vim.cmd([[
 if has("autocmd")
