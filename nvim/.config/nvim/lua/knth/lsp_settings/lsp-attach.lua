@@ -1,3 +1,5 @@
+-- DEPRECATED
+
 return {
 	attach = function(evt)
 		local keymap = vim.keymap
@@ -52,7 +54,7 @@ return {
 		keymap.set("n", "g]", vim.diagnostic.goto_next, opts)
 
 		-- inlay hints toggle
-    opts.desc = "Toggle inlay hints"
+		opts.desc = "Toggle inlay hints"
 		keymap.set("n", "<leader>i", function()
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 		end, opts)
