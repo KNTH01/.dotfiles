@@ -1,4 +1,6 @@
 return {
+	enabled = false,
+
 	"akinsho/bufferline.nvim",
 	version = "v4.*",
 	dependencies = {

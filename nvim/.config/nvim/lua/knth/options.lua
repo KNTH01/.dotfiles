@@ -41,8 +41,11 @@ local options = {
 	-- we don't need to see things like -- INSERT -- anymore
 	showmode = false,
 
-	-- always show tabs
-	showtabline = 2,
+	-- always show tabs / bufferline
+	-- showtabline = 2,
+
+	-- never show tabs / bufferline
+	showtabline = 0,
 
 	-- make indenting smarter again
 	smartindent = true,
