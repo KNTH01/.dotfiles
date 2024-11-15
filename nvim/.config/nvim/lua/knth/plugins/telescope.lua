@@ -208,6 +208,7 @@ return {
 			vim.keymap.set("n", "<Leader>fb", builtin.git_branches, { desc = "[F]ind Git [B]ranches" })
 			vim.keymap.set("n", "<Leader>fh", builtin.help_tags, { desc = "[F]ind [h]elp" })
 			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>m", builtin.marks, { desc = "[F]ind [M]arks" })
 			vim.keymap.set("n", "<leader>fd", function()
 				builtin.diagnostics({ bufnr = 0 })
 			end, { desc = "[F]ind [D]iagnostics" })

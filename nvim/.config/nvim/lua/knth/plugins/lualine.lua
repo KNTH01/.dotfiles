@@ -17,6 +17,11 @@ return {
 				section_separators = "",
 				component_separators = "",
 			},
+			winbar = {
+				lualine_y = {
+					{ "filename", path = 1 },
+				},
+			},
 			sections = {
 				lualine_c = {
 					{ "filename", path = 1 },
