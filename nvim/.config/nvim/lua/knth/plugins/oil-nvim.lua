@@ -1,4 +1,5 @@
 return {
+	enabled = false,
 	"stevearc/oil.nvim",
 	opts = {},
 	dependencies = {
