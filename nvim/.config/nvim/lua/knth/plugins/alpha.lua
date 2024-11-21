@@ -1,5 +1,6 @@
 return {
 	"goolord/alpha-nvim",
+	enabled = false, -- makes Harpoons buggy
 	dependencies = {
 		"echasnovski/mini.nvim", -- mini.icons
 	},

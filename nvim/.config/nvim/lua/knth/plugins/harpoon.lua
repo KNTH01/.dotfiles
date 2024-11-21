@@ -14,6 +14,10 @@ return {
 			harpoon:list():add()
 		end, { desc = "Harpoon [a]dd" })
 
+		vim.keymap.set("n", "<leader>J", function()
+			harpoon:list():add()
+		end, { desc = "Harpoon Add" })
+
 		vim.keymap.set("n", "<leader>j", function()
 			harpoon.ui:toggle_quick_menu(harpoon:list())
 		end, { desc = "Harpoon List" })
