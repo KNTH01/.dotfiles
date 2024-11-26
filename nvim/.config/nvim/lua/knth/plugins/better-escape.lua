@@ -1,7 +1,7 @@
 return {
 	-- Better escape
 	"max397574/better-escape.nvim",
-	enabled = false,
+	enabled = true,
 	config = function()
 		require("better_escape").setup({
 			mappings = {
