@@ -142,7 +142,9 @@ end
 
 # nvm
 function nvm
-    bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
+    if command -v bass >/dev/null
+        bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
+    end
 end
 
 set -x NVM_DIR ~/.nvm
