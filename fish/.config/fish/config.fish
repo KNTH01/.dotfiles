@@ -138,15 +138,3 @@ function yy
     end
     rm -f -- "$tmp"
 end
-
-
-# nvm
-function nvm
-    if command -v bass >/dev/null
-        bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
-    end
-end
-
-set -x NVM_DIR ~/.nvm
-nvm use default --silent
-# end nvm
