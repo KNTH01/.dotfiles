@@ -4,7 +4,10 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
-		"echasnovski/mini.nvim", -- mini.icons
+
+		"echasnovski/mini.nvim", -- NOTE: mini.icons doesn't work with neo-tree??
+
+		-- "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 	},
 
 	config = function()
@@ -13,11 +16,27 @@ return {
 		vim.keymap.set("n", "<Leader>e", [[:NeoTreeFloatToggle<cr>]])
 
 		-- If you want icons for diagnostic errors, you'll need to define them somewhere:
-		vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
-		vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
-		vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
-		vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
-
+		vim.diagnostic.config({
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = " ",
+					[vim.diagnostic.severity.WARN] = " ",
+					[vim.diagnostic.severity.INFO] = " ",
+					[vim.diagnostic.severity.HINT] = "",
+				},
+				numhl = {
+					-- If you were using numhl in your original definitions, add them here
+				},
+				texthl = {
+					[vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+					[vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
+					[vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
+					[vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
+				},
+				priority = 20, -- Optional: set the priority of the signs
+			},
+		})
+    
 		if vim.fn.argc() == 1 then
 			local stat = vim.loop.fs_stat(vim.fn.argv(0))
 			if stat and stat.type == "directory" then

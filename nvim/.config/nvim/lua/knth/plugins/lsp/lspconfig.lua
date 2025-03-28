@@ -103,16 +103,6 @@ return {
 							end,
 						})
 					end
-
-					-- The following code creates a keymap to toggle inlay hints in your
-					-- code, if the language server you are using supports them
-					--
-					-- This may be unwanted, since they displace some of your code
-					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-						map("<leader>i", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-						end, "Toggle [I]nlay Hints")
-					end
 				end,
 			})
 
@@ -154,7 +144,14 @@ return {
 				astro = {},
 				jsonls = require("knth.lsp_settings.jsonls"),
 
+				denols = {
+					root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
+				},
+
 				ts_ls = {
+					root_dir = require("lspconfig").util.root_pattern("package.json"),
+					single_file_support = false,
+
 					on_init = function(client)
 						-- Format using Prettier
 						client.server_capabilities.documentFormattingProvider = false
@@ -236,16 +233,17 @@ return {
 					-- 		hybridMode = false,
 					-- 	},
 					-- },
-					on_new_config = function(new_config, new_root_dir)
-						new_config.init_options = {
-							typescript = {
-								tsdk = get_typescript_server_path(new_root_dir),
-							},
-							vue = {
-								hybridMode = false,
-							},
-						}
-					end,
+
+					-- on_new_config = function(new_config, new_root_dir)
+					-- 	new_config.init_options = {
+					-- 		typescript = {
+					-- 			tsdk = get_typescript_server_path(new_root_dir),
+					-- 		},
+					-- 		vue = {
+					-- 			hybridMode = false,
+					-- 		},
+					-- 	}
+					-- end,
 					settings = {
 						typescript = {
 							inlayHints = {
@@ -316,11 +314,24 @@ return {
 
 			-- Change the Diagnostic symbols in the sign column (gutter)
 			local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+			local text_signs = {}
+			local text_highlights = {}
 
 			for type, icon in pairs(signs) do
-				local hl = "DiagnosticSign" .. type
-				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+				local severity = vim.diagnostic.severity[type:upper()]
+				if severity then
+					text_signs[severity] = icon
+					text_highlights[severity] = "DiagnosticSign" .. type
+				end
 			end
+
+			vim.diagnostic.config({
+				signs = {
+					text = text_signs,
+					texthl = text_highlights,
+					numhl = {}, -- Empty table since numhl was set to ""
+				},
+			})
 		end,
 	},
 
