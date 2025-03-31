@@ -232,6 +232,7 @@ vim.cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=cro
 -- })
 
 vim.diagnostic.config({
+	virtual_text = true,
 	float = {
 		source = "always",
 		border = "rounded",
