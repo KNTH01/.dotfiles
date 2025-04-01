@@ -5,7 +5,12 @@ return {
 		vim.api.nvim_set_keymap("n", "<leader>A", ":ASToggle<CR>", {})
 		require("auto-save").setup({
 			condition = function(buf)
-				local excluded_filetypes = { "harpoon" }
+				local excluded_filetypes = {
+					"NeogitStatus",
+					"NeogitDiffView",
+          "harpoon",
+          -- "gitcommit",
+				}
 				local filetype = vim.bo[buf].filetype
 
 				for _, ft in ipairs(excluded_filetypes) do
