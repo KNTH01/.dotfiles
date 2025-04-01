@@ -5,9 +5,6 @@ local options = {
 	-- set term gui colors (most terminals support this)
 	termguicolors = true,
 
-	-- allows neovim to access the system clipboard
-	clipboard = "unnamedplus",
-
 	-- set height for the command input below
 	cmdheight = 1,
 
@@ -63,7 +60,7 @@ local options = {
 	backup = false,
 
 	-- time to wait for a mapped sequence to complete (in milliseconds)
-	timeoutlen = 1000,
+	timeoutlen = 350,
 
 	-- enable persistent undo
 	undofile = true,
@@ -177,6 +174,14 @@ vim.opt.iskeyword:append("-")
 
 -- patterns to ignore during file-navigation
 vim.opt.wildignore:append("*.o,*.rej,*.so")
+
+-- Sync clipboard between OS and Neovim.
+--  Schedule the setting after `UiEnter` because it can increase startup-time.
+--  Remove this option if you want your OS clipboard to remain independent.
+--  See `:help 'clipboard'`
+vim.schedule(function()
+	vim.opt.clipboard = "unnamedplus"
+end)
 
 --
 -- Commands
