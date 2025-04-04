@@ -1,6 +1,7 @@
 return {
 	-- use for status line
 	"nvim-lualine/lualine.nvim",
+
 	dependencies = {
 		"echasnovski/mini.nvim", -- mini.icons
 	},
