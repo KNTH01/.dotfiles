@@ -5,11 +5,15 @@ return {
 		vim.api.nvim_set_keymap("n", "<leader>A", ":ASToggle<CR>", {})
 		require("auto-save").setup({
 			condition = function(buf)
+				-- First check if buffer is valid
+				if not buf or not vim.api.nvim_buf_is_valid(buf) then
+					return false
+				end
+
 				local excluded_filetypes = {
 					"NeogitStatus",
 					"NeogitDiffView",
-          "harpoon",
-          -- "gitcommit",
+					"harpoon",
 				}
 				local filetype = vim.bo[buf].filetype
 
@@ -21,14 +25,6 @@ return {
 
 				return true
 			end,
-
-			-- execution_message = {
-			-- 	message = function() -- message to print on save
-			-- 		-- return ("AutoSave: saved at " .. vim.fn.strftime("%H:%M:%S"))
-			-- 		-- disable auto-save message
-			-- 		return "toto"
-			-- 	end,
-			-- },
 		})
 	end,
 }
