@@ -1,6 +1,6 @@
 ---@class snacks.dashboard.Config
 local opts_dashboard = {
-	enabled = false,
+	enabled = true,
 	sections = {
 		{ section = "header" },
 		{ section = "keys", gap = 1, padding = 1 },
@@ -18,9 +18,11 @@ local opts_dashboard = {
 
 return {
 	"folke/snacks.nvim",
+
 	enabled = true,
 	priority = 1000,
 	lazy = false,
+
 	---@type snacks.Config
 	opts = {
 
@@ -28,6 +30,7 @@ return {
 
 		---@class snacks.bigfile.Config
 		bigfile = {
+			enabled = true,
 			notify = true, -- show notification when big file detected
 			size = 1.5 * 1024 * 1024, -- 1.5MB
 			-- Enable or disable features when big file detected
@@ -47,7 +50,7 @@ return {
 
 		quickfile = { enabled = true },
 
-		statuscolumn = { enabled = true },
+		statuscolumn = { enabled = false },
 
 		words = { enabled = true },
 
