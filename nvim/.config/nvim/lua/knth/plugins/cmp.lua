@@ -28,13 +28,17 @@ return {
 			["<C-j>"] = { "select_next", "fallback" },
 
 			-- TODO: signature
-			["<C-p>"] = { "select_next", "fallback" },
+			["<C-p>"] = { "show_signature" },
 
 			-- show with a list of providers
-			-- TODO: TOGGLE
 			["<C-e>"] = {
 				function(cmp)
-					cmp.show()
+					print(cmp.is_visible())
+					if cmp.is_visible() then
+						cmp.cancel()
+					else
+						cmp.show()
+					end
 				end,
 			},
 		},
