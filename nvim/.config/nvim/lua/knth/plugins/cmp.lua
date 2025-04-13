@@ -27,10 +27,16 @@ return {
 			["<C-k>"] = { "select_prev", "fallback" },
 			["<C-j>"] = { "select_next", "fallback" },
 
-			-- TODO: signature
-			["<C-p>"] = { "show_signature" },
+			["<C-p>"] = {
+				function(cmp)
+					if cmp.is_signature_visible() then
+						cmp.hide_signature()
+					else
+						cmp.show_signature()
+					end
+				end,
+			},
 
-			-- show with a list of providers
 			["<C-e>"] = {
 				function(cmp)
 					print(cmp.is_visible())
