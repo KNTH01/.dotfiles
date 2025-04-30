@@ -161,8 +161,8 @@ return {
 			local builtin = require("telescope.builtin")
 
 			vim.keymap.set("n", "<Leader>FF", builtin.git_files, { desc = "[F]ind Git [F]iles" })
-			vim.keymap.set("n", "<Leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
-			vim.keymap.set("n", "<Leader>fg", builtin.live_grep, { desc = "[F]ind [G]rep" })
+			-- vim.keymap.set("n", "<Leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+			-- vim.keymap.set("n", "<Leader>fg", builtin.live_grep, { desc = "[F]ind [G]rep" })
 			vim.keymap.set("n", "<Leader>fw", builtin.grep_string, { desc = "[F]ind [W]ord" })
 			vim.keymap.set("n", "<Leader>fb", builtin.git_branches, { desc = "[F]ind Git [B]ranches" })
 			vim.keymap.set("n", "<Leader>fh", builtin.help_tags, { desc = "[F]ind [h]elp" })
@@ -173,12 +173,12 @@ return {
 			end, { desc = "[F]ind [D]iagnostics" })
 			vim.keymap.set("n", "<leader>th", builtin.colorscheme, { desc = 'find ColorScheme ("th" for theme)' })
 			vim.keymap.set("n", "<leader>ci", builtin.git_commits, { desc = 'find Git commits ("ci" for commit)' })
-			vim.keymap.set(
-				"n",
-				"<Leader><space>",
-				builtin.current_buffer_fuzzy_find,
-				{ desc = "Fuzzy Find in Current Buffer" }
-			)
+			-- vim.keymap.set(
+			-- 	"n",
+			-- 	"<Leader><space>",
+			-- 	builtin.current_buffer_fuzzy_find,
+			-- 	{ desc = "Fuzzy Find in Current Buffer" }
+			-- )
 			vim.keymap.set("n", "<Leader>fp", ":Telescope media_files<CR>", { desc = "[F]ind media" })
 		end,
 	},

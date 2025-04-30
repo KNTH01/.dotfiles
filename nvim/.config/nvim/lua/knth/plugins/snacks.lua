@@ -9,6 +9,20 @@ local opts_dashboard = {
 	},
 }
 
+---@class snacks.picker.Config
+local opts_picker = {
+	prompt = " ",
+
+	win = {
+		input = {
+			keys = {
+				["<C-n>"] = { "history_forward", mode = { "i", "n" } },
+				["<C-p>"] = { "history_back", mode = { "i", "n" } },
+			},
+		},
+	},
+}
+
 return {
 	"folke/snacks.nvim",
 
@@ -19,6 +33,7 @@ return {
 	---@type snacks.Config
 	opts = {
 		dashboard = opts_dashboard,
+		picker = opts_picker,
 		bigfile = { enabled = true },
 		notifier = { enabled = true },
 		scroll = { enabled = true },
@@ -34,6 +49,70 @@ return {
 	},
 
 	keys = {
+
+		-- Picker
+		{
+			"<leader>,",
+			function()
+				Snacks.picker.buffers() -- list des buffers, osef
+			end,
+			desc = "Buffers",
+		},
+		{
+			"<leader>/",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Grep",
+		},
+		{
+			"<leader>:",
+			function()
+				Snacks.picker.command_history()
+			end,
+			desc = "Command History",
+		},
+		{
+			"<leader>n",
+			function()
+				Snacks.picker.notifications()
+			end,
+			desc = "Notification History",
+		},
+		{
+			"<leader>e",
+			function()
+				Snacks.explorer()
+			end,
+			desc = "File Explorer",
+		},
+		-- Picker - files
+		{
+			"<leader>ff",
+			function()
+				Snacks.picker.smart()
+			end,
+			desc = "smart Find Files",
+		},
+
+		-- Picker - grep
+		{
+			"<leader>fg",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Find Grep",
+		},
+		{
+			"<leader><space>",
+			function()
+				vim.cmd("normal! gg") -- workaround to fix lines picker
+				Snacks.picker.lines()
+			end,
+			desc = "Find Grep",
+		},
+
+		-- Toggler
 		{
 			"<leader>un",
 			function()
