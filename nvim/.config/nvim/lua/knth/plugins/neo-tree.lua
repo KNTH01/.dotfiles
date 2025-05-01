@@ -1,6 +1,7 @@
 return {
 	"nvim-neo-tree/neo-tree.nvim",
 	branch = "v2.x",
+	enabled = false,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"MunifTanjim/nui.nvim",
@@ -36,7 +37,7 @@ return {
 				priority = 20, -- Optional: set the priority of the signs
 			},
 		})
-    
+
 		if vim.fn.argc() == 1 then
 			local stat = vim.loop.fs_stat(vim.fn.argv(0))
 			if stat and stat.type == "directory" then

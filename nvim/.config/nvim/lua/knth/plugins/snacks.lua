@@ -50,20 +50,13 @@ return {
 
 	keys = {
 
-		-- Picker
+		-- Picker general
 		{
 			"<leader>,",
 			function()
 				Snacks.picker.buffers() -- list des buffers, osef
 			end,
 			desc = "Buffers",
-		},
-		{
-			"<leader>/",
-			function()
-				Snacks.picker.grep()
-			end,
-			desc = "Grep",
 		},
 		{
 			"<leader>:",
@@ -86,13 +79,63 @@ return {
 			end,
 			desc = "File Explorer",
 		},
-		-- Picker - files
+		{
+			"<leader>th",
+			function()
+				Snacks.picker.colorschemes()
+			end,
+			desc = "Pick colorschemes / themes",
+		},
+
+		-- find
 		{
 			"<leader>ff",
 			function()
 				Snacks.picker.smart()
 			end,
 			desc = "smart Find Files",
+		},
+		{
+			"<leader>f.",
+			function()
+				Snacks.picker.recent()
+			end,
+			desc = "Recent files",
+		},
+		{
+			"<leader>fd",
+			function()
+				Snacks.picker.diagnostics()
+			end,
+			desc = "Find Diagnostics",
+		},
+		{
+			"<leader>fD",
+			function()
+				Snacks.picker.diagnostics_buffer()
+			end,
+			desc = "Find Buffer Diagnostics",
+		},
+		{
+			"<leader>fk",
+			function()
+				Snacks.picker.keymaps()
+			end,
+			desc = "Keymaps",
+		},
+		{
+			"<leader>m",
+			function()
+				Snacks.picker.marks()
+			end,
+			desc = "Marks",
+		},
+		{
+			"<leader>fh",
+			function()
+				Snacks.picker.help()
+			end,
+			desc = "Help Pages",
 		},
 
 		-- Picker - grep
@@ -104,12 +147,78 @@ return {
 			desc = "Find Grep",
 		},
 		{
+			"<leader>/",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Grep",
+		},
+		{
+			"<leader>fw",
+			function()
+				Snacks.picker.grep_word()
+			end,
+			desc = "Find Word",
+		},
+		{
 			"<leader><space>",
 			function()
 				vim.cmd("normal! gg") -- workaround to fix lines picker
 				Snacks.picker.lines()
 			end,
 			desc = "Find Grep",
+		},
+
+		-- Picker LSP
+		{
+			"gd",
+			function()
+				Snacks.picker.lsp_definitions()
+			end,
+			desc = "Goto Definition",
+		},
+		{
+			"gD",
+			function()
+				Snacks.picker.lsp_declarations()
+			end,
+			desc = "Goto Declaration",
+		},
+		{
+			"grr",
+			function()
+				Snacks.picker.lsp_references()
+			end,
+			nowait = true,
+			desc = "References",
+		},
+		{
+			"gri",
+			function()
+				Snacks.picker.lsp_implementations()
+			end,
+			desc = "Goto Implementation",
+		},
+		{
+			"grt",
+			function()
+				Snacks.picker.lsp_type_definitions()
+			end,
+			desc = "Goto T[y]pe Definition",
+		},
+		{
+			"<leader>fs",
+			function()
+				Snacks.picker.lsp_symbols()
+			end,
+			desc = "LSP Symbols",
+		},
+		{
+			"<leader>fS",
+			function()
+				Snacks.picker.lsp_workspace_symbols()
+			end,
+			desc = "LSP Workspace Symbols",
 		},
 
 		-- Toggler
