@@ -38,8 +38,12 @@ return {
 		notifier = { enabled = true },
 		scroll = { enabled = true },
 		quickfile = { enabled = true },
-		statuscolumn = { enabled = false },
+		indent = { enabled = true, char = "┊" },
+		input = { enabled = true },
 		words = { enabled = true },
+		scope = { enabled = true },
+		image = { enabled = true },
+		statuscolumn = { enabled = true },
 
 		styles = {
 			notification = {
@@ -163,7 +167,7 @@ return {
 		{
 			"<leader><space>",
 			function()
-				vim.cmd("normal! gg") -- workaround to fix lines picker
+				-- vim.cmd("normal! gg") -- workaround to fix lines picker
 				Snacks.picker.lines()
 			end,
 			desc = "Find Grep",
