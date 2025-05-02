@@ -9,7 +9,7 @@ return {
 				Snacks.picker.todo_comments()
 			end
 ,
-			desc = "Open TODOs list in Telescope",
+			desc = "TODOs",
 		},
 	},
 	config = function()

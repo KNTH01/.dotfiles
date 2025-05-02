@@ -318,6 +318,21 @@ return {
 			desc = "Prev Reference",
 		},
 		{
+			"<leader>z",
+			function()
+				Snacks.zen()
+			end,
+			desc = "Toggle Zen Mode",
+		},
+		{
+			"<leader>Z",
+			function()
+				Snacks.zen.zoom()
+			end,
+			desc = "Toggle Zoom",
+		},
+
+		{
 			"<leader>N",
 			desc = "Neovim News",
 			function()

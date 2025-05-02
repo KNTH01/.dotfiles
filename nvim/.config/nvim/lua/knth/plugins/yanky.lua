@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		{ "kkharji/sqlite.lua" },
 	},
+	enabled = false,
 	config = function()
 		local utils = require("yanky.utils")
 		local mapping = require("yanky.telescope.mapping")
