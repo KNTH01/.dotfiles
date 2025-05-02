@@ -21,6 +21,12 @@ local opts_picker = {
 			},
 		},
 	},
+
+	sources = {
+		explorer = {
+			layout = { layout = { position = "right" } },
+		},
+	},
 }
 
 return {
@@ -44,6 +50,7 @@ return {
 		scope = { enabled = true },
 		image = { enabled = true },
 		statuscolumn = { enabled = true },
+		explorer = { enabled = true },
 
 		styles = {
 			notification = {
