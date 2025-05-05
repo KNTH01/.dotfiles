@@ -26,15 +26,21 @@ return {
 					local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
 					local filename = MiniStatusline.section_filename({ trunc_width = 140 })
 					local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
-					local location = MiniStatusline.section_location({ trunc_width = 75 })
 					local search = MiniStatusline.section_searchcount({ trunc_width = 75 })
 
-					-- Set MiniStatuslineLazyPkg to have blue text on a dark background
-					vim.api.nvim_set_hl(0, "MiniStatuslineLazyPkg", { fg = "#61AFEF", bg = "#1E2127" })
+					-- local location = MiniStatusline.section_location({ trunc_width = 75 })
+					local location = "%l│%2v"
+
+					local colors = require("catppuccin.palettes").get_palette()
+					vim.api.nvim_set_hl(0, "MiniStatuslineLazyPkg", {
+						fg = colors.red, -- Use Catppuccin's blue
+						bg = colors.mantle, -- Use Catppuccin's mantle (background color)
+						bold = true, -- Make it bold for emphasis
+					})
 
 					return MiniStatusline.combine_groups({
 						{ hl = mode_hl, strings = { mode } },
-						{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
+						{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
 						"%<", -- Mark general truncate point
 						{ hl = "MiniStatuslineFilename", strings = { filename } },
 						"%=", -- End left alignment
