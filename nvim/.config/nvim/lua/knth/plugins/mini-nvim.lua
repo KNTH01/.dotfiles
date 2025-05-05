@@ -29,7 +29,7 @@ return {
 					local search = MiniStatusline.section_searchcount({ trunc_width = 75 })
 
 					-- local location = MiniStatusline.section_location({ trunc_width = 75 })
-					local location = "%l│%2v"
+					local location = "%l:%2v"
 
 					local colors = require("catppuccin.palettes").get_palette()
 					vim.api.nvim_set_hl(0, "MiniStatuslineLazyPkg", {
