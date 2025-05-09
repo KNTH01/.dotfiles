@@ -40,15 +40,19 @@ return {
 
 					return MiniStatusline.combine_groups({
 						{ hl = mode_hl, strings = { mode } },
-						{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
+
+						{ hl = "MiniStatuslineDevinfo", strings = { git, diff } },
 						"%<", -- Mark general truncate point
+
 						{ hl = "MiniStatuslineFilename", strings = { filename } },
 						"%=", -- End left alignment
 
 						-- Add lazy updates to your statusline, using MiniStatuslineDevinfo highlight
 						{ hl = "MiniStatuslineLazyPkg", strings = { require("lazy.status").updates() } },
 
+						{ hl = "MiniStatuslineDevinfo", strings = { diagnostics } },
 						{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+
 						{ hl = mode_hl, strings = { search, location } },
 					})
 				end,
