@@ -39,7 +39,6 @@ return {
 
 			["<C-e>"] = {
 				function(cmp)
-					print(cmp.is_visible())
 					if cmp.is_visible() then
 						cmp.cancel()
 					else
