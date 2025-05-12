@@ -8,15 +8,8 @@ return {
 			-- cmp
 			{ "saghen/blink.cmp" },
 
-			-- Automatically install LSPs and related tools to stdpath for Neovim
-
-			-- { "mason-org/mason.nvim", config = true, version = "1.11.0" },
-			-- { "mason-org/mason-lspconfig.nvim", version = "1.32.0" },
-
 			{ "mason-org/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
 			"mason-org/mason-lspconfig.nvim",
-
-			-- "WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			{ "antosha417/nvim-lsp-file-operations", config = true }, -- TODO: what is that??
 
@@ -112,8 +105,6 @@ return {
 				print("Make sure you have installed vue-language-server with Mason")
 				-- You could return here or set a fallback path
 			end
-
-			print(vue_language_server_path)
 
 			local servers = {
 				-- clangd = {},
@@ -280,18 +271,4 @@ return {
 			})
 		end,
 	},
-
-	-- {
-	-- 	"mrcjkb/rustaceanvim",
-	-- 	version = "^4", -- Recommended
-	-- 	ft = { "rust" },
-	--
-	-- 	config = function()
-	-- 		local my_config = require("knth.lsp_settings.rust")
-	--
-	-- 		vim.g.rustaceanvim = {
-	-- 			server = my_config.server,
-	-- 		}
-	-- 	end,
-	-- },
 }
