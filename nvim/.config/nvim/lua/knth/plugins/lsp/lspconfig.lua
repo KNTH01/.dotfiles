@@ -9,9 +9,14 @@ return {
 			{ "saghen/blink.cmp" },
 
 			-- Automatically install LSPs and related tools to stdpath for Neovim
+
+			-- { "mason-org/mason.nvim", config = true, version = "1.11.0" },
+			-- { "mason-org/mason-lspconfig.nvim", version = "1.32.0" },
+
 			{ "mason-org/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
 			"mason-org/mason-lspconfig.nvim",
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
+
+			-- "WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			{ "antosha417/nvim-lsp-file-operations", config = true }, -- TODO: what is that??
 
@@ -87,6 +92,29 @@ return {
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 
+			-- local mason_registry = require("mason-registry")
+			-- local vue_language_server_path = ""
+			-- if mason_registry.is_installed("vue-language-server") then
+			-- 	vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
+			-- 		.. "/node_modules/@vue/language-server"
+			-- else
+			-- 	print("vue-language-server is not installed via Mason. Please install it first.")
+			-- 	-- You can either return here or set a default path
+			-- end
+
+			-- Use the stable approach recommended by Mason documentation for Mason 2
+			local vue_language_server_path =
+				vim.fn.expand("$MASON/packages/vue-language-server/node_modules/@vue/language-server")
+
+			-- Check if the directory exists
+			if vim.fn.isdirectory(vue_language_server_path) == 0 then
+				print("Warning: Vue language server directory not found at: " .. vue_language_server_path)
+				print("Make sure you have installed vue-language-server with Mason")
+				-- You could return here or set a fallback path
+			end
+
+			print(vue_language_server_path)
+
 			local servers = {
 				-- clangd = {},
 				-- gopls = {},
@@ -109,11 +137,10 @@ return {
 				jsonls = require("knth.lsp_settings.jsonls"),
 
 				denols = {
-					root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
+					-- root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
 				},
 
 				ts_ls = {
-					root_dir = require("lspconfig").util.root_pattern("package.json"),
 					single_file_support = false,
 
 					on_init = function(client)
@@ -121,6 +148,16 @@ return {
 						client.server_capabilities.documentFormattingProvider = false
 						client.server_capabilities.documentFormattingRangeProvider = false
 					end,
+
+					init_options = {
+						plugins = {
+							{
+								name = "@vue/typescript-plugin",
+								location = vue_language_server_path,
+								languages = { "vue" },
+							},
+						},
+					},
 
 					settings = {
 						typescript = {
@@ -151,16 +188,10 @@ return {
 						},
 					},
 
-					-- init_options = {
-					-- plugins = {
-					-- 	{
-					-- 		name = "@vue/typescript-plugin",
-					-- 		location = volar_path,
-					-- 		languages = { "vue" },
-					-- 	},
-					-- },
-					-- },
+					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
 				},
+
+				volar = {},
 
 				emmet_ls = {
 					filetypes = {
@@ -182,53 +213,6 @@ return {
 						"svelte",
 						"typescriptreact",
 						"javascriptreact",
-					},
-				},
-
-				["volar@1.8.27"] = {
-					on_init = function(client)
-						-- Format using Prettier
-						client.server_capabilities.documentFormattingProvider = false
-						client.server_capabilities.documentFormattingRangeProvider = false
-					end,
-					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-					-- init_options = {
-					-- 	vue = {
-					-- 		hybridMode = false,
-					-- 	},
-					-- },
-
-					-- on_new_config = function(new_config, new_root_dir)
-					-- 	new_config.init_options = {
-					-- 		typescript = {
-					-- 			tsdk = get_typescript_server_path(new_root_dir),
-					-- 		},
-					-- 		vue = {
-					-- 			hybridMode = false,
-					-- 		},
-					-- 	}
-					-- end,
-					settings = {
-						typescript = {
-							inlayHints = {
-								enumMemberValues = {
-									enabled = true,
-								},
-								functionLikeReturnTypes = {
-									enabled = true,
-								},
-								propertyDeclarationTypes = {
-									enabled = true,
-								},
-								parameterTypes = {
-									enabled = true,
-									suppressWhenArgumentMatchesName = true,
-								},
-								variableTypes = {
-									enabled = true,
-								},
-							},
-						},
 					},
 				},
 
@@ -256,30 +240,23 @@ return {
 			-- You can add other tools here that you want Mason to install
 			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"prettier", -- prettier formatter
-				"stylua", -- lua formatter
-				"eslint_d", -- js linter
-			})
-			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						-- This handles overriding only values explicitly passed
-						-- by the server configuration above. Useful when disabling
-						-- certain features of an LSP (for example, turning off formatting for ts_ls)
-
-						local blink_cmp_capabilities = require("blink.cmp").get_lsp_capabilities(server.capabilities)
-
-						server.capabilities =
-							vim.tbl_deep_extend("force", {}, blink_cmp_capabilities, server.capabilities or {})
-
-						require("lspconfig")[server_name].setup(server)
-					end,
-				},
+				ensure_installed = ensure_installed,
 			})
+
+			-- If you need to extend capabilities for all servers
+			local blink_cmp_capabilities = require("blink.cmp").get_lsp_capabilities({})
+
+			-- Setup each server with customizations
+			for server_name, server_config in pairs(servers) do
+				-- Add capabilities
+				server_config.capabilities =
+					vim.tbl_deep_extend("force", {}, blink_cmp_capabilities, server_config.capabilities or {})
+
+				vim.lsp.config(server_name, server_config)
+				vim.lsp.enable(server_name)
+			end
 
 			-- Change the Diagnostic symbols in the sign column (gutter)
 			local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
