@@ -98,7 +98,7 @@ return {
 				jsonls = require("knth.lsp_settings.jsonls"),
 
 				denols = {
-					-- root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
+					root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
 				},
 
 				ts_ls = {
