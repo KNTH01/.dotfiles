@@ -76,6 +76,13 @@ return {
 				-- You could return here or set a fallback path
 			end
 
+			local function is_deno_project(bufnr_or_filename)
+				-- Use vim.fs.root, handles bufnr or filename
+				local root = vim.fs.root(bufnr_or_filename, { "deno.json", "deno.jsonc" })
+				local is_deno_project_var = root ~= nil
+				return is_deno_project_var
+			end
+
 			local servers = {
 				-- clangd = {},
 				-- gopls = {},
@@ -98,10 +105,43 @@ return {
 				jsonls = require("knth.lsp_settings.jsonls"),
 
 				denols = {
-					root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
+					-- Use a root_dir function to conditionally attach denols
+					root_dir = function(bufnr, on_dir)
+						local is_deno = is_deno_project(bufnr)
+
+						if is_deno then
+							-- If it IS a Deno project, find the root using the Deno specific pattern
+							local root = require("lspconfig").util.root_pattern(
+								"deno.json",
+								"deno.jsonc",
+								".git" -- Keep .git as fallback for root in Deno projects if needed
+							)(bufnr)
+
+							-- Call on_dir with the found Deno root (or nil if pattern didn't find one)
+							on_dir(root)
+						end
+					end,
+
+					single_file_support = false,
 				},
 
 				ts_ls = {
+					root_dir = function(bufnr, on_dir)
+						local is_deno = is_deno_project(bufnr)
+
+						if not is_deno then
+							-- If NOT Deno project, find the root using root_pattern based on Node/TS files
+							local root = require("lspconfig").util.root_pattern(
+								"package.json",
+								"tsconfig.json",
+								"jsconfig.json",
+								".git"
+							)(bufnr)
+
+							on_dir(root)
+						end
+					end,
+
 					single_file_support = false,
 
 					on_init = function(client)
