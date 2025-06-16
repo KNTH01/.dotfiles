@@ -61,13 +61,14 @@ set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
     set -gx PATH "$PNPM_HOME" $PATH
 end
+fish_add_path ~/.local/share/pnpm/global/bin
 
 # npm config set prefix '/home/knth/.local/share/npm'
 set -gx NPM_HOME "/home/knth/.local/share/npm"
 if not string match -q -- $NPM_HOME $PATH
     set -gx PATH "$NPM_HOME/bin" $PATH
 end
-# pnpm end
+# npm end
 
 #### aliases
 
@@ -138,3 +139,10 @@ function yy
     end
     rm -f -- "$tmp"
 end
+
+# pnpm
+set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
