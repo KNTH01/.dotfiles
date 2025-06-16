@@ -251,9 +251,24 @@ return {
 
 			-- Setup each server with customizations
 			for server_name, server_config in pairs(servers) do
+        -- folding_capabilities for ufo.nvim
+				local folding_capabilities = {
+					textDocument = {
+						foldingRange = {
+							dynamicRegistration = false,
+							lineFoldingOnly = true,
+						},
+					},
+				}
+
 				-- Add capabilities
-				server_config.capabilities =
-					vim.tbl_deep_extend("force", {}, blink_cmp_capabilities, server_config.capabilities or {})
+				server_config.capabilities = vim.tbl_deep_extend(
+					"force",
+					{},
+					blink_cmp_capabilities,
+					folding_capabilities,
+					server_config.capabilities or {}
+				)
 
 				vim.lsp.config(server_name, server_config)
 				vim.lsp.enable(server_name)
