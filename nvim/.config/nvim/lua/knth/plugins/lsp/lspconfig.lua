@@ -110,15 +110,7 @@ return {
 						local is_deno = is_deno_project(bufnr)
 
 						if is_deno then
-							-- If it IS a Deno project, find the root using the Deno specific pattern
-							local root = require("lspconfig").util.root_pattern(
-								"deno.json",
-								"deno.jsonc",
-								".git" -- Keep .git as fallback for root in Deno projects if needed
-							)(bufnr)
-
-							-- Call on_dir with the found Deno root (or nil if pattern didn't find one)
-							on_dir(root)
+							on_dir()
 						end
 					end,
 
@@ -130,15 +122,7 @@ return {
 						local is_deno = is_deno_project(bufnr)
 
 						if not is_deno then
-							-- If NOT Deno project, find the root using root_pattern based on Node/TS files
-							local root = require("lspconfig").util.root_pattern(
-								"package.json",
-								"tsconfig.json",
-								"jsconfig.json",
-								".git"
-							)(bufnr)
-
-							on_dir(root)
+							on_dir()
 						end
 					end,
 
@@ -243,7 +227,8 @@ return {
 			local ensure_installed = vim.tbl_keys(servers or {})
 
 			require("mason-lspconfig").setup({
-				ensure_installed = ensure_installed,
+				-- ensure_installed = ensure_installed,
+				ensure_installed = {},
 			})
 
 			-- If you need to extend capabilities for all servers
