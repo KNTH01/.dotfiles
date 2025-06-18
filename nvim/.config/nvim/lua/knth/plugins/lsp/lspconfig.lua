@@ -176,7 +176,7 @@ return {
 					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
 				},
 
-				volar = {},
+				vue_ls = {},
 
 				emmet_ls = {
 					filetypes = {
