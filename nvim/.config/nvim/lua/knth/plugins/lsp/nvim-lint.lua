@@ -39,6 +39,7 @@ return {
 			}
 		else
 			lint.linters_by_ft = {
+				markdown = { "markdownlint" },
 				javascript = { "oxlint" },
 				typescript = { "oxlint" },
 				javascriptreact = { "oxlint" },
