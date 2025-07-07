@@ -15,7 +15,7 @@ return {
 		vim.keymap.set("n", "zR", require("ufo").openAllFolds)
 		vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
 
-		vim.keymap.set("n", "<Tab>", "za", { desc = "Toggle fold" })
+		-- vim.keymap.set("n", "<Tab>", "za", { desc = "Toggle fold" })
 
 		-- Add this to your UFO config for fold preview
 		vim.keymap.set("n", "zK", function()
