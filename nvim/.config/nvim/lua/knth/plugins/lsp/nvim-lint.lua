@@ -26,29 +26,42 @@ return {
 			return false
 		end
 
-		-- Set linters based on ESLint config presence
-		if find_eslint_config() then
-			lint.linters_by_ft = {
-				javascript = { "eslint_d" },
-				typescript = { "eslint_d" },
-				javascriptreact = { "eslint_d" },
-				typescriptreact = { "eslint_d" },
-				svelte = { "eslint_d" },
-				vue = { "eslint_d" },
-				astro = { "eslint_d" },
+		-- Function to check for Biome config
+		local function find_biome_config()
+			local current_dir = vim.fn.getcwd()
+			local config_files = {
+				"biome.jsonc",
+				"biome.json",
 			}
-		else
-			lint.linters_by_ft = {
-				markdown = { "markdownlint" },
-				javascript = { "oxlint" },
-				typescript = { "oxlint" },
-				javascriptreact = { "oxlint" },
-				typescriptreact = { "oxlint" },
-				svelte = { "oxlint" },
-				vue = { "oxlint" },
-				astro = { "oxlint" },
-			}
+
+			for _, file in ipairs(config_files) do
+				if fs.find(file, { path = current_dir, upward = true })[1] then
+					return true
+				end
+			end
+			return false
 		end
+
+		-- Set linters based on config presence (ESLint > Biome > oxlint)
+		local js_linter
+		if find_eslint_config() then
+			js_linter = "eslint_d"
+		elseif find_biome_config() then
+			js_linter = "biomejs"
+		else
+			js_linter = "oxlint"
+		end
+
+		lint.linters_by_ft = {
+			javascript = { js_linter },
+			typescript = { js_linter },
+			javascriptreact = { js_linter },
+			typescriptreact = { js_linter },
+			svelte = { js_linter },
+			vue = { js_linter },
+			astro = { js_linter },
+			markdown = { "markdownlint" },
+		}
 
 		-- Create autocommand which carries out the actual linting
 		-- on the specified events.
