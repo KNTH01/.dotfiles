@@ -38,7 +38,15 @@ return {
 				astro = { "eslint_d" },
 			}
 		else
-			lint.linters_by_ft = {}
+			lint.linters_by_ft = {
+				javascript = { "oxlint" },
+				typescript = { "oxlint" },
+				javascriptreact = { "oxlint" },
+				typescriptreact = { "oxlint" },
+				svelte = { "oxlint" },
+				vue = { "oxlint" },
+				astro = { "oxlint" },
+			}
 		end
 
 		-- Create autocommand which carries out the actual linting
