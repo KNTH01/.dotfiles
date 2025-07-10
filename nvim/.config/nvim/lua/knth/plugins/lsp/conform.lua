@@ -32,6 +32,7 @@ return {
 			javascriptreact = { js_formatter },
 			typescriptreact = { js_formatter },
 			vue = { js_formatter },
+			astro = { js_formatter },
 			svelte = { js_formatter },
 			css = { js_formatter },
 			html = { js_formatter },
@@ -48,11 +49,11 @@ return {
 		conform.setup({
 			formatters_by_ft = formatters_by_ft,
 
-			-- format_on_save = {
-			--   lsp_fallback = true,
-			--   async = false,
-			--   timeout_ms = 1000,
-			-- },
+			format_on_save = js_formatter == "biome-check" and {
+				lsp_fallback = true,
+				async = false,
+				timeout_ms = 1000,
+			} or nil,
 		})
 
 		vim.keymap.set({ "n", "v" }, "<leader>fm", function()

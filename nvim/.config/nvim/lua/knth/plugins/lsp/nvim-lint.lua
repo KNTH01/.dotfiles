@@ -46,8 +46,10 @@ return {
 		local js_linter
 		if find_eslint_config() then
 			js_linter = "eslint_d"
-		elseif find_biome_config() then
-			js_linter = "biomejs"
+
+		-- TODO: strange, looks like biome is here anyway
+		-- elseif find_biome_config() then
+		-- 	js_linter = "biomejs"
 		else
 			js_linter = "oxlint"
 		end
