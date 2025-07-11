@@ -49,11 +49,11 @@ return {
 		conform.setup({
 			formatters_by_ft = formatters_by_ft,
 
-			format_on_save = js_formatter == "biome-check" and {
-				lsp_fallback = true,
-				async = false,
-				timeout_ms = 1000,
-			} or nil,
+			-- format_on_save = js_formatter == "biome-check" and {
+			-- 	lsp_fallback = true,
+			-- 	async = false,
+			-- 	timeout_ms = 1000,
+			-- } or nil,
 		})
 
 		vim.keymap.set({ "n", "v" }, "<leader>fm", function()

@@ -117,7 +117,7 @@ return {
 					single_file_support = false,
 				},
 
-				ts_ls = {
+				vtsls = {
 					root_dir = function(bufnr, on_dir)
 						local is_deno = is_deno_project(bufnr)
 
@@ -134,17 +134,19 @@ return {
 						client.server_capabilities.documentFormattingRangeProvider = false
 					end,
 
-					init_options = {
-						plugins = {
-							{
-								name = "@vue/typescript-plugin",
-								location = vue_language_server_path,
-								languages = { "vue" },
+					settings = {
+						vtsls = {
+							tsserver = {
+								globalPlugins = {
+									{
+										name = "@vue/typescript-plugin",
+										location = vue_language_server_path,
+										languages = { "vue" },
+										configNamespace = "typescript",
+									},
+								},
 							},
 						},
-					},
-
-					settings = {
 						typescript = {
 							inlayHints = {
 								-- You can set this to 'all' or 'literals' to enable more hints
@@ -176,7 +178,6 @@ return {
 					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
 				},
 
-				vue_ls = {},
 
 				emmet_ls = {
 					filetypes = {
