@@ -178,6 +178,17 @@ return {
 					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
 				},
 
+				-- vue_ls = {},
+				vue_ls = {
+					-- fix Snacks opening vue files (Dashboard, Picker)
+					init_options = {
+						typescript = {
+							tsdk = vim.fn.expand(
+								"$MASON/packages/typescript-language-server/node_modules/typescript/lib"
+							),
+						},
+					},
+				},
 
 				emmet_ls = {
 					filetypes = {
@@ -227,26 +238,26 @@ return {
 			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
 
+			-- If you need to extend capabilities for all servers
+			local blink_cmp_capabilities = require("blink.cmp").get_lsp_capabilities({})
+
+			-- folding_capabilities for ufo.nvim
+			local folding_capabilities = {
+				textDocument = {
+					foldingRange = {
+						dynamicRegistration = false,
+						lineFoldingOnly = true,
+					},
+				},
+			}
+
 			require("mason-lspconfig").setup({
 				-- ensure_installed = ensure_installed,
 				ensure_installed = {},
 			})
 
-			-- If you need to extend capabilities for all servers
-			local blink_cmp_capabilities = require("blink.cmp").get_lsp_capabilities({})
-
 			-- Setup each server with customizations
 			for server_name, server_config in pairs(servers) do
-        -- folding_capabilities for ufo.nvim
-				local folding_capabilities = {
-					textDocument = {
-						foldingRange = {
-							dynamicRegistration = false,
-							lineFoldingOnly = true,
-						},
-					},
-				}
-
 				-- Add capabilities
 				server_config.capabilities = vim.tbl_deep_extend(
 					"force",
