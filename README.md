@@ -26,3 +26,10 @@ ln -s ~/.dotfiles/.zshrc ~/.zshrc
 - [ ] .zshrc
 - [ ] .profile
 - [ ] npm / yarn bin location configuration
+
+## stow
+
+```
+$> stow $folder
+$stow -t / $folder (for e.g: /etc, like for pacman.conf)
+```
