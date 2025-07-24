@@ -97,7 +97,7 @@ keymap.set("x", "<A-j>", ":move '>+1<CR>gv-gv")
 keymap.set("x", "<A-k>", ":move '<-2<CR>gv-gv")
 
 -- MISC
-keymap.set("n", "<leader>cp", '<cmd>let @+ = expand("%")<CR>') -- copy current file path
+keymap.set("n", "<leader>cp", '<cmd>let @+ = expand("%:.")<CR>') -- copy current file path
 -- keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
