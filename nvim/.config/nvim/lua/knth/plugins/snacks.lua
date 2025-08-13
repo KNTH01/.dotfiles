@@ -285,7 +285,7 @@ return {
 		{
 			"<leader>cR",
 			function()
-				Snacks.rename()
+				Snacks.rename.rename_file()
 			end,
 			desc = "Rename File",
 		},
@@ -379,6 +379,13 @@ return {
 					.option("background", { off = "light", on = "dark", name = "Dark Background" })
 					:map("<leader>ub")
 				Snacks.toggle.inlay_hints():map("<leader>ui")
+			end,
+		})
+
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "MiniFilesActionRename",
+			callback = function(event)
+				Snacks.rename.on_rename_file(event.data.from, event.data.to)
 			end,
 		})
 	end,
