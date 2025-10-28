@@ -4,6 +4,10 @@ return {
 	config = function()
 		local lint = require("lint")
 
+		-- Customize oxlint to use --type-aware flag
+		lint.linters.oxlint = require("lint").linters.oxlint
+		table.insert(lint.linters.oxlint.args, 1, '--type-aware')
+
 		local fs = require("vim.fs") -- Using vim.fs for file system operations
 
 		-- Function to check for ESLint config
