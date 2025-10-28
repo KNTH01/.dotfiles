@@ -26,30 +26,10 @@ return {
 			return false
 		end
 
-		-- Function to check for Biome config
-		local function find_biome_config()
-			local current_dir = vim.fn.getcwd()
-			local config_files = {
-				"biome.jsonc",
-				"biome.json",
-			}
-
-			for _, file in ipairs(config_files) do
-				if fs.find(file, { path = current_dir, upward = true })[1] then
-					return true
-				end
-			end
-			return false
-		end
-
 		-- Set linters based on config presence (ESLint > Biome > oxlint)
 		local js_linter
 		if find_eslint_config() then
 			js_linter = "eslint_d"
-
-		-- TODO: strange, looks like biome is here anyway
-		-- elseif find_biome_config() then
-		-- 	js_linter = "biomejs"
 		else
 			js_linter = "oxlint"
 		end
