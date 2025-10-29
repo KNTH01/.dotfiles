@@ -30,7 +30,7 @@ return {
 			return false
 		end
 
-		-- Set linters based on config presence (ESLint > Biome > oxlint)
+		-- Set linters based on config presence (ESLint > oxlint)
 		local js_linter
 		if find_eslint_config() then
 			js_linter = "eslint_d"
