@@ -5,4 +5,3 @@ fisher install jorgebucaran/autopair.fish
 fisher install lewisacidic/fish-git-abbr
 fisher install gazorby/fish-abbreviation-tips
 fisher install ilancosman/tide@v6
-fisher install jorgebucaran/nvm.fish

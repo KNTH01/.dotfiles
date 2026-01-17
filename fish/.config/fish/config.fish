@@ -25,54 +25,16 @@ if type -q fzf
     fzf --fish | source
 end
 
-
 if type -q atuin
     # call this after fzf for CTRL + R
     atuin init fish | source
 end
 
-
-# changing cat to bat
-# if string match -rq "Debian" (uname -a); or string match -rq "WSL2" (uname -a)
-#     # Alias for Debian or WSL2
-#   alias cat="batcat" 
-# else
-#   alias cat="bat" 
-# end
-# alias oldcat="/usr/bin/cat"
-
-# x server for wsl2
-# set -Ux DISPLAY (awk "/nameserver / {print \$2; exit}" /etc/resolv.conf 2>/dev/null):0
-# set -Ux LIBGL_ALWAYS_INDIRECT 1
-
-
-# cargo and rust
-# fish_add_path ~/.cargo/bin
-
-# flyctl
-fish_add_path ~/.fly/bin
-
 # my bin
 fish_add_path ~/.dotfiles/bin
 
-
-# pnpm + npm
-set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
-end
-fish_add_path ~/.local/share/pnpm/global/bin
-
-# npm config set prefix '/home/knth/.local/share/npm'
-set -gx NPM_HOME "/home/knth/.local/share/npm"
-if not string match -q -- $NPM_HOME $PATH
-    set -gx PATH "$NPM_HOME/bin" $PATH
-end
-# npm end
-
 #### aliases
 
-# alias cat="bat"
 if command -v batcat >/dev/null
     alias cat='batcat'
 else if command -v bat >/dev/null
@@ -129,7 +91,6 @@ alias update-mirrors='sudo reflector --verbose --score 100 --latest 20 --fastest
 alias update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias clean-arch='paru -Sc && paru -c'
 
-
 ### yazi
 function yy
     set tmp (mktemp -t "yazi-cwd.XXXXXX")
@@ -140,9 +101,4 @@ function yy
     rm -f -- "$tmp"
 end
 
-# pnpm
-set -gx PNPM_HOME "/home/knth/.local/share/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
-end
-# pnpm end
+/home/knth/.local/bin/mise activate fish | source
