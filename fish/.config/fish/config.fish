@@ -12,11 +12,6 @@ if test -e /home/knth/.nix-profile/etc/profile.d/nix.fish
     . /home/knth/.nix-profile/etc/profile.d/nix.fish
 end
 
-if not type -q tide
-    and type -q starship
-    starship init fish | source
-end
-
 if type -q zoxide
     zoxide init --cmd cd fish | source
 end
@@ -102,3 +97,8 @@ function yy
 end
 
 /home/knth/.local/bin/mise activate fish | source
+
+if not type -q tide
+    and type -q starship
+    starship init fish | source
+end
