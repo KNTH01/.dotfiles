@@ -83,6 +83,9 @@ return {
 				return is_deno_project_var
 			end
 
+			local effect_ls_path = vim.fn.getcwd() .. "/node_modules/@effect/language-service/"
+			local has_effect_ls = vim.fn.isdirectory(effect_ls_path) == 1
+
 			local servers = {
 				-- clangd = {},
 				-- gopls = {},
@@ -137,14 +140,21 @@ return {
 					settings = {
 						vtsls = {
 							tsserver = {
-								globalPlugins = {
+								globalPlugins = vim.list_extend({
 									{
 										name = "@vue/typescript-plugin",
 										location = vue_language_server_path,
 										languages = { "vue" },
 										configNamespace = "typescript",
 									},
-								},
+								}, has_effect_ls and {
+									{
+										name = "@effect/language-service",
+										location = effect_ls_path,
+										languages = { "typescript" },
+										configNamespace = "typescript",
+									},
+								} or {}),
 							},
 						},
 						typescript = {
