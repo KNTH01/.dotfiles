@@ -5,26 +5,7 @@ return {
 	config = function()
 		local conform = require("conform")
 
-		local fs = require("vim.fs") -- Using vim.fs for file system operations
-
-		-- Function to check for Biome config
-		local function find_biome_config()
-			local current_dir = vim.fn.getcwd()
-			local config_files = {
-				"biome.jsonc",
-				"biome.json",
-			}
-
-			for _, file in ipairs(config_files) do
-				if fs.find(file, { path = current_dir, upward = true })[1] then
-					return true
-				end
-			end
-			return false
-		end
-
-		-- Set formatters based on Biome config presence
-		local js_formatter = find_biome_config() and "biome-check" or "prettier"
+		local js_formatter = "oxfmt"
 
 		local formatters_by_ft = {
 			javascript = { js_formatter },
