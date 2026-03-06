@@ -30,7 +30,7 @@ config.ssh_domains = {
 }
 
 config.keys = {
-  {key="Enter", mods="SHIFT", action=wezterm.action{SendString="\x1b\r"}},
+  {key="Enter", mods="SHIFT", action=wezterm.action{SendString="\x1b[13;2u"}},
 }
 
 return config
