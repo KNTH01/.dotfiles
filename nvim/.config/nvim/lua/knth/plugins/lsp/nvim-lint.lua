@@ -44,7 +44,6 @@ return {
 			javascriptreact = { js_linter },
 			typescriptreact = { js_linter },
 			svelte = { js_linter },
-			vue = { js_linter },
 			astro = { js_linter },
 			markdown = { "markdownlint" },
 		}

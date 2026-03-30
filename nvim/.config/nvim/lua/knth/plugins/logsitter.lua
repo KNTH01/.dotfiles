@@ -16,6 +16,6 @@ return {
 		local javascript_logger = require("logsitter.lang.javascript")
 
 		logsitter.register(require("knth.logsitter.rust-logger"), { "rust" })
-		logsitter.register(javascript_logger, { "vue", "astro", "svelte" })
+		logsitter.register(javascript_logger, { "astro", "svelte" })
 	end,
 }

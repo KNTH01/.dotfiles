@@ -12,7 +12,6 @@ return {
 			typescript = { js_formatter },
 			javascriptreact = { js_formatter },
 			typescriptreact = { js_formatter },
-			vue = { js_formatter },
 			astro = { js_formatter },
 			svelte = { js_formatter },
 			css = { js_formatter },
