@@ -55,27 +55,6 @@ return {
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 
-			-- local mason_registry = require("mason-registry")
-			-- local vue_language_server_path = ""
-			-- if mason_registry.is_installed("vue-language-server") then
-			-- 	vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
-			-- 		.. "/node_modules/@vue/language-server"
-			-- else
-			-- 	print("vue-language-server is not installed via Mason. Please install it first.")
-			-- 	-- You can either return here or set a default path
-			-- end
-
-			-- Use the stable approach recommended by Mason documentation for Mason 2
-			local vue_language_server_path =
-				vim.fn.expand("$MASON/packages/vue-language-server/node_modules/@vue/language-server")
-
-			-- Check if the directory exists
-			if vim.fn.isdirectory(vue_language_server_path) == 0 then
-				print("Warning: Vue language server directory not found at: " .. vue_language_server_path)
-				print("Make sure you have installed vue-language-server with Mason")
-				-- You could return here or set a fallback path
-			end
-
 			local function is_deno_project(bufnr_or_filename)
 				-- Use vim.fs.root, handles bufnr or filename
 				local root = vim.fs.root(bufnr_or_filename, { "deno.json", "deno.jsonc" })
@@ -140,21 +119,14 @@ return {
 					settings = {
 						vtsls = {
 							tsserver = {
-								globalPlugins = vim.list_extend({
-									{
-										name = "@vue/typescript-plugin",
-										location = vue_language_server_path,
-										languages = { "vue" },
-										configNamespace = "typescript",
-									},
-								}, has_effect_ls and {
+								globalPlugins = has_effect_ls and {
 									{
 										name = "@effect/language-service",
 										location = effect_ls_path,
 										languages = { "typescript" },
 										configNamespace = "typescript",
 									},
-								} or {}),
+								} or {},
 							},
 						},
 						typescript = {
@@ -185,20 +157,9 @@ return {
 						},
 					},
 
-					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
 				},
 
-				-- vue_ls = {},
-				vue_ls = {
-					-- fix Snacks opening vue files (Dashboard, Picker)
-					init_options = {
-						typescript = {
-							tsdk = vim.fn.expand(
-								"$MASON/packages/typescript-language-server/node_modules/typescript/lib"
-							),
-						},
-					},
-				},
 
 				emmet_ls = {
 					filetypes = {
