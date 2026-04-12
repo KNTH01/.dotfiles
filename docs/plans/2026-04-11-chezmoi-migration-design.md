@@ -2,265 +2,480 @@
 
 ## Goal
 
-Migrate the current gnustow-managed dotfiles repo to **chezmoi** with a single shared source state, machine-based overrides, and age-encrypted secrets.
+Migrate the current GNU Stow-managed dotfiles repo to **chezmoi** while keeping the active workflow safe on `velvet`, preserving a familiar core CLI environment on `pixelpirate`, and making future laptop onboarding explicit and low-friction.
 
-The end state should:
+The approved phase 1 outcome is:
 
-- keep the current userland experience working on **velvet** and **pixelpirate**
-- make it easy to add a future laptop that mostly inherits velvet
-- keep the repo readable and low-duplication
-- avoid bootstrapping package installs or system setup in this phase
+- `chezmoi` becomes the manager for the first core slice
+- `~/.dotfiles` remains the only Git source repo
+- the actual chezmoi source state lives under `home/`
+- `pixelpirate` receives only the core CLI/userland slice
+- encrypted Git identity moves into an age-encrypted chezmoi file
+- `nvim`, desktop/UI configs, `zsh`, and system-level config are deferred
 
-## Context
+## Scope
 
-Today the repo is organized around stow-style folders per app. That works, but it makes cross-machine management awkward and encourages path-heavy configs.
+### Phase 1
 
-The important real-world constraint is that **pixelpirate is a Debian server, but it still uses the same desktop/userland configs when SSHing in**. So the design is not really “desktop vs server”. It is:
+Phase 1 migrates:
 
-- mostly shared config
-- a few machine-specific overrides
-- very limited OS-specific branching only when truly necessary
+- chezmoi scaffolding and machine data
+- `git`
+- encrypted `~/.gitconfig.user`
+- `tmux`
+- `mise`
+- `fish`
+- CLI-safe helper scripts that should live in `~/.local/bin`
+- README / legacy workflow documentation updates
 
-The current known machines are:
+### Deferred from phase 1
 
-- **velvet** — current Arch Linux machine
-- **pixelpirate** — Debian server
-- **future laptop** — expected to be Arch or CachyOS, and should mostly inherit velvet
+These stay out until the core migration is stable:
 
-## Non-goals
-
-This migration does **not** try to solve everything at once.
-
-Out of scope for this phase:
-
+- `nvim`
+- desktop/UI config (`wezterm`, `alacritty`, `rofi`, `polybar`, `awesome`, `xmonad`, `vivaldi`, etc.)
+- `zsh`
+- `/etc` and other system-level files
 - package installation / bootstrap automation
-- full system provisioning
-- `/etc` management like `pacman.conf`
-- replacing chezmoi itself with config management for this repo
-- a large refactor of app configs unless needed for portability
+- a full secrets sweep beyond `~/.gitconfig.user`
 
-## Proposed Architecture
+## Key Decisions From the Grilling Session
+
+- **Manager:** choose `chezmoi` now; do not pause for a broader tooling evaluation.
+- **Repository model:** keep `/home/knth/.dotfiles` as the source-of-truth repo.
+- **Source root:** use `.chezmoiroot` with `home`.
+- **Machine model:** keep minimal repo-tracked machine data and fail closed for unknown hosts.
+- **Branching strategy:** prefer shared config + optional-tool checks + portable paths before hostname branching.
+- **Server policy:** `pixelpirate` gets core CLI/userland only, not desktop/UI payload.
+- **Secrets:** use `age`, reuse the existing local gopass age identity, keep public recipients in Git, keep private identities local.
+- **Generated artifacts:** do not track generated Fish completions, Fisher vendor state, or `fish_variables`.
+- **Fish bootstrap:** do not auto-install Fisher plugins during `chezmoi apply`.
+- **Mise bootstrap:** do not auto-run `mise install` during `chezmoi apply`.
+- **Backup policy:** no separate backup workflow beyond Git for tracked files.
+- **Stow transition:** retire the broad Stow installer/docs as the primary workflow as soon as phase 1 lands.
+
+## Repo and Local Configuration Model
 
 ### Repo layout
 
-The repo root stays the repo root, but the actual chezmoi source state lives under `home/`. The git repository itself can still be named `.dotfiles`; chezmoi only cares about the source root.
+The repo root remains the repo root. The chezmoi source state is narrowed to `home/` via `.chezmoiroot`.
 
-A `.chezmoiroot` file at the repo root will point chezmoi at that subdirectory:
+```text
+/home/knth/.dotfiles/
+  .chezmoiroot
+  README.md
+  chezmoi/
+    age/
+      recipients.txt
+  docs/
+    prd/
+    plans/
+  home/
+    .chezmoidata/
+      machines.yaml
+    dot_gitconfig
+    encrypted_private_dot_gitconfig.user
+    dot_tmux.conf
+    dot_config/
+      fish/
+      mise/
+    executable_dot_local/
+      bin/
+```
+
+`.chezmoiroot` contains:
 
 ```text
 home
 ```
 
-That means the repo can keep non-source-state files at the top level, while chezmoi reads only from `home/`.
+That keeps all target-state files inside `home/`, while docs and migration assets stay at repo root.
 
-Suggested layout:
+### Local chezmoi config
 
-```text
-repo/
-  .chezmoiroot
-  README.md
-  docs/
-    plans/
-  home/
-    dot_zshrc.tmpl
-    dot_tmux.conf
-    dot_gitconfig
-    encrypted_private_dot_gitconfig.user
-    dot_local/
-      bin/
-    dot_config/
-      fish/
-      nvim/
-      bat/
-      gitui/
-      wezterm/
-      alacritty/
-      rofi/
-      polybar/
-      lvim/
-      awesome/
-    dot_zsh/
-      arco.zsh
-      me.aliases
-      arcolinux.aliases
-    dot_xmonad/
-      scripts/
-      xmonad.hs
+chezmoi itself must be pointed at `/home/knth/.dotfiles` instead of the default `~/.local/share/chezmoi` source directory.
+
+The machine-local config file should be:
+
+`/home/knth/.config/chezmoi/chezmoi.toml`
+
+Example:
+
+```toml
+sourceDir = "/home/knth/.dotfiles"
+encryption = "age"
+
+[age]
+    identities = ["/home/knth/.config/gopass/age/identities"]
 ```
 
-### Machine model
+This file is intentionally **local-only** and not tracked in Git.
 
-The primary axis is **hostname**, not OS.
+### Existing default chezmoi source dir
 
-- `pixelpirate` gets explicit hostname-based overrides where needed
-- `velvet` and the future laptop share the common/default behavior
-- OS-specific branching is allowed only as a fallback for truly platform-dependent bits
+`/home/knth/.local/share/chezmoi` is treated as stale/default chezmoi state, not as an active source repo. Once phase 1 is working, it should be retired so there is only one source of truth.
 
-The key principle is that **95% of the config should stay common**. Host-specific logic should be narrow and local.
+## Machine Model
 
-### Template strategy
+### Repo-tracked machine data
 
-Files that need portable paths, host-specific behavior, or optional command checks become `.tmpl` files.
+Minimal machine metadata lives in:
 
-Use templates for:
+`/home/knth/.dotfiles/home/.chezmoidata/machines.yaml`
 
-- hardcoded paths like `/home/knth/...`
-- hostname branches
-- optional integrations that may not exist on every machine
-- small per-machine variations in shell/editor setup
+Initial shape:
 
-Prefer simple checks in templates or shell snippets, such as:
+```yaml
+machines:
+  velvet:
+    isDesktop: true
+  pixelpirate:
+    isDesktop: false
+```
 
-- `{{ if eq .chezmoi.hostname "pixelpirate" }}` for real machine-specific differences
-- `type -q`, `command -v`, or `lookPath` for optional executables
-- `{{ .chezmoi.homeDir }}` instead of hardcoded home paths
+This is intentionally small. It should not grow a full inventory model unless a real need appears.
 
-The goal is to keep common files readable and avoid turning the repo into a maze of machine profiles.
+### Unknown-host policy
 
-## File Mapping Strategy
+Unknown hosts must **fail closed**.
 
-The existing stow folders map cleanly to chezmoi source-state names.
+That means:
 
-### Examples
+- common core config can still render
+- desktop-only behavior must default to **off**
+- a new laptop must be explicitly added to `machines.yaml` before it should be treated as desktop-like
 
-| Current path | Chezmoi source-state path |
-| --- | --- |
-| `zsh/.zshrc` | `home/dot_zshrc.tmpl` |
-| `zsh/arco.zsh` | `home/dot_zsh/arco.zsh` |
-| `zsh/.zsh/me.aliases` | `home/dot_zsh/me.aliases` |
-| `zsh/.zsh/arcolinux.aliases` | `home/dot_zsh/arcolinux.aliases` |
-| `fish/.config/fish/config.fish` | `home/dot_config/fish/config.fish.tmpl` |
-| `gitconfig/.gitconfig` | `home/dot_gitconfig` |
-| `gitconfig/.gitconfig.user` | `home/encrypted_private_dot_gitconfig.user` |
-| `tmux/.tmux.conf` | `home/dot_tmux.conf` |
-| `nvim/.config/nvim/...` | `home/dot_config/nvim/...` |
-| `bin/*` | `home/executable_dot_local/bin/*` |
-| `vivaldi/customcss/custom.css` | `home/dot_config/vivaldi/customcss/custom.css` or a similar portable target, depending on how it is consumed |
+### Branching policy
 
-### Rules of thumb
+Use this decision order when a config differs between machines:
 
-- hidden files in `$HOME` use `dot_`
-- hidden directories use `dot_` on the directory name
-- executable helper scripts use `executable_` when they should land as executable
-- secrets use `encrypted_` and usually `private_` too
-- templates use `.tmpl`
+1. shared config and portable paths
+2. optional-tool checks such as `type -q`, `command -v`, file existence, or `$HOME`
+3. hostname-based behavior for true exceptions
 
-### Current repo folders likely to migrate
-
-These are the main userland areas worth moving into chezmoi:
-
-- shell: `zsh/`, `fish/`, `tmux/`
-- editor: `nvim/`, `lvim/`
-- git: `gitconfig/`, `gitui/`
-- terminal/UI: `wezterm/`, `alacritty/`, `bat/`, `rofi/`, `polybar/`
-- desktop/windowing: `awesome/`, `xmonad/`
-- scripts/helpers: `bin/`
-- small app-specific config: `vivaldi/`
-
-`pacman/etc/pacman.conf` is intentionally left out of the first pass because it is system-level and not part of the common userland migration.
+Avoid creating broad Arch-vs-Debian config forks unless a real config file truly requires it.
 
 ## Secrets and Encryption
 
-Secrets will be stored encrypted in the chezmoi source state using **age**.
+### Identity model
 
-Design choices:
+Each machine keeps its own local age identity.
 
-- use `age` rather than `gpg`
-- keep one identity per machine
-- allow multiple recipients per encrypted file so the same secret can be shared across several authorized devices
-- keep the age identities on each machine, not in the repo
+For the current machines, reuse the existing local identity file:
 
-The sensitive file currently called out is:
+`/home/knth/.config/gopass/age/identities`
+
+Private identities never enter the repo.
+
+### Public recipients
+
+The canonical public recipient list should live in the repo at:
+
+`/home/knth/.dotfiles/chezmoi/age/recipients.txt`
+
+Recommended format:
+
+```text
+age1...
+age1...
+```
+
+One public recipient per line.
+
+This file is safe to version because the recipients are public.
+
+### How encryption is used
+
+Start with one encrypted file only:
 
 - `~/.gitconfig.user`
 
-That becomes an encrypted private chezmoi file. Additional secrets can follow the same pattern later.
+Because the local chezmoi config intentionally keeps identities local, encryption and re-encryption commands should explicitly use the repo-tracked public recipient file via `--age-recipient-file` when needed.
 
-When a new machine is added, the workflow should be:
+### New-machine onboarding
 
-1. generate an age identity for the new machine
-2. add its public recipient to the relevant encrypted files
-3. re-encrypt so the new device can decrypt them
+When a new laptop is added:
 
-## Runtime Flow
+1. generate or expose the machine’s local age identity
+2. derive its public recipient
+3. add its hostname to `home/.chezmoidata/machines.yaml`
+4. add its public recipient to `chezmoi/age/recipients.txt`
+5. re-encrypt secrets
+6. run `chezmoi diff` and `chezmoi apply --dry-run`
 
-The apply flow should stay simple:
+## Phase 1 File Mapping
 
-1. chezmoi reads the source state from `home/` via `.chezmoiroot`
-2. templates render using the local machine hostname and environment
-3. encrypted files decrypt only on authorized machines
-4. chezmoi writes the rendered files into `$HOME`
-5. `chezmoi diff` and `chezmoi apply` make changes visible before they land
+### Git
 
-This keeps the config deterministic and easy to reason about across machines.
+Current:
+
+- `gitconfig/.gitconfig`
+- local `~/.gitconfig.user`
+
+Target:
+
+- `home/dot_gitconfig`
+- `home/encrypted_private_dot_gitconfig.user`
+
+Notes:
+
+- Keep the include boundary exactly as it works now.
+- `~/.gitconfig.user` is the first and only encrypted secret in phase 1.
+
+### tmux
+
+Current:
+
+- `tmux/.tmux.conf`
+
+Target:
+
+- `home/dot_tmux.conf`
+
+Notes:
+
+- This is a straightforward static migration.
+- It is a good early low-risk cutover after Git.
+
+### mise
+
+Current:
+
+- local `/home/knth/.config/mise/config.toml`
+
+Target:
+
+- `home/dot_config/mise/config.toml`
+
+Notes:
+
+- Track the existing config as source-of-truth.
+- Do not add a machine override system yet.
+- Do not auto-run `mise install` from chezmoi.
+
+### Fish
+
+Current:
+
+- `fish/.config/fish/config.fish`
+- `fish/.config/fish/conf.d/*`
+- `fish/.config/fish/functions/*`
+- `fish/.config/fish/fish_plugins`
+- `fish/.config/fish/install_fisher.sh`
+- `fish/.config/fish/install_fisher_plugins.sh`
+- generated/vendor/local state mixed into the tree
+
+Target:
+
+- `home/dot_config/fish/config.fish`
+- split `conf.d/` files by concern
+- hand-written functions only
+- `fish_plugins`
+- documented manual Fisher bootstrap scripts
+
+Recommended split:
+
+```text
+home/dot_config/fish/
+  config.fish
+  fish_plugins
+  install_fisher.sh
+  install_fisher_plugins.sh
+  conf.d/
+    00-core-paths.fish.tmpl
+    10-optional-tools.fish.tmpl
+    20-prompt.fish.tmpl
+    30-atuin-env.fish
+    40-deno.fish.tmpl
+    50-arch-maintenance.fish.tmpl
+  functions/
+    fish_greeting.fish.tmpl
+    fish_user_key_bindings.fish
+    web2app.fish.tmpl
+    web2app-remove.fish.tmpl
+```
+
+Fish-specific rules:
+
+- keep `config.fish` thin
+- use `conf.d/` files for paths, optional tools, prompt, and machine-specific extras
+- replace hardcoded paths with `$HOME` where practical
+- remove `fish_add_path ~/.dotfiles/bin` in favor of `~/.local/bin`
+- guard optional tools like `mise`, `starship`, `zoxide`, `fzf`, `atuin`, and `fastfetch`
+- keep Arch maintenance aliases isolated rather than mixed with shared shell startup
+- treat desktop-only Fish functions as migrated files that are gated when Fish migrates
+
+Do **not** manage these as source-of-truth in chezmoi:
+
+- `fish/.config/fish/fisher/`
+- `fish/.config/fish/fish_variables`
+- generated completions like `deno.fish` and `mise.fish`
+
+These must be rebuildable from package/tool installation or from the documented Fish bootstrap step.
+
+### CLI-safe scripts
+
+Current:
+
+- `bin/cheat`
+- `bin/omarchy-webapp-install`
+
+Target in phase 1:
+
+- `home/executable_dot_local/bin/cheat`
+
+Deferred:
+
+- desktop-specific helpers like `omarchy-webapp-install`
+
+The goal is to standardize on `~/.local/bin` rather than `~/.dotfiles/bin`.
+
+## Deferred Slices
+
+### Neovim
+
+`nvim` is intentionally deferred even though it is important.
+
+Reason:
+
+- with normal chezmoi behavior, the source of truth moves to `home/dot_config/nvim/...`
+- that is a bigger workflow change for a live-edited Neovim config than for the other phase 1 files
+
+Deferring it keeps phase 1 lower-risk.
+
+### Desktop/UI configs
+
+Desktop/UI config will become a later slice.
+
+Examples:
+
+- `wezterm`
+- `alacritty`
+- `rofi`
+- `polybar`
+- `awesome`
+- `xmonad`
+- `vivaldi`
+
+When those files migrate, desktop/server gating should be introduced **only for those migrated files**.
+
+### zsh
+
+`zsh` is out of scope for now because it is no longer part of the active workflow.
+
+## Hybrid Migration Strategy
+
+During phase 1 there is a temporary hybrid period:
+
+- chezmoi manages migrated paths
+- Stow only remains relevant for untouched, unmigrated areas
+
+Critical rule:
+
+> Stow and chezmoi must never own the same target path at the same time.
+
+Consequences:
+
+- broad `install.sh` Stow usage becomes a footgun
+- migrated paths must move into `home/` immediately
+- once a path is migrated, README and installer guidance must stop telling the user to manage it with Stow
 
 ## Validation Strategy
 
-The migration is successful only if the following are true:
+Validation should be small, repeatable, and behavior-focused.
 
-- `chezmoi diff` is clean or explains expected differences
-- `chezmoi apply --dry-run` succeeds on both velvet and pixelpirate
-- common shell/editor configs still work on both machines
-- optional integrations do not error out when a command is missing
-- encrypted files decrypt on authorized machines
-- the future laptop can be added by reusing the velvet behavior with minimal extra branching
+### Checked-in validation
 
-Manual smoke tests after apply should include:
+Create a repo-tracked validation script suite under something like:
 
-- shell startup (`zsh` and `fish`)
-- `tmux` config load
-- `nvim` launch
-- `git` reading the private include file
-- a quick SSH session on pixelpirate to verify the common userland config behaves correctly
+`/home/knth/.dotfiles/tests/chezmoi/`
+
+The scripts should:
+
+- render to a temporary destination directory with `chezmoi -S /home/knth/.dotfiles apply -D <tmpdir> --force`
+- assert expected files are present
+- assert deferred/generated files are absent
+- smoke-test rendered Fish startup
+- verify the encrypted Git identity decrypts on authorized machines
+- verify the standard target paths are correct
+
+### Manual verification
+
+After a slice is ready on each machine:
+
+- `chezmoi diff`
+- `chezmoi apply --dry-run`
+- Fish smoke test
+- tmux smoke test
+- Git include/identity smoke test
+- mise config presence check
+- CLI script presence check in `~/.local/bin`
+
+Validation must be run on both `velvet` and `pixelpirate`.
+
+## Rollout Order
+
+The approved rollout order is:
+
+1. scaffolding (`.chezmoiroot`, local config, machine data, recipient file, validation harness)
+2. `git` + encrypted `~/.gitconfig.user`
+3. `tmux`
+4. `mise`
+5. `fish`
+6. CLI-safe scripts in `~/.local/bin`
+7. README / Stow workflow retirement and final verification
+
+This order proves the age flow early, handles simple static files before Fish, and leaves the riskiest shell cutover until the basics are already working.
 
 ## Risks and Mitigations
 
-### Risk: host-specific logic spreads everywhere
+### Risk: two source repos compete (`~/.dotfiles` and `~/.local/share/chezmoi`)
 
 Mitigation:
 
-- keep the common path as the default
-- only branch on hostname for true exceptions
-- prefer local template checks over global profile systems
+- point local chezmoi config at `/home/knth/.dotfiles`
+- retire the stale default source dir once phase 1 is working
 
-### Risk: hardcoded paths break on a new machine
-
-Mitigation:
-
-- replace absolute paths with `{{ .chezmoi.homeDir }}` or relative paths
-- avoid embedding `/home/knth` directly in migrated files
-
-### Risk: optional tools are missing on pixelpirate
+### Risk: Fish migration breaks startup on `pixelpirate`
 
 Mitigation:
 
-- guard integrations with `type -q`, `command -v`, or `lookPath`
-- keep the Debian server on the same userland configs, but don’t assume desktop-only tools are present
+- split Fish by concern
+- guard optional tools
+- exclude generated/vendor state
+- keep a documented manual Fisher rebuild step
 
-### Risk: secrets cannot be decrypted on a new device
+### Risk: machine-specific logic spreads everywhere
 
 Mitigation:
 
-- treat age recipient addition as part of the onboarding checklist for every new machine
-- verify decryption before applying the rest of the source state
+- keep machine data minimal
+- default unknown hosts to non-desktop behavior
+- add gating only when a file actually migrates
 
-## Rollout Plan at a High Level
+### Risk: secrets drift between machines
 
-This design is intended to be migrated in small slices:
+Mitigation:
 
-1. introduce `.chezmoiroot` and the `home/` source root
-2. move the most central shell and git files first
-3. migrate editor and terminal configs
-4. add age-encrypted secrets
-5. verify velvet and pixelpirate independently
-6. defer `/etc` and other system-level config to a follow-up phase
+- keep public recipients in a single repo-tracked file
+- keep private identities local only
+- start with one encrypted secret, not a full sweep
+
+### Risk: legacy Stow instructions remain usable after cutover
+
+Mitigation:
+
+- retire the broad Stow installer/docs in the same migration phase
+- make chezmoi the primary documented workflow as soon as phase 1 lands
 
 ## Summary
 
-The migration should keep the repo simple:
+Phase 1 is a deliberately narrow chezmoi migration:
 
-- one shared chezmoi source state under `home/`
-- hostname-based machine differences
-- age-encrypted secrets
-- no bootstrap or system provisioning in phase 1
-- userland configs that work on both velvet and pixelpirate, with the future laptop inheriting velvet by default
+- one Git repo at `/home/knth/.dotfiles`
+- one source root under `home/`
+- one minimal machine-data file under `home/.chezmoidata/`
+- one local chezmoi config pointing to that repo
+- one encrypted secret to prove the age workflow
+- one shared-first CLI/userland slice for `velvet` and `pixelpirate`
+- deferred `nvim`, desktop/UI, `zsh`, and system-level config until the core path is stable
