@@ -1,0 +1,5 @@
+machines:
+  velvet:
+    isDesktop: true
+  pixelpirate:
+    isDesktop: false
