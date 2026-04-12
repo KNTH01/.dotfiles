@@ -1,3 +1,5 @@
+{{- with index .machines .chezmoi.hostname }}
+{{- if .isDesktop }}
 function web2app-remove
     if test (count $argv) -ne 1
         echo "Usage: web2app-remove <AppName>"
@@ -12,3 +14,5 @@ function web2app-remove
     rm "$DESKTOP_FILE"
     rm "$ICON_PATH"
 end
+{{- end }}
+{{- end }}
