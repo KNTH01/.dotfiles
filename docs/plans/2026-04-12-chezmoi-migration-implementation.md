@@ -10,6 +10,32 @@
 
 ---
 
+## Current branch execution status (2026-04-12)
+
+This file is the **original execution plan**.
+
+The actual branch outcome is summarized in:
+
+- `docs/plans/2026-04-12-chezmoi-phase1-status-and-next-steps.md`
+
+Important branch differences from this original plan:
+
+- Tasks 1 through 6 are complete on `feat/chezmoi-migration-phase1`
+- Task 7 was **not** implemented as written because the repo-tracked `tests/chezmoi/*` scripts were removed from the final PR after review
+- final phase 1 validation on `velvet` is manual rather than checked-in shell tests
+- the actual encrypted Git secret path is `home/encrypted_dot_gitconfig.user.age`
+- the actual migrated CLI helper path is `home/dot_local/bin/executable_cheat`
+- `home/dot_local/bin/executable_fish-regenerate-completions` was added during review
+- these Fish files are plain `.fish`, not `.tmpl`:
+  - `home/dot_config/fish/conf.d/00-core-paths.fish`
+  - `home/dot_config/fish/conf.d/10-optional-tools.fish`
+  - `home/dot_config/fish/conf.d/20-prompt.fish`
+  - `home/dot_config/fish/conf.d/40-deno.fish`
+  - `home/dot_config/fish/conf.d/50-arch-maintenance.fish`
+  - `home/dot_config/fish/functions/fish_greeting.fish`
+
+If resuming this work later, use the status doc above instead of assuming every filename and validation step in the original plan still matches the branch.
+
 ## TDD note for this plan
 
 Most production changes here are configuration files, not application code. The implementation must still follow **@test-driven-development** by writing or updating a failing validation script before each config slice is migrated, running it to see the expected failure, making the minimal config change, and re-running the script until it passes.

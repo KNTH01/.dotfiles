@@ -39,6 +39,14 @@ These stay out until the core migration is stable:
 - package installation / bootstrap automation
 - a full secrets sweep beyond `~/.gitconfig.user`
 
+## Current branch status note (2026-04-12)
+
+The actual branch outcome for phase 1 is summarized in:
+
+- `docs/plans/2026-04-12-chezmoi-phase1-status-and-next-steps.md`
+
+Use that status doc as the source of truth for what actually landed, what changed during review, and what to do next. This design doc still captures the original approved shape, but several concrete filenames and the validation approach changed during execution.
+
 ## Key Decisions From the Grilling Session
 
 - **Manager:** choose `chezmoi` now; do not pause for a broader tooling evaluation.
@@ -74,12 +82,12 @@ The repo root remains the repo root. The chezmoi source state is narrowed to `ho
     .chezmoidata/
       machines.yaml
     dot_gitconfig
-    encrypted_private_dot_gitconfig.user
+    encrypted_dot_gitconfig.user.age
     dot_tmux.conf
     dot_config/
       fish/
       mise/
-    executable_dot_local/
+    dot_local/
       bin/
 ```
 
@@ -215,7 +223,7 @@ Current:
 Target:
 
 - `home/dot_gitconfig`
-- `home/encrypted_private_dot_gitconfig.user`
+- `home/encrypted_dot_gitconfig.user.age`
 
 Notes:
 
@@ -282,14 +290,14 @@ home/dot_config/fish/
   install_fisher.sh
   install_fisher_plugins.sh
   conf.d/
-    00-core-paths.fish.tmpl
-    10-optional-tools.fish.tmpl
-    20-prompt.fish.tmpl
+    00-core-paths.fish
+    10-optional-tools.fish
+    20-prompt.fish
     30-atuin-env.fish
-    40-deno.fish.tmpl
-    50-arch-maintenance.fish.tmpl
+    40-deno.fish
+    50-arch-maintenance.fish
   functions/
-    fish_greeting.fish.tmpl
+    fish_greeting.fish
     fish_user_key_bindings.fish
     web2app.fish.tmpl
     web2app-remove.fish.tmpl
@@ -322,7 +330,7 @@ Current:
 
 Target in phase 1:
 
-- `home/executable_dot_local/bin/cheat`
+- `home/dot_local/bin/executable_cheat`
 
 Deferred:
 
@@ -384,34 +392,32 @@ Consequences:
 
 Validation should be small, repeatable, and behavior-focused.
 
-### Checked-in validation
+### Current branch outcome
 
-Create a repo-tracked validation script suite under something like:
+During execution, a repo-tracked shell validation harness was prototyped and then removed from the final PR after review.
 
-`/home/knth/.dotfiles/tests/chezmoi/`
-
-The scripts should:
-
-- render to a temporary destination directory with `chezmoi -S /home/knth/.dotfiles apply -D <tmpdir> --force`
-- assert expected files are present
-- assert deferred/generated files are absent
-- smoke-test rendered Fish startup
-- verify the encrypted Git identity decrypts on authorized machines
-- verify the standard target paths are correct
+The retained phase 1 validation model is therefore **manual smoke testing** on live machines.
 
 ### Manual verification
 
-After a slice is ready on each machine:
+On each machine, run:
 
+- `chezmoi status`
 - `chezmoi diff`
 - `chezmoi apply --dry-run`
+- `chezmoi apply` when the diff is acceptable
 - Fish smoke test
 - tmux smoke test
 - Git include/identity smoke test
 - mise config presence check
 - CLI script presence check in `~/.local/bin`
+- `~/.local/bin/fish-regenerate-completions` when `deno` and `mise` are installed
 
-Validation must be run on both `velvet` and `pixelpirate`.
+Validation still needs to be run on both `velvet` and `pixelpirate`.
+
+For the exact phase 1 branch handoff state and next actions, see:
+
+- `docs/plans/2026-04-12-chezmoi-phase1-status-and-next-steps.md`
 
 ## Rollout Order
 

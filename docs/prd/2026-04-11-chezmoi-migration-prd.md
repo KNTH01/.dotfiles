@@ -57,6 +57,22 @@ Phase 1 should explicitly defer:
 - `/etc` and other system-level files
 - package installation / bootstrap automation
 
+## Current phase 1 PR status (2026-04-12)
+
+The current branch state for this PR is captured in:
+
+- `docs/plans/2026-04-12-chezmoi-phase1-status-and-next-steps.md`
+
+Important branch outcomes:
+
+- phase 1 core chezmoi scaffolding, `git`, encrypted `~/.gitconfig.user`, `tmux`, `mise`, `fish`, and CLI-safe `~/.local/bin` helpers have been migrated into `home/`
+- the actual encrypted Git identity source file is `home/encrypted_dot_gitconfig.user.age`
+- the actual migrated CLI helper path is `home/dot_local/bin/executable_cheat`
+- generated Fish completions are no longer source-of-truth files and are regenerated locally via `~/.local/bin/fish-regenerate-completions`
+- `bin/omarchy-webapp-install`, `nvim`, desktop/UI configs, `zsh`, and system-level config remain deferred
+
+The first concrete post-PR task is live validation/apply on `pixelpirate`, then a fresh phase 2 design/implementation plan for one deferred slice.
+
 ## User Stories
 
 1. As the dotfiles owner, I want one source of truth for my configs, so that I can update settings once and apply them everywhere.
@@ -121,10 +137,15 @@ The most important checks are:
 - unknown hosts do not implicitly get desktop behavior
 - Fish generated artifacts are rebuildable and no longer treated as source-of-truth files
 
-Validation should include both:
+Validation should currently include:
 
-- a small checked-in validation script suite
-- a manual smoke-test checklist for live `velvet` and `pixelpirate`
+- a manual smoke-test checklist for live `velvet`
+- the same manual smoke-test checklist on `pixelpirate` once the branch or merge is available there
+
+Current branch note:
+
+- repo-tracked validation scripts were prototyped during implementation and then removed from the final PR after review
+- phase 1 therefore currently relies on explicit manual chezmoi, Fish, tmux, Git, and CLI smoke checks instead of checked-in shell test files
 
 ## Out of Scope
 
