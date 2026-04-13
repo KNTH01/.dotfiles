@@ -3,6 +3,19 @@ My dotfiles
 
 `git clone {repo} .dotfiles`
 
+## Fish generated completions
+
+`deno.fish` and `mise.fish` are generated locally and are not tracked in Git.
+After `chezmoi apply` on a machine with `deno` and `mise` installed, run:
+
+```bash
+~/.local/bin/fish-regenerate-completions
+```
+
+This writes:
+- `~/.config/fish/completions/deno.fish`
+- `~/.config/fish/completions/mise.fish`
+
 Add `~/.gitconfig.user` with you Git credentials
 
 ```plaintext

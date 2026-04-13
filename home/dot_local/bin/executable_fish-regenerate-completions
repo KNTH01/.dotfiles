@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+completions_dir="$config_home/fish/completions"
+
+mkdir -p "$completions_dir"
+
+if command -v deno >/dev/null 2>&1; then
+  deno completions fish > "$completions_dir/deno.fish"
+  echo "generated $completions_dir/deno.fish"
+else
+  echo "skipped deno: command not found" >&2
+fi
+
+if command -v mise >/dev/null 2>&1; then
+  mise completion fish > "$completions_dir/mise.fish"
+  echo "generated $completions_dir/mise.fish"
+else
+  echo "skipped mise: command not found" >&2
+fi

@@ -9,9 +9,13 @@ chezmoi -S "$repo" apply -D "$tmpdir" --force
 
 test -f "$tmpdir/.config/fish/config.fish"
 test -f "$tmpdir/.config/fish/fish_plugins"
+test -x "$tmpdir/.local/bin/fish-regenerate-completions"
 test ! -e "$tmpdir/.config/fish/fish_variables"
 test ! -e "$tmpdir/.config/fish/completions/deno.fish"
 test ! -e "$tmpdir/.config/fish/completions/mise.fish"
 ! rg -n '/home/knth/.dotfiles/bin' "$tmpdir/.config/fish"
 env HOME="$tmpdir" XDG_CONFIG_HOME="$tmpdir/.config" PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin" fish -i -c exit >/dev/null 2>"$tmpdir/fish.stderr"
 test ! -s "$tmpdir/fish.stderr"
+HOME="$tmpdir" XDG_CONFIG_HOME="$tmpdir/.config" "$tmpdir/.local/bin/fish-regenerate-completions" >/dev/null
+test -f "$tmpdir/.config/fish/completions/deno.fish"
+test -f "$tmpdir/.config/fish/completions/mise.fish"
