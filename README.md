@@ -1,7 +1,27 @@
 # dotfiles
-My dotfiles
 
-`git clone {repo} .dotfiles`
+Phase 1 CLI dotfiles in this repo are managed with chezmoi.
+
+## Bootstrap
+
+```bash
+git clone git@github.com:KNTH01/.dotfiles.git ~/.dotfiles
+chezmoi init --source="$HOME/.dotfiles"
+chezmoi apply
+```
+
+If this machine needs encrypted files, configure your age identity in `~/.config/chezmoi/chezmoi.toml` before running `chezmoi apply`.
+
+## Managed in phase 1
+
+- `~/.gitconfig`
+- `~/.gitconfig.user` (encrypted)
+- `~/.tmux.conf`
+- `~/.config/mise/config.toml`
+- `~/.config/fish/...`
+- `~/.local/bin/cheat`
+
+`bin/omarchy-webapp-install` is still deferred and is not managed by chezmoi in phase 1.
 
 ## Fish generated completions
 
@@ -16,33 +36,7 @@ This writes:
 - `~/.config/fish/completions/deno.fish`
 - `~/.config/fish/completions/mise.fish`
 
-Add `~/.gitconfig.user` with you Git credentials
+## Legacy workflow
 
-```plaintext
-// ~/.gitconfig.user
-[user]
-  name = My name
-  email = my-email@gmail.com
-```
-
-```bash
-ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
-ln -s ~/.dotfiles/.zshrc ~/.zshrc
-```
-
-## How to
-
-- Copy the env file `ln -s .dotfiles_env $HOME/.dotfiles_env` and change the values if needed
-
-## TODO
-
-- [ ] .zshrc
-- [ ] .profile
-- [ ] npm / yarn bin location configuration
-
-## stow
-
-```
-$> stow $folder
-$stow -t / $folder (for e.g: /etc, like for pacman.conf)
-```
+`install.sh` is retired for migrated phase 1 paths.
+Do not use broad Stow commands for files already managed by chezmoi.

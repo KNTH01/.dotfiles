@@ -1,9 +1,4 @@
-#!/usr/bin/env zsh
-# src: https://github.com/ThePrimeagen/.dotfiles/blob/master/install
-pushd $DOTFILES
-for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
-do
-    stow -D $folder
-    stow $folder
-done
-popd
+#!/usr/bin/env bash
+
+echo "install.sh is retired for migrated paths. Use chezmoi for phase 1 dotfiles management."
+exit 1
