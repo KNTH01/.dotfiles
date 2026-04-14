@@ -45,7 +45,7 @@ print("phase1_no_vue_tools: ok")
 Run:
 
 ```bash
-cd /home/knth/.dotfiles/nvim/.config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_tools.lua')" +qa
+cd /home/knth/.dotfiles/home/dot_config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_tools.lua')" +qa
 ```
 
 Expected: FAIL with at least one Vue-related assertion.
@@ -117,7 +117,7 @@ to:
 Run:
 
 ```bash
-cd /home/knth/.dotfiles/nvim/.config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_tools.lua')" +qa
+cd /home/knth/.dotfiles/home/dot_config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_tools.lua')" +qa
 ```
 
 Expected: PASS and print `phase1_no_vue_tools: ok`.
@@ -125,7 +125,7 @@ Expected: PASS and print `phase1_no_vue_tools: ok`.
 **Step 5: Commit**
 
 ```bash
-cd /home/knth/.dotfiles && git add nvim/.config/nvim/tests/headless/phase1_no_vue_tools.lua nvim/.config/nvim/lua/knth/plugins/lsp/conform.lua nvim/.config/nvim/lua/knth/plugins/lsp/nvim-lint.lua nvim/.config/nvim/lua/knth/plugins/logsitter.lua && git commit -m "nvim: remove vue tool mappings"
+cd /home/knth/.dotfiles && git add home/dot_config/nvim/tests/headless/phase1_no_vue_tools.lua home/dot_config/nvim/lua/knth/plugins/lsp/conform.lua home/dot_config/nvim/lua/knth/plugins/lsp/nvim-lint.lua home/dot_config/nvim/lua/knth/plugins/logsitter.lua && git commit -m "nvim: remove vue tool mappings"
 ```
 
 ### Task 2: Remove Vue from LSP config while keeping `vtsls`, `denols`, and Effect
@@ -163,7 +163,7 @@ print("phase1_no_vue_lsp: ok")
 Run:
 
 ```bash
-cd /home/knth/.dotfiles/nvim/.config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_lsp.lua')" +qa
+cd /home/knth/.dotfiles/home/dot_config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_lsp.lua')" +qa
 ```
 
 Expected: FAIL with one or more Vue-related assertions.
@@ -235,7 +235,7 @@ Delete the whole `vue_ls` block:
 Run:
 
 ```bash
-cd /home/knth/.dotfiles/nvim/.config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_lsp.lua')" +qa
+cd /home/knth/.dotfiles/home/dot_config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_lsp.lua')" +qa
 ```
 
 Expected: PASS and print `phase1_no_vue_lsp: ok`.
@@ -243,7 +243,7 @@ Expected: PASS and print `phase1_no_vue_lsp: ok`.
 **Step 5: Commit**
 
 ```bash
-cd /home/knth/.dotfiles && git add nvim/.config/nvim/tests/headless/phase1_no_vue_lsp.lua nvim/.config/nvim/lua/knth/plugins/lsp/lspconfig.lua && git commit -m "nvim: remove vue lsp config"
+cd /home/knth/.dotfiles && git add home/dot_config/nvim/tests/headless/phase1_no_vue_lsp.lua home/dot_config/nvim/lua/knth/plugins/lsp/lspconfig.lua && git commit -m "nvim: remove vue lsp config"
 ```
 
 ### Task 3: Run phase 1 smoke validation
@@ -257,7 +257,7 @@ cd /home/knth/.dotfiles && git add nvim/.config/nvim/tests/headless/phase1_no_vu
 Run:
 
 ```bash
-cd /home/knth/.dotfiles/nvim/.config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_tools.lua')" +qa && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_lsp.lua')" +qa
+cd /home/knth/.dotfiles/home/dot_config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_tools.lua')" +qa && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_lsp.lua')" +qa
 ```
 
 Expected: both PASS.
@@ -267,7 +267,7 @@ Expected: both PASS.
 Run:
 
 ```bash
-cd /home/knth/.dotfiles/nvim/.config/nvim && nvim --headless "+lua require('knth.plugins.lsp.conform'); require('knth.plugins.lsp.nvim-lint'); require('knth.plugins.logsitter'); require('knth.plugins.lsp.lspconfig')" +qa
+cd /home/knth/.dotfiles/home/dot_config/nvim && nvim --headless "+lua require('knth.plugins.lsp.conform'); require('knth.plugins.lsp.nvim-lint'); require('knth.plugins.logsitter'); require('knth.plugins.lsp.lspconfig')" +qa
 ```
 
 Expected: exit code 0 with no Lua errors.
@@ -277,7 +277,7 @@ Expected: exit code 0 with no Lua errors.
 Run:
 
 ```bash
-cd /home/knth/.dotfiles/nvim/.config/nvim && printf 'const answer: number = 42\n' > /tmp/pi-ts-phase1.ts && nvim --headless /tmp/pi-ts-phase1.ts "+lua print(vim.bo.filetype)" +qa
+cd /home/knth/.dotfiles/home/dot_config/nvim && printf 'const answer: number = 42\n' > /tmp/pi-ts-phase1.ts && nvim --headless /tmp/pi-ts-phase1.ts "+lua print(vim.bo.filetype)" +qa
 ```
 
 Expected: output includes `typescript`.
@@ -285,7 +285,7 @@ Expected: output includes `typescript`.
 **Step 4: Commit**
 
 ```bash
-cd /home/knth/.dotfiles && git add nvim/.config/nvim/tests/headless/phase1_no_vue_tools.lua nvim/.config/nvim/tests/headless/phase1_no_vue_lsp.lua nvim/.config/nvim/lua/knth/plugins/lsp/conform.lua nvim/.config/nvim/lua/knth/plugins/lsp/nvim-lint.lua nvim/.config/nvim/lua/knth/plugins/logsitter.lua nvim/.config/nvim/lua/knth/plugins/lsp/lspconfig.lua && git commit -m "nvim: drop vue support"
+cd /home/knth/.dotfiles && git add home/dot_config/nvim/tests/headless/phase1_no_vue_tools.lua home/dot_config/nvim/tests/headless/phase1_no_vue_lsp.lua home/dot_config/nvim/lua/knth/plugins/lsp/conform.lua home/dot_config/nvim/lua/knth/plugins/lsp/nvim-lint.lua home/dot_config/nvim/lua/knth/plugins/logsitter.lua home/dot_config/nvim/lua/knth/plugins/lsp/lspconfig.lua && git commit -m "nvim: drop vue support"
 ```
 
 ### Task 4: Prove or disprove `tsgo` + Effect compatibility before editing code
@@ -298,7 +298,7 @@ cd /home/knth/.dotfiles && git add nvim/.config/nvim/tests/headless/phase1_no_vu
 Run:
 
 ```bash
-rg -n "tsgo|globalPlugins|plugins|@effect/language-service" /home/knth/.local/share/nvim/lazy/nvim-lspconfig /home/knth/.local/share/nvim/mason/packages /home/knth/.dotfiles/nvim/.config/nvim
+rg -n "tsgo|globalPlugins|plugins|@effect/language-service" /home/knth/.local/share/nvim/lazy/nvim-lspconfig /home/knth/.local/share/nvim/mason/packages /home/knth/.dotfiles/home/dot_config/nvim
 ```
 
 Expected: evidence that `vtsls` documents plugin support and `tsgo` docs do not show an equivalent local plugin-loading path.
@@ -325,7 +325,7 @@ Append this section to `docs/plans/2026-03-30-typescript-lsp-two-phase-migration
 **Step 4: Commit**
 
 ```bash
-cd /home/knth/.dotfiles && git add nvim/.config/nvim/docs/plans/2026-03-30-typescript-lsp-two-phase-migration-design.md && git commit -m "docs: record tsgo evaluation"
+cd /home/knth/.dotfiles && git add home/dot_config/nvim/docs/plans/2026-03-30-typescript-lsp-two-phase-migration-design.md && git commit -m "docs: record tsgo evaluation"
 ```
 
 ### Task 5A: Stop safely if `tsgo` cannot preserve Effect support
@@ -348,7 +348,7 @@ Phase 2 stops here. `vtsls` remains the TypeScript/JavaScript server because loc
 Run:
 
 ```bash
-cd /home/knth/.dotfiles/nvim/.config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_tools.lua')" +qa && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_lsp.lua')" +qa
+cd /home/knth/.dotfiles/home/dot_config/nvim && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_tools.lua')" +qa && nvim --headless "+lua dofile('tests/headless/phase1_no_vue_lsp.lua')" +qa
 ```
 
 Expected: both PASS.
@@ -356,7 +356,7 @@ Expected: both PASS.
 **Step 3: Commit**
 
 ```bash
-cd /home/knth/.dotfiles && git add nvim/.config/nvim/docs/plans/2026-03-30-typescript-lsp-two-phase-migration-design.md && git commit -m "docs: keep vtsls after tsgo evaluation"
+cd /home/knth/.dotfiles && git add home/dot_config/nvim/docs/plans/2026-03-30-typescript-lsp-two-phase-migration-design.md && git commit -m "docs: keep vtsls after tsgo evaluation"
 ```
 
 ### Task 5B: If `tsgo` + Effect is proven, stop and write a new exact follow-up plan
@@ -395,5 +395,5 @@ Before touching production config, write a follow-up plan that includes the exac
 **Step 4: Commit**
 
 ```bash
-cd /home/knth/.dotfiles && git add nvim/.config/nvim/docs/plans/2026-03-30-tsgo-follow-up.md && git commit -m "docs: add tsgo follow-up plan"
+cd /home/knth/.dotfiles && git add home/dot_config/nvim/docs/plans/2026-03-30-tsgo-follow-up.md && git commit -m "docs: add tsgo follow-up plan"
 ```
