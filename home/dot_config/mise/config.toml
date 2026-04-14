@@ -25,6 +25,7 @@ uv = "latest"
 glow = "latest"
 "npm:@openai/codex" = "latest"
 chezmoi = "latest"
+pnpm = "latest"
 
 [settings]
 
