@@ -212,16 +212,6 @@ return {
 			-- If you need to extend capabilities for all servers
 			local blink_cmp_capabilities = require("blink.cmp").get_lsp_capabilities({})
 
-			-- folding_capabilities for ufo.nvim
-			local folding_capabilities = {
-				textDocument = {
-					foldingRange = {
-						dynamicRegistration = false,
-						lineFoldingOnly = true,
-					},
-				},
-			}
-
 			require("mason-lspconfig").setup({
 				-- ensure_installed = ensure_installed,
 				ensure_installed = {},
@@ -234,7 +224,6 @@ return {
 					"force",
 					{},
 					blink_cmp_capabilities,
-					folding_capabilities,
 					server_config.capabilities or {}
 				)
 
