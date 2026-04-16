@@ -20,8 +20,7 @@ If this machine needs encrypted files, configure your age identity in `~/.config
 - `~/.config/mise/config.toml`
 - `~/.config/fish/...`
 - `~/.local/bin/cheat`
-
-`bin/omarchy-webapp-install` is still deferred and is not managed by chezmoi in phase 1.
+- `~/.local/bin/omarchy-webapp-install` (desktop hosts only)
 
 ## Fish generated completions
 
