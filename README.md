@@ -1,6 +1,6 @@
 # dotfiles
 
-Phase 1 CLI dotfiles in this repo are managed with chezmoi.
+dotfiles in this repo are managed with chezmoi.
 
 ## Bootstrap
 
@@ -32,10 +32,6 @@ After `chezmoi apply` on a machine with `deno` and `mise` installed, run:
 ```
 
 This writes:
+
 - `~/.config/fish/completions/deno.fish`
 - `~/.config/fish/completions/mise.fish`
-
-## Legacy workflow
-
-`install.sh` is retired for migrated phase 1 paths.
-Do not use broad Stow commands for files already managed by chezmoi.
