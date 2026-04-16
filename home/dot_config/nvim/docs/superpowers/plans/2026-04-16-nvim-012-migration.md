@@ -4,57 +4,71 @@
 
 **Goal:** Migrer la config Neovim de 0.11 vers 0.12 (approche B+): fixer deprecations, retirer nvim-lspconfig/mason-lspconfig, rewrite treesitter pour la nouvelle API main, dropper les plugins obsolètes.
 
-**Architecture:** Modifications ciblées sur lazy.nvim config existante. Keep: lazy.nvim, blink.cmp, mason. Drop: nvim-lspconfig, mason-lspconfig, nvim-lsp-file-operations + 6 plugins obsolètes (Comment, cellular-automaton, undotree, vista, ufo, oil). Refactor: lspconfig.lua → lsp.lua utilisant `vim.lsp.config()` natif. Rewrite: treesitter.lua pour API main branch.
+**Architecture:** Modifications ciblées sur lazy.nvim config existante. Keep: lazy.nvim, blink.cmp, mason. Drop: nvim-lspconfig, mason-lspconfig, nvim-lsp-file-operations + 6 plugins obsolètes. Refactor: lspconfig.lua → lsp.lua utilisant `vim.lsp.config()` natif. Rewrite: treesitter.lua pour API main branch.
 
-**Tech Stack:** Neovim 0.12, Lua, lazy.nvim, blink.cmp, mason.nvim, nvim-treesitter (branch main), vtsls/denols/lua_ls/etc. LSPs.
+**Tech Stack:** Neovim 0.12, Lua, lazy.nvim, blink.cmp, mason.nvim, nvim-treesitter (branch main), vtsls/denols/lua_ls/etc. LSPs. Config gérée par **chezmoi** depuis `~/.dotfiles/`.
+
+---
+
+## Workflow chezmoi — à chaque Task
+
+1. **Éditer le fichier source** dans `~/.dotfiles/home/dot_config/nvim/...`
+2. **Appliquer** avec `chezmoi apply`
+3. **Tester** nvim (headless checks ou ouverture manuelle)
+4. **Commit** dans `~/.dotfiles/` (branch `migration/nvim-0.12` déjà active)
+
+Rollback = `git reset --hard HEAD~1` depuis `~/.dotfiles/`.
 
 ---
 
 ## File Structure
 
-**Files à créer:**
-- `lua/knth/plugins/lsp/lsp.lua` — nouvelle config LSP native (remplace lspconfig.lua)
+**Files à créer (source chezmoi):**
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/lsp/lsp.lua` — nouvelle config LSP native
 
-**Files à modifier:**
-- `lua/knth/options.lua` — `vim.diagnostic.config` fix
-- `lua/knth/plugins/treesitter.lua` — rewrite pour API main branch
+**Files à modifier (source chezmoi):**
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/options.lua`
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/treesitter.lua`
 
-**Files à supprimer:**
-- `lua/knth/plugins/lsp/lspconfig.lua` (remplacé par lsp.lua)
-- `lua/knth/plugins/comment.lua`
-- `lua/knth/plugins/cellular-automaton.lua`
-- `lua/knth/plugins/undotree.lua`
-- `lua/knth/plugins/vista.lua`
-- `lua/knth/plugins/ufo.lua`
-- `lua/knth/plugins/oil-nvim.lua`
+**Files à supprimer (source chezmoi):**
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/lsp/lspconfig.lua`
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/comment.lua`
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/cellular-automaton.lua`
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/undotree.lua`
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/vista.lua`
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/ufo.lua`
+- `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/oil-nvim.lua`
 
-**Note:** Ce projet n'est pas un git repo. On utilise un backup dossier pour rollback. "Commit" dans ce plan = checkpoint via verify que nvim démarre OK.
+**Note:** `chezmoi apply` propage les suppressions? **À vérifier** — chezmoi par défaut ne supprime pas les fichiers du target quand ils disparaissent de la source. Pour les plugins drop, on peut:
+- Option A: supprimer aussi manuellement dans `~/.config/nvim/lua/knth/plugins/` après edit source
+- Option B: remplacer le contenu par un empty return (`return {}`) — garde le fichier mais le plugin ne se charge pas, fichier à drop plus tard
+
+Recommandation: **Option A** (supprimer source + destination) pour propreté.
 
 ---
 
-### Task 1: Baseline + Backup
+### Task 1: Baseline
 
 **Files:**
-- Create: `~/.config/nvim.bak-2026-04-16/` (backup)
-- Create: `/tmp/nvim-baseline-checkhealth.txt` (diagnostic baseline)
+- Create: `/tmp/nvim-baseline-checkhealth.txt`
 
-- [ ] **Step 1: Backup complet du dossier**
+- [ ] **Step 1: Vérifier qu'on est sur la bonne branche**
 
 Run:
 ```bash
-cp -r ~/.config/nvim ~/.config/nvim.bak-2026-04-16
+cd ~/.dotfiles && git status
 ```
 
-Expected: dossier `~/.config/nvim.bak-2026-04-16/` créé, `ls ~/.config/nvim.bak-2026-04-16/` montre init.lua, lua/, etc.
+Expected: `On branch migration/nvim-0.12`, working tree propre (ou juste les docs spec/plan stagés).
 
 - [ ] **Step 2: Capture baseline checkhealth**
 
 Run:
 ```bash
-nvim --headless "+checkhealth" "+w /tmp/nvim-baseline-checkhealth.txt" "+qa" 2>&1 | tee /tmp/nvim-baseline-startup.txt
+nvim --headless "+checkhealth" "+w /tmp/nvim-baseline-checkhealth.txt" "+qa" 2>&1
 ```
 
-Expected: fichier `/tmp/nvim-baseline-checkhealth.txt` créé. Contient le rapport checkhealth complet (notamment sections `vim.deprecated`, `vim.lsp`, `vim.treesitter`).
+Expected: fichier `/tmp/nvim-baseline-checkhealth.txt` créé avec rapport complet.
 
 - [ ] **Step 3: Identifier la source de `vim.tbl_flatten`**
 
@@ -63,91 +77,108 @@ Run:
 grep -n "tbl_flatten" /tmp/nvim-baseline-checkhealth.txt
 ```
 
-Si pas trouvé dans checkhealth, chercher dans les plugins installés:
+Si absent, chercher dans les plugins installés:
 ```bash
 grep -rn "vim.tbl_flatten" ~/.local/share/nvim/lazy/ 2>/dev/null | grep -v "\.git/" | head -20
 ```
 
-Expected: liste des fichiers plugin appelant `vim.tbl_flatten`. Noter les plugins coupables pour Task 9.
+Expected: liste des plugins coupables. Noter pour Task 6.
 
-- [ ] **Step 4: Checkpoint — nvim démarre OK**
+- [ ] **Step 4: Commit baseline (les docs du plan sont déjà stagés)**
 
-Run: `nvim --headless "+echo 'ok'" "+qa"`
-Expected: exit code 0, output "ok".
+Run:
+```bash
+cd ~/.dotfiles && git commit -m "docs(nvim): migration 0.12 spec + plan"
+```
+
+Expected: commit créé.
 
 ---
 
 ### Task 2: Drop plugins obsolètes
 
 **Files:**
-- Delete: `lua/knth/plugins/comment.lua`
-- Delete: `lua/knth/plugins/cellular-automaton.lua`
-- Delete: `lua/knth/plugins/undotree.lua`
-- Delete: `lua/knth/plugins/vista.lua`
-- Delete: `lua/knth/plugins/ufo.lua`
-- Delete: `lua/knth/plugins/oil-nvim.lua`
+- Delete (source): 6 fichiers dans `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/`
+- Delete (target): 6 fichiers dans `~/.config/nvim/lua/knth/plugins/` (chezmoi ne propage pas les suppressions)
 
-- [ ] **Step 1: Supprimer les fichiers plugin**
+- [ ] **Step 1: Supprimer les fichiers plugin source**
 
 Run:
 ```bash
-cd ~/.config/nvim
-rm lua/knth/plugins/comment.lua
-rm lua/knth/plugins/cellular-automaton.lua
-rm lua/knth/plugins/undotree.lua
-rm lua/knth/plugins/vista.lua
-rm lua/knth/plugins/ufo.lua
-rm lua/knth/plugins/oil-nvim.lua
+cd ~/.dotfiles/home/dot_config/nvim/lua/knth/plugins
+rm comment.lua cellular-automaton.lua undotree.lua vista.lua ufo.lua oil-nvim.lua
 ```
 
-Expected: 6 fichiers supprimés. Vérifier: `ls lua/knth/plugins/ | wc -l` diminué de 6.
+Expected: 6 fichiers supprimés.
 
-- [ ] **Step 2: Chercher des références résiduelles**
+- [ ] **Step 2: Supprimer les fichiers plugin target (chezmoi ne le fait pas)**
 
 Run:
 ```bash
-cd ~/.config/nvim
+cd ~/.config/nvim/lua/knth/plugins
+rm comment.lua cellular-automaton.lua undotree.lua vista.lua ufo.lua oil-nvim.lua
+```
+
+Expected: 6 fichiers supprimés aussi du target.
+
+- [ ] **Step 3: Chercher des références résiduelles**
+
+Run:
+```bash
+cd ~/.dotfiles/home/dot_config/nvim
 grep -rn "require.*oil\|require.*ufo\|require.*undotree\|require.*vista\|require.*cellular\|Comment\\.nvim\|numToStr" lua/ --include="*.lua"
 ```
 
-Expected: aucun match. Si des mappings ou configs référencent ces plugins, les retirer manuellement. Candidats probables: mappings custom pour `:UndotreeToggle`, `:Vista`, `:Oil`. Check `lua/knth/mappings.lua` et `lua/knth/plugins/which-keys.lua`.
+Expected: aucun match. Si mappings ou configs référencent ces plugins, retirer manuellement. Check probable dans `lua/knth/mappings.lua` et `lua/knth/plugins/which-keys.lua`.
 
-- [ ] **Step 3: Nettoyer les mappings orphelins (si trouvés à Step 2)**
+- [ ] **Step 4: Nettoyer les mappings orphelins (si trouvés à Step 3)**
 
-Ouvrir les fichiers identifiés et retirer les lignes qui mappent vers les plugins supprimés. Exemple de pattern à chercher:
+Retirer les lignes référençant les plugins supprimés. Patterns typiques:
 ```lua
--- À retirer si présent:
 -- keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>")
 -- keymap.set("n", "<leader>v", "<cmd>Vista<CR>")
 -- keymap.set("n", "-", "<cmd>Oil<CR>")
 ```
 
-- [ ] **Step 4: Checkpoint — nvim démarre et Lazy purge les plugins**
+Si modifs ici, re-sync: `chezmoi apply`.
+
+- [ ] **Step 5: Lazy purge les plugins désinstallés**
 
 Run:
 ```bash
 nvim --headless "+Lazy! sync" "+qa" 2>&1 | tail -20
 ```
 
-Expected: pas d'erreur. Lazy désinstalle les plugins supprimés. Si erreur "module not found" pour un des plugins, c'est qu'il reste une référence — retour à Step 2/3.
+Expected: Lazy désinstalle les plugins dont les fichiers sont supprimés. Pas d'erreur.
 
-Run ensuite:
+- [ ] **Step 6: Checkpoint nvim démarre sans erreur**
+
+Run:
 ```bash
 nvim "+qa"
 ```
 
-Expected: pas de notification d'erreur au démarrage.
+Expected: pas de notification d'erreur.
+
+- [ ] **Step 7: Commit**
+
+Run:
+```bash
+cd ~/.dotfiles && git add -A && git commit -m "nvim: drop obsolete plugins (Comment, cellular-automaton, undotree, vista, ufo, oil)"
+```
+
+Expected: commit créé avec les suppressions + lazy-lock updated.
 
 ---
 
 ### Task 3: Fix `vim.diagnostic.config` dans options.lua
 
 **Files:**
-- Modify: `lua/knth/options.lua` (ligne du bloc `vim.diagnostic.config`)
+- Modify (source): `~/.dotfiles/home/dot_config/nvim/lua/knth/options.lua`
 
 - [ ] **Step 1: Fix la valeur de `source`**
 
-Dans `lua/knth/options.lua`, trouver:
+Dans `~/.dotfiles/home/dot_config/nvim/lua/knth/options.lua`, trouver:
 ```lua
 vim.diagnostic.config({
 	virtual_text = true,
@@ -169,7 +200,16 @@ vim.diagnostic.config({
 })
 ```
 
-- [ ] **Step 2: Checkpoint — pas de warning de type**
+- [ ] **Step 2: Apply chezmoi**
+
+Run:
+```bash
+chezmoi apply
+```
+
+Expected: `~/.config/nvim/lua/knth/options.lua` mis à jour.
+
+- [ ] **Step 3: Checkpoint — pas de warning de type**
 
 Run:
 ```bash
@@ -178,18 +218,25 @@ nvim --headless "+lua vim.diagnostic.config({float={source=true}})" "+qa" 2>&1
 
 Expected: exit code 0, aucune sortie (pas de deprecation).
 
+- [ ] **Step 4: Commit**
+
+Run:
+```bash
+cd ~/.dotfiles && git add -A && git commit -m "nvim(options): fix vim.diagnostic.config source (string -> bool)"
+```
+
 ---
 
 ### Task 4: Rewrite treesitter.lua pour API main branch
 
 **Files:**
-- Modify: `lua/knth/plugins/treesitter.lua` (rewrite complet du premier bloc)
+- Modify (source): `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/treesitter.lua`
 
-**Contexte:** La branche `main` de nvim-treesitter a abandonné `require("nvim-treesitter.configs").setup(...)`. La nouvelle API expose `require("nvim-treesitter").install(...)` et nécessite d'appeler `vim.treesitter.start()` via autocmd. `autotag` n'est plus intégré (nécessiterait `nvim-ts-autotag` séparé — NOT installed dans lazy-lock donc était déjà no-op).
+**Contexte:** La branche `main` de nvim-treesitter a abandonné `require("nvim-treesitter.configs").setup(...)`. Nouvelle API: `require("nvim-treesitter").install(...)` + autocmd pour `vim.treesitter.start()`. `autotag` retiré (pas installé de toute façon).
 
 - [ ] **Step 1: Remplacer le premier plugin block (nvim-treesitter)**
 
-Dans `lua/knth/plugins/treesitter.lua`, remplacer le bloc `{ "nvim-treesitter/nvim-treesitter", ... }` (du début jusqu'à `dependencies = {},` inclus) par:
+Dans `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/treesitter.lua`, remplacer le bloc `{ "nvim-treesitter/nvim-treesitter", ... }` (du début jusqu'à `dependencies = {},` inclus, la VIRGULE finale incluse) par:
 
 ```lua
 {
@@ -224,20 +271,16 @@ Dans `lua/knth/plugins/treesitter.lua`, remplacer le bloc `{ "nvim-treesitter/nv
 
 		require("nvim-treesitter").install(parsers)
 
-		-- Map parser names to filetypes for FileType autocmd
-		local ft_to_parser = vim.treesitter.language.get_filetypes or function() return {} end
-
 		vim.api.nvim_create_autocmd("FileType", {
 			callback = function(args)
 				local ft = args.match
 				local lang = vim.treesitter.language.get_lang(ft)
 				if not lang then return end
 
-				-- Start treesitter highlighting
 				local ok = pcall(vim.treesitter.start, args.buf, lang)
 				if not ok then return end
 
-				-- Enable treesitter-based indentation (skip yaml, user preference from old config)
+				-- Indent treesitter (skip yaml, comme avant)
 				if ft ~= "yaml" then
 					vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 				end
@@ -247,51 +290,57 @@ Dans `lua/knth/plugins/treesitter.lua`, remplacer le bloc `{ "nvim-treesitter/nv
 },
 ```
 
-Garder le second bloc (`nvim-treesitter/nvim-treesitter-context`) tel quel — ce plugin est séparé et son API n'a pas changé.
+Garder le second bloc (`nvim-treesitter-context`) tel quel — plugin séparé, API inchangée.
 
-- [ ] **Step 2: Checkpoint — parsers installés et highlight actif**
+- [ ] **Step 2: Apply chezmoi**
+
+Run:
+```bash
+chezmoi apply
+```
+
+- [ ] **Step 3: Lazy sync pour installer la nouvelle version**
 
 Run:
 ```bash
 nvim --headless "+Lazy! sync" "+qa" 2>&1 | tail -30
 ```
 
-Expected: pas d'erreur. `nvim-treesitter` s'installe sans crash.
+Expected: pas d'erreur. Les parsers vont être réinstallés automatiquement.
 
-Ensuite:
-```bash
-nvim +TSUpdate +qa 2>&1 | tail -5
-```
-
-Note: si `:TSUpdate` n'existe plus, la commande native est `:TSInstall` ou via `require("nvim-treesitter").update()`. Les parsers se télécharger automatiquement au premier lancement.
-
-- [ ] **Step 3: Vérifier highlight sur un fichier lua**
+- [ ] **Step 4: Vérifier highlight sur un fichier lua**
 
 Run:
 ```bash
-nvim lua/knth/options.lua +'lua vim.defer_fn(function() print(vim.treesitter.highlighter.active[0] and "TS_ACTIVE" or "TS_INACTIVE"); vim.cmd("qa") end, 500)'
+nvim ~/.config/nvim/lua/knth/options.lua +'lua vim.defer_fn(function() print(vim.treesitter.highlighter.active[0] and "TS_ACTIVE" or "TS_INACTIVE"); vim.cmd("qa") end, 1500)'
 ```
 
-Expected: output contient `TS_ACTIVE`. Si `TS_INACTIVE`, vérifier que `vim.treesitter.start()` a bien été appelé dans l'autocmd.
+Expected: output contient `TS_ACTIVE`. Si `TS_INACTIVE`, vérifier que les parsers sont installés (`:checkhealth vim.treesitter`).
+
+- [ ] **Step 5: Commit**
+
+Run:
+```bash
+cd ~/.dotfiles && git add -A && git commit -m "nvim(treesitter): rewrite for main branch API"
+```
 
 ---
 
 ### Task 5: Refactor LSP — retirer nvim-lspconfig et mason-lspconfig
 
 **Files:**
-- Create: `lua/knth/plugins/lsp/lsp.lua`
-- Delete: `lua/knth/plugins/lsp/lspconfig.lua`
+- Create (source): `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/lsp/lsp.lua`
+- Delete (source): `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/lsp/lspconfig.lua`
+- Delete (target): `~/.config/nvim/lua/knth/plugins/lsp/lspconfig.lua`
 
-**Contexte:** Neovim 0.12 embarque les configs LSP par défaut dans `runtimepath/lsp/*.lua`. On peut donc `vim.lsp.enable("server")` sans avoir `nvim-lspconfig`. La nouvelle `lsp.lua` garde juste les overrides custom de l'utilisateur (denols root_dir, vtsls settings, etc.).
+**Contexte:** 0.12 embarque les configs LSP dans `runtimepath/lsp/*.lua`. `vim.lsp.enable("server")` suffit. La nouvelle `lsp.lua` garde les overrides custom (denols root_dir, vtsls settings, etc.) + mason (install binaires) + fidget (UI progress).
 
 - [ ] **Step 1: Créer le nouveau fichier lsp.lua**
 
-Créer `lua/knth/plugins/lsp/lsp.lua` avec le contenu:
+Créer `~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/lsp/lsp.lua` avec:
 
 ```lua
 return {
-	-- Blink.cmp fournit les capabilities, mason les binaires, fidget l'UI.
-	-- Plus besoin de nvim-lspconfig (0.12 ship les configs nativement).
 	"saghen/blink.cmp",
 
 	dependencies = {
@@ -300,10 +349,9 @@ return {
 	},
 
 	config = function()
-		-- Setup Mason (install binaires des LSPs)
 		require("mason").setup()
 
-		-- User commands pour remplacer LspInfo/LspRestart/LspLog supprimés
+		-- User commands pour remplacer LspInfo/LspRestart/LspLog supprimés en 0.12
 		vim.api.nvim_create_user_command("LspInfo", "checkhealth vim.lsp", {})
 		vim.api.nvim_create_user_command("LspRestart", function()
 			for _, client in ipairs(vim.lsp.get_clients()) do
@@ -324,15 +372,14 @@ return {
 					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 				end
 
-				-- K (hover), grn (rename), gra (code action), grr (references), gri (implementation), gO (symbols)
-				-- sont maintenant des defaults natifs de Neovim 0.12 — pas besoin de les remap.
-				-- On garde uniquement les customs utilisateur qui ne sont pas couverts:
+				-- Natifs 0.12 déjà présents: K (hover), grn (rename), gra (code action),
+				-- grr (references), gri (implementation), gO (document symbols).
+				-- On garde uniquement les customs utilisateur:
 				map("gl", vim.diagnostic.open_float, "Show line diagnostics")
 				map("gK", vim.lsp.buf.signature_help, "Show signature help")
 			end,
 		})
 
-		-- Capabilities combinées (blink.cmp + folding)
 		local blink_cmp_capabilities = require("blink.cmp").get_lsp_capabilities({})
 		local folding_capabilities = {
 			textDocument = {
@@ -343,17 +390,14 @@ return {
 			},
 		}
 
-		-- Helper: détection projet Deno
 		local function is_deno_project(bufnr_or_filename)
 			local root = vim.fs.root(bufnr_or_filename, { "deno.json", "deno.jsonc" })
 			return root ~= nil
 		end
 
-		-- Effect language service (optionnel)
 		local effect_ls_path = vim.fn.getcwd() .. "/node_modules/@effect/language-service/"
 		local has_effect_ls = vim.fn.isdirectory(effect_ls_path) == 1
 
-		-- Définitions des overrides par serveur
 		local servers = {
 			html = {},
 			cssls = {},
@@ -441,7 +485,6 @@ return {
 			},
 		}
 
-		-- Appliquer chaque serveur: merge capabilities + enable
 		for server_name, server_config in pairs(servers) do
 			server_config.capabilities = vim.tbl_deep_extend(
 				"force",
@@ -454,7 +497,7 @@ return {
 			vim.lsp.enable(server_name)
 		end
 
-		-- Signs diagnostics dans la gutter
+		-- Signs diagnostics
 		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 		local text_signs = {}
 		local text_highlights = {}
@@ -477,29 +520,37 @@ return {
 }
 ```
 
-- [ ] **Step 2: Supprimer l'ancien lspconfig.lua**
+- [ ] **Step 2: Supprimer l'ancien lspconfig.lua (source + target)**
 
 Run:
 ```bash
+rm ~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/lsp/lspconfig.lua
 rm ~/.config/nvim/lua/knth/plugins/lsp/lspconfig.lua
 ```
 
-Expected: fichier supprimé. Vérifier: `ls ~/.config/nvim/lua/knth/plugins/lsp/` montre `conform.lua`, `lazydev.lua`, `lsp.lua`, `nvim-lint.lua` (4 fichiers).
+Expected: fichiers supprimés. Vérifier: `ls ~/.dotfiles/home/dot_config/nvim/lua/knth/plugins/lsp/` montre `conform.lua`, `lazydev.lua`, `lsp.lua`, `nvim-lint.lua`.
 
-- [ ] **Step 3: Vérifier lazy.nvim pick up le rename**
+- [ ] **Step 3: Apply chezmoi**
 
-Le fichier `lua/knth/lazy.lua` utilise `{ import = "knth.plugins.lsp" }` qui importe tout le dossier. Aucun changement requis.
+Run:
+```bash
+chezmoi apply
+```
+
+Expected: `~/.config/nvim/lua/knth/plugins/lsp/lsp.lua` créé.
+
+- [ ] **Step 4: Lazy sync pour désinstaller les plugins retirés**
 
 Run:
 ```bash
 nvim --headless "+Lazy! sync" "+qa" 2>&1 | tail -20
 ```
 
-Expected: lazy désinstalle `nvim-lspconfig`, `mason-lspconfig.nvim`, `nvim-lsp-file-operations`. Pas d'erreur.
+Expected: Lazy désinstalle `nvim-lspconfig`, `mason-lspconfig.nvim`, `nvim-lsp-file-operations`. Pas d'erreur.
 
-- [ ] **Step 4: Checkpoint — LSP attach fonctionne sur TypeScript**
+- [ ] **Step 5: Checkpoint — LSP attach sur TypeScript**
 
-Créer un fichier test temporaire:
+Créer un fichier test:
 ```bash
 mkdir -p /tmp/nvim-test && cat > /tmp/nvim-test/test.ts <<'EOF'
 const x: number = 42;
@@ -512,29 +563,33 @@ Run:
 nvim /tmp/nvim-test/test.ts +'lua vim.defer_fn(function() local c = vim.lsp.get_clients({bufnr=0}); print(#c > 0 and "LSP_OK:" .. c[1].name or "LSP_NONE"); vim.cmd("qa") end, 3000)'
 ```
 
-Expected: output contient `LSP_OK:vtsls` (ou `LSP_OK:denols` si tu es dans un projet Deno). Si `LSP_NONE`, vtsls n'est peut-être pas installé. Check: `nvim +'Mason' +qa` puis vérifier manuellement.
+Expected: output contient `LSP_OK:vtsls`. Si `LSP_NONE`, vtsls n'est peut-être pas installé via Mason — check: `:Mason` et installer si absent.
 
-- [ ] **Step 5: Checkpoint — LSP attach fonctionne sur Lua**
+- [ ] **Step 6: Checkpoint — LSP attach sur Lua**
 
 Run:
 ```bash
 nvim ~/.config/nvim/init.lua +'lua vim.defer_fn(function() local c = vim.lsp.get_clients({bufnr=0}); print(#c > 0 and "LSP_OK:" .. c[1].name or "LSP_NONE"); vim.cmd("qa") end, 3000)'
 ```
 
-Expected: output contient `LSP_OK:lua_ls`.
+Expected: `LSP_OK:lua_ls`.
+
+- [ ] **Step 7: Commit**
+
+Run:
+```bash
+cd ~/.dotfiles && git add -A && git commit -m "nvim(lsp): refactor to native vim.lsp.config, drop nvim-lspconfig + mason-lspconfig"
+```
 
 ---
 
 ### Task 6: Résoudre deprecation `vim.tbl_flatten`
 
-**Files:**
-- Potentiellement: modifier un plugin ou le replacer. Dépend du coupable identifié en Task 1 Step 3.
+**Files:** potentiellement un plugin (identifié en Task 1).
 
-**Contexte:** `vim.tbl_flatten` est deprecated en 0.12, remplacé par `vim.iter(...):flatten():totable()`. Le code utilisateur n'en contient pas, donc vient d'un plugin.
+- [ ] **Step 1: Relecture des candidats**
 
-- [ ] **Step 1: Relecture des candidats identifiés en Task 1**
-
-Depuis l'output de Task 1 Step 3, identifier les plugins qui utilisent `vim.tbl_flatten`. Candidats probables: plugins sur branch `master` pas maintenus, ou versions pinnées anciennes.
+Depuis Task 1 Step 3, identifier les plugins qui utilisent `vim.tbl_flatten`.
 
 - [ ] **Step 2: Mise à jour des plugins**
 
@@ -543,23 +598,23 @@ Run:
 nvim +'Lazy update' +qa 2>&1 | tail -10
 ```
 
-Expected: Lazy bump les commits. Re-check si `vim.tbl_flatten` est encore utilisé:
+Puis re-check:
 ```bash
 grep -rn "vim.tbl_flatten" ~/.local/share/nvim/lazy/ 2>/dev/null | grep -v "\.git/" | head
 ```
 
-Si vide → problème résolu par l'update.
+Si vide → résolu. Skip steps 3-4.
 
-- [ ] **Step 3: Si persistant, patch local ou replace**
+- [ ] **Step 3: Si persistant — patch local ou replace**
 
-Si un plugin abandonné persiste à utiliser `vim.tbl_flatten`:
-- Option A: fork + patch
-- Option B: remplacer par un équivalent maintenu
-- Option C: pin sur un commit qui n'a pas encore l'appel (temporaire)
+Si un plugin abandonné persiste:
+- Option A: fork + patch pour remplacer `vim.tbl_flatten(t)` par `vim.iter(t):flatten():totable()`
+- Option B: plugin de remplacement maintenu
+- Option C: pin sur commit ancien (temporaire)
 
-Décision à prendre au cas par cas selon le plugin identifié. Documenter dans un commentaire dans la config du plugin concerné.
+Documenter la décision dans un commentaire sur le plugin concerné dans la config lazy.
 
-- [ ] **Step 4: Checkpoint — plus de deprecation warning**
+- [ ] **Step 4: Checkpoint — plus de warning**
 
 Run:
 ```bash
@@ -567,7 +622,14 @@ nvim --headless "+checkhealth vim.deprecated" "+w /tmp/nvim-deprecated-after.txt
 grep -i "tbl_flatten" /tmp/nvim-deprecated-after.txt
 ```
 
-Expected: grep retourne vide (pas de match).
+Expected: grep vide.
+
+- [ ] **Step 5: Commit (si changes)**
+
+Run:
+```bash
+cd ~/.dotfiles && git add -A && git commit -m "nvim: resolve vim.tbl_flatten deprecation"
+```
 
 ---
 
@@ -580,38 +642,32 @@ Expected: grep retourne vide (pas de match).
 Run:
 ```bash
 nvim --headless "+checkhealth" "+w /tmp/nvim-final-checkhealth.txt" "+qa"
-```
-
-Expected: fichier créé. Comparer avec `/tmp/nvim-baseline-checkhealth.txt`:
-
-```bash
 diff /tmp/nvim-baseline-checkhealth.txt /tmp/nvim-final-checkhealth.txt | head -100
 ```
 
-- [ ] **Step 2: Vérifier critères de succès**
+- [ ] **Step 2: Check manuel**
 
-Check manuel en ouvrant nvim:
-
-1. `:checkhealth` — section `vim.lsp` OK, section `vim.treesitter` OK, section `vim.deprecated` sans warnings actifs
-2. Ouvrir un fichier TypeScript → LSP attach, hover (`K`), completion blink
-3. Ouvrir un fichier Lua → lua_ls attach, completion
+Ouvrir nvim et vérifier:
+1. `:checkhealth` — `vim.lsp`, `vim.treesitter`, `vim.deprecated` propres
+2. Ouvrir un fichier TypeScript — LSP attach, `K` (hover), completion blink
+3. Ouvrir un fichier Lua — lua_ls attach, completion
 4. `:LspInfo` → ouvre checkhealth vim.lsp
-5. `:LspRestart` → fonctionne sans erreur
-6. Treesitter highlight visible (couleurs de syntaxe correctes)
-7. Mappings quotidiens intacts (`<leader>w`, `<S-l>`/`<S-h>` buffers, etc.)
+5. `:LspRestart` → fonctionne
+6. Treesitter highlight visible
+7. Mappings quotidiens intacts (`<leader>w`, `<S-l>`/`<S-h>`, etc.)
 
-- [ ] **Step 3: Comparer startup time**
+- [ ] **Step 3: Compare startup time**
 
 Run:
 ```bash
 nvim +'Lazy profile' +qa 2>&1 | tail -20
 ```
 
-Note le total startup time. Comparer avec ton habitude avant migration. Un gain est attendu (moins de plugins chargés).
+Note le total. Gain attendu (moins de plugins).
 
-- [ ] **Step 4: Documenter les décisions ouvertes restantes**
+- [ ] **Step 4: Documenter notes post-migration**
 
-Créer une note dans `docs/superpowers/plans/2026-04-16-nvim-012-migration-notes.md`:
+Créer `~/.dotfiles/home/dot_config/nvim/docs/superpowers/plans/2026-04-16-nvim-012-migration-notes.md`:
 
 ```markdown
 # Notes post-migration
@@ -621,25 +677,27 @@ Statut: [conservé / remplacé / supprimé]
 Raison: [à remplir]
 
 ## Prochaines étapes recommandées
-- [ ] Initialiser git repo dans ~/.config/nvim pour versioning
 - [ ] Arbitrage snacks.nvim vs mini.nvim (overlap important à résoudre)
 - [ ] Arbitrage telescope vs snacks.picker
+- [ ] Review des autres deprecations trouvées dans la baseline
 ```
 
-- [ ] **Step 5: Nettoyage backup (optionnel)**
+- [ ] **Step 5: Merge branch (quand confiance établie)**
 
-Une fois que la config tourne depuis quelques jours sans problème:
+**Ne pas faire immédiatement.** Attendre quelques jours d'usage. Puis:
 ```bash
-rm -rf ~/.config/nvim.bak-2026-04-16
+cd ~/.dotfiles
+git checkout main
+git merge migration/nvim-0.12
+git push
 ```
-
-Ne pas exécuter tant que la confiance n'est pas établie (attendre une semaine d'usage minimum).
 
 ---
 
 ## Notes pour l'implémenteur
 
-- **Ordre critique:** Task 1 (baseline) → Task 2 (drop) → Tasks 3-4 (simples fixes) → Task 5 (gros refactor LSP) → Task 6 (cleanup deprecation). Task 7 = verification.
-- **Rollback:** à n'importe quel moment, `rm -rf ~/.config/nvim && cp -r ~/.config/nvim.bak-2026-04-16 ~/.config/nvim`.
-- **Pas de tests automatisés** — toutes les vérifications sont manuelles ou headless nvim commands.
-- **Mason installe les LSPs** — la première fois que tu ouvres un fichier, Mason peut avoir besoin d'installer le binaire LSP si absent. Vérifier via `:Mason`.
+- **Source of truth:** `~/.dotfiles/home/dot_config/nvim/...` (jamais éditer `~/.config/nvim/` directement sauf pour les suppressions que chezmoi ne propage pas)
+- **Workflow par étape:** edit source → `chezmoi apply` → test → commit
+- **Ordre critique:** Task 1 → 2 → 3 → 4 → 5 → 6 → 7
+- **Rollback:** `cd ~/.dotfiles && git reset --hard HEAD~1 && chezmoi apply`
+- **Mason installe les LSPs** — la première fois que tu ouvres un fichier, Mason peut devoir installer le binaire. `:Mason` pour vérifier.

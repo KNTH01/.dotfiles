@@ -112,18 +112,17 @@ Neovim 0.12 ajoute par défaut: `K` (hover), `grn` (rename), `gra` (code action)
 
 ### Safety net
 
-Le répertoire `~/.config/nvim` n'est **pas** un git repo. Backup par copie avant de commencer:
-```bash
-cp -r ~/.config/nvim ~/.config/nvim.bak-2026-04-16
-```
-Rollback = restauration du dossier backup.
+La config est gérée par **chezmoi** depuis `~/.dotfiles/` (branche `migration/nvim-0.12` déjà créée). Workflow par étape:
+1. Éditer les fichiers source dans `~/.dotfiles/home/dot_config/nvim/...`
+2. `chezmoi apply` → sync vers `~/.config/nvim/`
+3. Tester nvim
+4. `git commit` dans `~/.dotfiles/` si OK
 
-**Note:** à considérer d'initialiser un git repo dans `~/.config/nvim` après migration (hors scope de ce spec mais recommandé).
+Rollback = `git reset --hard` ou checkout d'un commit antérieur. Commits atomiques par Task.
 
 ### Ordre d'exécution (du moins risqué au plus risqué)
 
-1. Backup dossier
-2. Baseline: `nvim`, `:checkhealth`, capturer output complet (deprecations, erreurs)
+1. Baseline: `nvim`, `:checkhealth`, capturer output complet (deprecations, erreurs)
 3. Drop plugins inutiles (suppression des fichiers `lua/knth/plugins/*.lua` listés en section 5)
 4. Fix `options.lua` — `source = true`
 5. Rewrite `treesitter.lua` pour API main branch
