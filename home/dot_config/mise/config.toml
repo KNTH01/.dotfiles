@@ -1,0 +1,33 @@
+[tools]
+usage = "latest"
+bun = "latest"
+node = "latest"
+"npm:btca" = "latest"
+"npm:ccusage" = "latest"
+"npm:@ccusage/opencode" = "latest"
+"npm:agent-browser" = "latest"
+btop = "latest"
+bottom = "latest"
+starship = "latest"
+bat = "latest"
+bat-extras = "latest"
+ripgrep-all = "latest"
+ripgrep = "latest"
+opencode = "latest"
+"npm:effect-solutions" = "latest"
+"npm:@effect/language-service" = "latest"
+rust = "latest"
+"npm:@steipete/summarize" = "latest"
+"cargo:lstr" = "latest"
+"npm:@mariozechner/pi-coding-agent" = "latest"
+uv = "latest"
+"pipx:yt-dlp" = "latest"
+glow = "latest"
+"npm:@openai/codex" = "latest"
+chezmoi = "latest"
+pnpm = "latest"
+
+[settings]
+
+[settings.npm]
+package_manager = "bun"

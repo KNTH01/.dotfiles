@@ -1,35 +1,37 @@
 # dotfiles
-My dotfiles
 
-`git clone {repo} .dotfiles`
+dotfiles in this repo are managed with chezmoi.
 
-Add `~/.gitconfig.user` with you Git credentials
-
-```plaintext
-// ~/.gitconfig.user
-[user]
-  name = My name
-  email = my-email@gmail.com
-```
+## Bootstrap
 
 ```bash
-ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
-ln -s ~/.dotfiles/.zshrc ~/.zshrc
+git clone git@github.com:KNTH01/.dotfiles.git ~/.dotfiles
+chezmoi init --source="$HOME/.dotfiles"
+chezmoi apply
 ```
 
-## How to
+If this machine needs encrypted files, configure your age identity in `~/.config/chezmoi/chezmoi.toml` before running `chezmoi apply`.
 
-- Copy the env file `ln -s .dotfiles_env $HOME/.dotfiles_env` and change the values if needed
+## Managed in phase 1
 
-## TODO
+- `~/.gitconfig`
+- `~/.gitconfig.user` (encrypted)
+- `~/.tmux.conf`
+- `~/.config/mise/config.toml`
+- `~/.config/fish/...`
+- `~/.local/bin/cheat`
+- `~/.local/bin/omarchy-webapp-install` (desktop hosts only)
 
-- [ ] .zshrc
-- [ ] .profile
-- [ ] npm / yarn bin location configuration
+## Fish generated completions
 
-## stow
+`deno.fish` and `mise.fish` are generated locally and are not tracked in Git.
+After `chezmoi apply` on a machine with `deno` and `mise` installed, run:
 
+```bash
+~/.local/bin/fish-regenerate-completions
 ```
-$> stow $folder
-$stow -t / $folder (for e.g: /etc, like for pacman.conf)
-```
+
+This writes:
+
+- `~/.config/fish/completions/deno.fish`
+- `~/.config/fish/completions/mise.fish`
