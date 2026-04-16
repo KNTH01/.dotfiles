@@ -2,55 +2,51 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		branch = "main",
-		event = { "BufReadPre", "BufNewFile" },
-		build = ":TSUpdate",
+		lazy = false,
+		build = function()
+			require("nvim-treesitter").update()
+		end,
 
 		config = function()
-			-- Treesitter configuration
-			-- Parsers must be installed manually via :TSInstall
+			local parsers = {
+				"rust",
+				"javascript",
+				"typescript",
+				"html",
+				"css",
+				"lua",
+				"json",
+				"tsx",
+				"yaml",
+				"markdown",
+				"svelte",
+				"graphql",
+				"bash",
+				"vim",
+				"dockerfile",
+				"gitignore",
+				"markdown_inline",
+				"regex",
+			}
 
-			local status_ok, treesitter_configs = pcall(require, "nvim-treesitter.configs")
-			if not status_ok then
-				return
-			end
+			require("nvim-treesitter").install(parsers)
 
-			treesitter_configs.setup({
-				highlight = {
-					enable = true, -- `false` will disable the whole extension
-				},
-				-- enable indentation
-				indent = { enable = true, disable = { "yaml" } },
-				-- enable autotagging (w/ nvim-ts-autotag plugin)
-				autotag = { enable = true },
-				-- ensure these language parsers are installed
-				ensure_installed = {
-					"rust",
-					"javascript",
-					"typescript",
-					"html",
-					"css",
-					"lua",
-					"json",
-					"tsx",
-					"yaml",
-					"markdown",
-					"svelte",
-					"graphql",
-					"bash",
-					"vim",
-					"dockerfile",
-					"gitignore",
-					"markdown_inline",
-					"regex",
-				},
-				-- Install parsers synchronously (only applied to `ensure_installed`)
-				sync_install = false,
-				-- Automatically install missing parsers when entering buffer
-				-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-				auto_install = true,
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					local ft = args.match
+					local lang = vim.treesitter.language.get_lang(ft)
+					if not lang then return end
+
+					local ok = pcall(vim.treesitter.start, args.buf, lang)
+					if not ok then return end
+
+					-- Indent treesitter (skip yaml comme dans la config précédente)
+					if ft ~= "yaml" then
+						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					end
+				end,
 			})
 		end,
-		dependencies = {},
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
