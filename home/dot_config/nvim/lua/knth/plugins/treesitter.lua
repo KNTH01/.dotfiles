@@ -40,7 +40,7 @@ return {
 					local ok = pcall(vim.treesitter.start, args.buf, lang)
 					if not ok then return end
 
-					-- Indent treesitter (skip yaml comme dans la config précédente)
+					-- Treesitter indentation (skip yaml as in the previous config)
 					if ft ~= "yaml" then
 						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 					end

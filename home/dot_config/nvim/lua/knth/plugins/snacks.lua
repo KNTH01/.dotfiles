@@ -65,7 +65,7 @@ return {
 		{
 			"<leader>,",
 			function()
-				Snacks.picker.buffers() -- list des buffers, osef
+				Snacks.picker.buffers() -- buffer list
 			end,
 			desc = "Buffers",
 		},

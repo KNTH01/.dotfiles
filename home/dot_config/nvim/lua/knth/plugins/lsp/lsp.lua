@@ -2,26 +2,35 @@ return {
 	"saghen/blink.cmp",
 
 	dependencies = {
-		-- nvim-lspconfig fournit les presets serveur (cmd, root_markers, filetypes)
-		-- via runtimepath/lsp/*.lua. Neovim 0.12 a les APIs natives mais pas les presets.
+		-- nvim-lspconfig provides the server presets (cmd, root_markers, filetypes)
+		-- via runtimepath/lsp/*.lua. Neovim 0.12 has the native APIs, but not the presets.
 		"neovim/nvim-lspconfig",
 		{ "mason-org/mason.nvim", config = true },
 		{ "j-hui/fidget.nvim", opts = {} },
 	},
 
 	config = function()
-		require("mason").setup()
-
-		-- User commands pour remplacer LspInfo/LspRestart/LspLog supprimés en 0.12
+		-- User commands to replace LspInfo/LspRestart/LspLog removed in 0.12
 		vim.api.nvim_create_user_command("LspInfo", "checkhealth vim.lsp", {})
-		vim.api.nvim_create_user_command("LspRestart", function()
-			for _, client in ipairs(vim.lsp.get_clients()) do
-				client:stop()
-			end
-			vim.defer_fn(function() vim.cmd("edit") end, 500)
-		end, {})
+		vim.api.nvim_create_user_command("LspRestart", function(info)
+			vim.api.nvim_cmd({
+				cmd = "lsp",
+				args = vim.list_extend({ "restart" }, info.fargs),
+				bang = info.bang,
+			}, {})
+		end, {
+			nargs = "?",
+			bang = true,
+			complete = function()
+				return vim.iter(vim.lsp.get_clients({ bufnr = 0 }))
+					:map(function(client)
+						return client.name
+					end)
+					:totable()
+			end,
+		})
 		vim.api.nvim_create_user_command("LspLog", function()
-			vim.cmd("edit " .. vim.lsp.get_log_path())
+			vim.cmd.edit(vim.lsp.log.get_filename())
 		end, {})
 
 		-- Mappings LSP via LspAttach
@@ -33,9 +42,9 @@ return {
 					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 				end
 
-				-- Natifs 0.12 déjà présents: K (hover), grn (rename), gra (code action),
-				-- grr (references), gri (implementation), gO (document symbols).
-				-- On garde uniquement les customs utilisateur:
+				-- Native 0.12 mappings already present: K (hover), grn (rename),
+				-- gra (code action), grr (references), gri (implementation), gO (document symbols).
+				-- Keep only the user custom mappings:
 				map("gl", vim.diagnostic.open_float, "Show line diagnostics")
 				map("gK", vim.lsp.buf.signature_help, "Show signature help")
 			end,
@@ -48,8 +57,31 @@ return {
 			return root ~= nil
 		end
 
-		local effect_ls_path = vim.fn.getcwd() .. "/node_modules/@effect/language-service/"
-		local has_effect_ls = vim.fn.isdirectory(effect_ls_path) == 1
+		local function get_effect_ls_path(root_dir)
+			if not root_dir then return nil end
+
+			local effect_ls_package = vim.fs.find(
+				"node_modules/@effect/language-service/package.json",
+				{ upward = true, path = root_dir, type = "file" }
+			)[1]
+
+			if not effect_ls_package then return nil end
+			return vim.fs.dirname(effect_ls_package)
+		end
+
+		local function get_effect_ls_plugin(root_dir)
+			local effect_ls_path = get_effect_ls_path(root_dir)
+			if not effect_ls_path then return {} end
+
+			return {
+				{
+					name = "@effect/language-service",
+					location = effect_ls_path,
+					languages = { "typescript" },
+					configNamespace = "typescript",
+				},
+			}
+		end
 
 		local servers = {
 			html = {},
@@ -71,6 +103,12 @@ return {
 					if not is_deno_project(bufnr) then on_dir() end
 				end,
 				single_file_support = false,
+				on_new_config = function(new_config, new_root_dir)
+					new_config.settings = new_config.settings or {}
+					new_config.settings.vtsls = new_config.settings.vtsls or {}
+					new_config.settings.vtsls.tsserver = new_config.settings.vtsls.tsserver or {}
+					new_config.settings.vtsls.tsserver.globalPlugins = get_effect_ls_plugin(new_root_dir)
+				end,
 				on_init = function(client)
 					client.server_capabilities.documentFormattingProvider = false
 					client.server_capabilities.documentFormattingRangeProvider = false
@@ -78,14 +116,7 @@ return {
 				settings = {
 					vtsls = {
 						tsserver = {
-							globalPlugins = has_effect_ls and {
-								{
-									name = "@effect/language-service",
-									location = effect_ls_path,
-									languages = { "typescript" },
-									configNamespace = "typescript",
-								},
-							} or {},
+							globalPlugins = {},
 						},
 					},
 					typescript = {
