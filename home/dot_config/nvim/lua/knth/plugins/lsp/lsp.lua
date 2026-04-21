@@ -1,10 +1,11 @@
 return {
-	"saghen/blink.cmp",
+	-- nvim-lspconfig provides the server presets (cmd, root_markers, filetypes)
+	-- via runtimepath/lsp/*.lua. Neovim 0.12 has the native APIs, but not the presets.
+	"neovim/nvim-lspconfig",
+	event = { "BufReadPre", "BufNewFile" },
 
 	dependencies = {
-		-- nvim-lspconfig provides the server presets (cmd, root_markers, filetypes)
-		-- via runtimepath/lsp/*.lua. Neovim 0.12 has the native APIs, but not the presets.
-		"neovim/nvim-lspconfig",
+		"saghen/blink.cmp",
 		{ "mason-org/mason.nvim", config = true },
 		{ "j-hui/fidget.nvim", opts = {} },
 	},
