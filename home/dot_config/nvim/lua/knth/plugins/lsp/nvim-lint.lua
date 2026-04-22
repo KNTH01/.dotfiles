@@ -6,7 +6,7 @@ return {
 
 		-- Customize oxlint to use --type-aware flag
 		lint.linters.oxlint = require("lint").linters.oxlint
-		table.insert(lint.linters.oxlint.args, 1, '--type-aware')
+		table.insert(lint.linters.oxlint.args, 1, "--type-aware")
 
 		local js_filetypes = {
 			javascript = true,
@@ -24,23 +24,31 @@ return {
 		end
 
 		local function get_js_linter(bufnr)
-			if has_root_config(bufnr, { "biome.json", "biome.jsonc" }) then return "biomejs" end
-			if has_root_config(bufnr, {
-				".eslintrc.js",
-				".eslintrc.cjs",
-				".eslintrc.json",
-				".eslintrc.yml",
-				".eslintrc",
-			}) then return "eslint_d" end
+			if has_root_config(bufnr, { "biome.json", "biome.jsonc" }) then
+				return "biomejs"
+			end
+			if
+				has_root_config(bufnr, {
+					".eslintrc.js",
+					".eslintrc.cjs",
+					".eslintrc.json",
+					".eslintrc.yml",
+					".eslintrc",
+				})
+			then
+				return "eslint_d"
+			end
 			return "oxlint"
 		end
 
 		lint.linters_by_ft = {
-			markdown = { "markdownlint" },
+			markdown = {},
 		}
 
 		local function lint_buffer(bufnr)
-			if not vim.bo[bufnr].modifiable then return end
+			if not vim.bo[bufnr].modifiable then
+				return
+			end
 
 			local filetype = vim.bo[bufnr].filetype
 			if js_filetypes[filetype] then

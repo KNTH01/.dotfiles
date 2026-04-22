@@ -59,20 +59,26 @@ return {
 		end
 
 		local function get_effect_ls_path(root_dir)
-			if not root_dir then return nil end
+			if not root_dir then
+				return nil
+			end
 
 			local effect_ls_package = vim.fs.find(
 				"node_modules/@effect/language-service/package.json",
 				{ upward = true, path = root_dir, type = "file" }
 			)[1]
 
-			if not effect_ls_package then return nil end
+			if not effect_ls_package then
+				return nil
+			end
 			return vim.fs.dirname(effect_ls_package)
 		end
 
 		local function get_effect_ls_plugin(root_dir)
 			local effect_ls_path = get_effect_ls_path(root_dir)
-			if not effect_ls_path then return {} end
+			if not effect_ls_path then
+				return {}
+			end
 
 			return {
 				{
@@ -85,6 +91,15 @@ return {
 		end
 
 		local servers = {
+			markdown_oxide = {
+				capabilities = {
+					workspace = {
+						didChangeWatchedFiles = {
+							dynamicRegistration = true,
+						},
+					},
+				},
+			},
 			html = {},
 			cssls = {},
 			tailwindcss = {},
@@ -94,14 +109,18 @@ return {
 
 			denols = {
 				root_dir = function(bufnr, on_dir)
-					if is_deno_project(bufnr) then on_dir() end
+					if is_deno_project(bufnr) then
+						on_dir()
+					end
 				end,
 				single_file_support = false,
 			},
 
 			vtsls = {
 				root_dir = function(bufnr, on_dir)
-					if not is_deno_project(bufnr) then on_dir() end
+					if not is_deno_project(bufnr) then
+						on_dir()
+					end
 				end,
 				single_file_support = false,
 				on_new_config = function(new_config, new_root_dir)
@@ -150,14 +169,24 @@ return {
 
 			emmet_ls = {
 				filetypes = {
-					"html", "typescriptreact", "javascriptreact",
-					"css", "sass", "scss", "less", "svelte",
+					"html",
+					"typescriptreact",
+					"javascriptreact",
+					"css",
+					"sass",
+					"scss",
+					"less",
+					"svelte",
 				},
 			},
 
 			graphql = {
 				filetypes = {
-					"graphql", "gql", "svelte", "typescriptreact", "javascriptreact",
+					"graphql",
+					"gql",
+					"svelte",
+					"typescriptreact",
+					"javascriptreact",
 				},
 			},
 
@@ -171,12 +200,8 @@ return {
 		}
 
 		for server_name, server_config in pairs(servers) do
-			server_config.capabilities = vim.tbl_deep_extend(
-				"force",
-				{},
-				blink_cmp_capabilities,
-				server_config.capabilities or {}
-			)
+			server_config.capabilities =
+				vim.tbl_deep_extend("force", {}, blink_cmp_capabilities, server_config.capabilities or {})
 			vim.lsp.config(server_name, server_config)
 			vim.lsp.enable(server_name)
 		end
