@@ -28,6 +28,7 @@ chezmoi = "latest"
 pnpm = "latest"
 kubectl = "latest"
 kubelogin = "latest"
+restic = "latest"
 
 [settings]
 
