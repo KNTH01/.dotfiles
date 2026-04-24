@@ -5,8 +5,8 @@ local options = {
 	-- set term gui colors (most terminals support this)
 	termguicolors = true,
 
-	-- set height for the command input below
-	cmdheight = 1,
+	-- reserve no permanent cmdline on nvim 0.12+, ui2 will handle it
+	cmdheight = vim.fn.has("nvim-0.12") == 1 and 0 or 1,
 
 	-- mostly just for cmp
 	completeopt = { "menuone", "noselect" },
@@ -160,7 +160,6 @@ local options = {
 	breakindent = true,
 
 	-- faster scrolling
-	-- disabled because conflict with noice.nvim
 	-- lazyredraw = true,
 }
 
@@ -182,6 +181,29 @@ vim.opt.wildignore:append("*.o,*.rej,*.so")
 vim.schedule(function()
 	vim.opt.clipboard = "unnamedplus"
 end)
+
+if vim.fn.has("nvim-0.12") == 1 then
+	vim.api.nvim_create_autocmd("UIEnter", {
+		once = true,
+		callback = function()
+			local ok, ui2 = pcall(require, "vim._core.ui2")
+			if ok then
+				ui2.enable()
+			end
+		end,
+		desc = "Enable Neovim's experimental ui2",
+	})
+
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = { "cmd", "msg", "pager", "dialog" },
+		callback = function()
+			vim.opt_local.number = false
+			vim.opt_local.relativenumber = false
+			vim.opt_local.signcolumn = "no"
+		end,
+		desc = "Tidy ui2 windows",
+	})
+end
 
 --
 -- Commands
@@ -239,7 +261,7 @@ vim.cmd([[ au BufEnter *.json set ai expandtab shiftwidth=2 tabstop=2 sta fo=cro
 vim.diagnostic.config({
 	virtual_text = true,
 	float = {
-		source = "always",
+		source = true,
 		border = "rounded",
 	},
 })

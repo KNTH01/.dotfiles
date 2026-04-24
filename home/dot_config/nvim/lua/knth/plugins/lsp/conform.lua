@@ -5,18 +5,31 @@ return {
 	config = function()
 		local conform = require("conform")
 
-		local js_formatter = "oxfmt"
+		local function has_biome_config(bufnr)
+			local buffer_path = vim.api.nvim_buf_get_name(bufnr)
+			local search_path = buffer_path ~= "" and vim.fs.dirname(buffer_path) or vim.fn.getcwd()
+
+			return vim.fs.find({ "biome.json", "biome.jsonc" }, {
+				upward = true,
+				path = search_path,
+				type = "file",
+			})[1] ~= nil
+		end
+
+		local function biome_check_or_oxfmt(bufnr)
+			return has_biome_config(bufnr) and { "biome-check" } or { "oxfmt" }
+		end
 
 		local formatters_by_ft = {
-			javascript = { js_formatter },
-			typescript = { js_formatter },
-			javascriptreact = { js_formatter },
-			typescriptreact = { js_formatter },
-			astro = { js_formatter },
-			svelte = { js_formatter },
-			css = { js_formatter },
-			html = { js_formatter },
-			json = { js_formatter },
+			javascript = biome_check_or_oxfmt,
+			typescript = biome_check_or_oxfmt,
+			javascriptreact = biome_check_or_oxfmt,
+			typescriptreact = biome_check_or_oxfmt,
+			json = biome_check_or_oxfmt,
+			css = biome_check_or_oxfmt,
+			astro = { "oxfmt" },
+			svelte = { "oxfmt" },
+			html = { "oxfmt" },
 			yaml = { "prettier" },
 			markdown = { "prettier" },
 			graphql = { "prettier" },
@@ -28,12 +41,6 @@ return {
 
 		conform.setup({
 			formatters_by_ft = formatters_by_ft,
-
-			-- format_on_save = js_formatter == "biome-check" and {
-			-- 	lsp_fallback = true,
-			-- 	async = false,
-			-- 	timeout_ms = 1000,
-			-- } or nil,
 		})
 
 		vim.keymap.set({ "n", "v" }, "<leader>fm", function()
@@ -41,7 +48,14 @@ return {
 				lsp_fallback = true,
 				async = true,
 				timeout_ms = 500,
-			})
+			}, function(err)
+				if err then return end
+				vim.api.nvim_exec_autocmds("User", {
+					pattern = "KnthLint",
+					modeline = false,
+					data = { bufnr = vim.api.nvim_get_current_buf() },
+				})
+			end)
 		end, { desc = "Format file or range (in visual mode)" })
 	end,
 }

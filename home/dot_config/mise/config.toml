@@ -26,6 +26,8 @@ glow = "latest"
 "npm:@openai/codex" = "latest"
 chezmoi = "latest"
 pnpm = "latest"
+kubectl = "latest"
+kubelogin = "latest"
 
 [settings]
 
