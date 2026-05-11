@@ -19,7 +19,7 @@ opencode = "latest"
 rust = "latest"
 "npm:@steipete/summarize" = "latest"
 "cargo:lstr" = "latest"
-"npm:@mariozechner/pi-coding-agent" = "latest"
+"npm:@earendil-works/pi-coding-agent" = "latest"
 uv = "latest"
 "pipx:yt-dlp" = "latest"
 glow = "latest"
@@ -29,6 +29,8 @@ pnpm = "latest"
 kubectl = "latest"
 kubelogin = "latest"
 restic = "latest"
+"npm:@kitlangton/ghui" = "latest"
+"npm:hunkdiff" = "latest"
 
 [settings]
 
