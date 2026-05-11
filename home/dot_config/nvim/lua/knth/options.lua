@@ -160,6 +160,7 @@ local options = {
 	breakindent = true,
 
 	-- faster scrolling
+	-- disabled because conflict with noice.nvim
 	-- lazyredraw = true,
 }
 
