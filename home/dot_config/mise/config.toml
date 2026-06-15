@@ -28,6 +28,8 @@ restic = "latest"
 "npm:@kitlangton/ghui" = "latest"
 "npm:hunkdiff" = "latest"
 fd = "latest"
+eza = "latest"
+lazygit = "latest"
 
 [settings]
 
