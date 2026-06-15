@@ -62,24 +62,30 @@ EOF
 echo "==> Wrote $CHEZMOI_CONFIG"
 
 if [ ! -f "$AGE_KEY" ]; then
+  echo "==> Generating age key for this host"
+  age-keygen -o "$AGE_KEY"
+  chmod 600 "$AGE_KEY"
+
+  NEW_RECIPIENT="$(grep '^# public key:' "$AGE_KEY" | sed 's/^# public key: //')"
+
   echo
-  echo "==> Missing age private key:"
-  echo "    $AGE_KEY"
+  echo "==> New age recipient:"
+  echo "    $NEW_RECIPIENT"
   echo
-  echo "Copy it from an existing machine, e.g. from velvet:"
+  echo "Add this recipient to:"
+  echo "    $AGE_RECIPIENTS"
   echo
-  echo "    scp ~/.config/age/key-chezmoi.txt <new-machine-hostname-or-ip>:$AGE_KEY"
+  echo "Then re-encrypt chezmoi secrets from an already-authorized machine:"
+  echo "    cd ~/.dotfiles"
+  echo "    chezmoi re-add"
+  echo "    git add chezmoi/age/recipients.txt"
+  echo "    git add -u"
+  echo "    git commit -m \"chezmoi: add age recipient\""
+  echo "    git push"
   echo
-  echo "Then on this machine:"
-  echo
-  echo "    chmod 600 $AGE_KEY"
-  echo "    chezmoi doctor"
-  echo "    chezmoi diff"
-  echo "    chezmoi apply"
-  echo
-  echo "Stopping here because applying encrypted dotfiles without the age key would fail."
   exit 2
 fi
+
 
 chmod 600 "$AGE_KEY"
 
