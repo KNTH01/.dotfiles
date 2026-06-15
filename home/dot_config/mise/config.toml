@@ -27,6 +27,7 @@ kubelogin = "latest"
 restic = "latest"
 "npm:@kitlangton/ghui" = "latest"
 "npm:hunkdiff" = "latest"
+fd = "latest"
 
 [settings]
 
