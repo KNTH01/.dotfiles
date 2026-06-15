@@ -6,16 +6,19 @@ dotfiles in this repo are managed with chezmoi.
 
 ```bash
 git clone git@github.com:KNTH01/.dotfiles.git ~/.dotfiles
+~/.dotfiles/bootstrap.sh
+```
+
+Or manually:
+
+```bash
 chezmoi init --source="$HOME/.dotfiles"
 chezmoi apply
 ```
 
-If this machine needs encrypted files, configure your age identity in `~/.config/chezmoi/chezmoi.toml` before running `chezmoi apply`.
-
 ## Managed in phase 1
 
 - `~/.gitconfig`
-- `~/.gitconfig.user` (encrypted)
 - `~/.tmux.conf`
 - `~/.config/mise/config.toml`
 - `~/.config/fish/...`
