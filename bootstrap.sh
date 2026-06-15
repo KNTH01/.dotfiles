@@ -68,7 +68,7 @@ if [ ! -f "$AGE_KEY" ]; then
   echo
   echo "Copy it from an existing machine, e.g. from velvet:"
   echo
-  echo "    scp ~/.config/age/key-chezmoi.txt $(hostname):$AGE_KEY"
+  echo "    scp ~/.config/age/key-chezmoi.txt <new-machine-hostname-or-ip>:$AGE_KEY"
   echo
   echo "Then on this machine:"
   echo
