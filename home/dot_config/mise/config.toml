@@ -15,7 +15,6 @@ ripgrep = "15.1.0"
 rust = "1.96.0"
 "npm:@steipete/summarize" = "0.18.1"
 "cargo:lstr" = "0.2.1"
-"npm:@earendil-works/pi-coding-agent" = "0.79.4"
 uv = "0.11.21"
 "pipx:yt-dlp" = "2026.6.9"
 glow = "2.1.2"
@@ -32,6 +31,7 @@ eza = "0.23.4"
 lazygit = "0.62.2"
 gh = "2.94.0"
 zoxide = "0.9.9"
+pi = "0.79.5"
 
 [settings]
 
