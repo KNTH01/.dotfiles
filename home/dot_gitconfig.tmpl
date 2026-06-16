@@ -1,13 +1,22 @@
+{{- $host := .chezmoi.hostname -}}
+{{- $isEchoHost := eq $host "pixelpirate" -}}
 [user]
+{{ if $isEchoHost -}}
+name = Echo
+email = echo.sgnl@gmail.com
+{{ else -}}
 name = Kevin Nguyen
 email = 1632391+KNTH01@users.noreply.github.com
 signingkey = ~/.ssh/id_ed25519.pub
+{{ end -}}
 
+{{ if not $isEchoHost -}}
 [gpg]
 format = ssh
 
 [commit]
 gpgsign = true
+{{ end -}}
 
 [alias]
 st = status --branch --short
