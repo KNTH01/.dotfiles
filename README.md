@@ -1,6 +1,6 @@
 # dotfiles
 
-dotfiles in this repo are managed with chezmoi.
+Dotfiles in this repo are managed with [chezmoi](https://www.chezmoi.io/).
 
 ## Bootstrap
 
@@ -9,6 +9,14 @@ git clone git@github.com:KNTH01/.dotfiles.git ~/.dotfiles
 ~/.dotfiles/bootstrap.sh
 ```
 
+The bootstrap script installs `git` and `chezmoi` on Arch/Debian-like systems when missing, writes:
+
+```text
+~/.config/chezmoi/chezmoi.toml
+```
+
+with `sourceDir = "$HOME/.dotfiles"`, previews `chezmoi diff`, then optionally runs `chezmoi apply`.
+
 Or manually:
 
 ```bash
@@ -16,14 +24,144 @@ chezmoi init --source="$HOME/.dotfiles"
 chezmoi apply
 ```
 
-## Managed in phase 1
+## Managed files
+
+This repo currently manages, among others:
 
 - `~/.gitconfig`
 - `~/.tmux.conf`
-- `~/.config/mise/config.toml`
+- `~/.wezterm.lua`
+- `~/.xmonad/...`
 - `~/.config/fish/...`
+- `~/.config/mise/config.toml`
+- `~/.config/nvim/...`
+- `~/.config/starship.toml`
+- `~/.config/alacritty/...`
+- `~/.config/ghostty/...`
+- `~/.config/bat/...`
+- `~/.config/fastfetch/...`
+- `~/.config/gitui/...`
+- `~/.config/awesome/...`
+- `~/.config/polybar/...`
+- `~/.config/rofi/...`
+- `~/.config/paru/paru.conf`
 - `~/.local/bin/cheat`
-- `~/.local/bin/omarchy-webapp-install` (desktop hosts only)
+- `~/.local/bin/fish-regenerate-completions`
+- `~/.local/bin/omarchy-webapp-install` / `web2app` helpers
+
+## Tmux plugins
+
+Tmux plugins are managed with [TPM](https://github.com/tmux-plugins/tpm), the Tmux Plugin Manager.
+
+The plugin list is in:
+
+```text
+~/.tmux.conf
+```
+
+Currently configured plugins:
+
+- `tmux-plugins/tpm`
+- `christoomey/vim-tmux-navigator`
+- `catppuccin/tmux`
+- `tmux-plugins/tmux-resurrect`
+- `tmux-plugins/tmux-continuum`
+- `laktak/extrakto`
+
+Install TPM:
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+Reload tmux config:
+
+```bash
+tmux source ~/.tmux.conf
+```
+
+Install configured plugins from inside tmux:
+
+```text
+prefix + I
+```
+
+By default the prefix is `Ctrl-b`, so press:
+
+```text
+Ctrl-b I
+```
+
+Useful TPM bindings:
+
+```text
+prefix + I  install plugins
+prefix + U  update plugins
+prefix + alt-u  remove plugins no longer listed in ~/.tmux.conf
+```
+
+Optional dependency for `laktak/extrakto`:
+
+```bash
+# Arch
+sudo pacman -S fzf
+
+# Debian/Ubuntu
+sudo apt install fzf
+```
+
+## Fish plugins
+
+Fish plugins are managed with [Fisher](https://github.com/jorgebucaran/fisher).
+
+The plugin list is tracked in:
+
+```text
+~/.config/fish/fish_plugins
+```
+
+Currently configured plugins:
+
+- `jorgebucaran/fisher`
+- `patrickf1/fzf.fish`
+- `jorgebucaran/autopair.fish`
+- `lewisacidic/fish-git-abbr`
+- `gazorby/fish-abbreviation-tips`
+
+Install Fisher:
+
+```bash
+fish ~/.config/fish/install_fisher.sh
+```
+
+Install configured Fish plugins:
+
+```bash
+fish ~/.config/fish/install_fisher_plugins.sh
+```
+
+If working directly from the repo before `chezmoi apply`, use:
+
+```bash
+fish home/dot_config/fish/install_fisher.sh
+fish home/dot_config/fish/install_fisher_plugins.sh
+```
+
+After Fisher is installed, plugin maintenance can also be done with:
+
+```fish
+fisher update
+```
+
+Optional dependency for `patrickf1/fzf.fish`:
+
+```bash
+# Arch
+sudo pacman -S fzf
+
+# Debian/Ubuntu
+sudo apt install fzf
+```
 
 ## Fish generated completions
 
