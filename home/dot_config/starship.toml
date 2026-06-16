@@ -1,0 +1,95 @@
+# Kevin / Echo Starship baseline
+# Signal > noise. Portable, readable, low-drama.
+
+add_newline = true
+command_timeout = 1000
+
+format = "$hostname$directory$git_branch$git_status$nodejs$package$kubernetes$docker_context$cmd_duration$line_break$character"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold purple)"
+
+[hostname]
+ssh_only = false
+format = "[$hostname](bold purple) "
+aliases = { raven = "raven 🐦‍⬛", velvet = "velvet 🧵", pixelpirate = "pixelpirate 🏴‍☠️" }
+
+[directory]
+format = "[$path](bold cyan) "
+truncation_length = 4
+truncate_to_repo = false
+home_symbol = "~"
+read_only = " 󰌾"
+
+[directory.substitutions]
+"~/echo-workspace" = "~/echo"
+"~/dotfiles" = "~/dotfiles"
+
+[git_branch]
+format = "[$symbol$branch](bold purple) "
+symbol = " "
+truncation_length = 36
+truncation_symbol = "…"
+
+[git_status]
+format = "[$all_status$ahead_behind](bold yellow) "
+conflicted = "=${count} "
+ahead = "⇡${count} "
+behind = "⇣${count} "
+diverged = "⇕⇡${ahead_count}⇣${behind_count} "
+untracked = "?${count} "
+modified = "*${count} "
+staged = "+${count} "
+renamed = "»${count} "
+deleted = "✘${count} "
+stashed = '$${count} '
+
+[nodejs]
+format = "[$symbol$version](green) "
+symbol = " "
+detect_files = ["package.json", ".node-version", ".nvmrc", "bun.lock", "pnpm-lock.yaml", "yarn.lock", "package-lock.json"]
+detect_folders = ["node_modules"]
+
+[package]
+format = "[📦 $version](208) "
+disabled = false
+
+[kubernetes]
+format = "[󱃾 $context](blue) "
+disabled = false
+
+[[kubernetes.contexts]]
+context_pattern = ".*prod.*"
+context_alias = "prod"
+style = "bold red"
+
+[[kubernetes.contexts]]
+context_pattern = ".*staging.*"
+context_alias = "staging"
+style = "yellow"
+
+[docker_context]
+format = "[ $context](blue) "
+only_with_files = true
+
+[cmd_duration]
+min_time = 2000
+format = "[took $duration](dimmed yellow) "
+
+# Keep language modules quiet unless deliberately enabled.
+[python]
+disabled = true
+
+[rust]
+disabled = true
+
+[golang]
+disabled = true
+
+[bun]
+disabled = true
+
+[deno]
+disabled = true
