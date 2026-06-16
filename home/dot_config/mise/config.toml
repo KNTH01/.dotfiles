@@ -30,6 +30,7 @@ restic = "latest"
 fd = "latest"
 eza = "latest"
 lazygit = "latest"
+gh = "latest"
 
 [settings]
 
