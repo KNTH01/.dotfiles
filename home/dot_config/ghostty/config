@@ -2,4 +2,8 @@ command = /usr/bin/fish
 mouse-scroll-multiplier = 0.75
 theme = light:"Catppuccin Latte",dark:"Catppuccin Frappe"
 font-family = "JetBrainsMono Nerd Font Mono"
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = false
+window-step-resize = true
 
