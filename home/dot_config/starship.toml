@@ -14,7 +14,7 @@ vimcmd_symbol = "[❮](bold purple)"
 [hostname]
 ssh_only = false
 format = "[$hostname](bold purple) "
-aliases = { raven = "raven 🐦‍⬛", velvet = "velvet 🧵", pixelpirate = "pixelpirate 🏴‍☠️" }
+aliases = { raven = "raven 🪶", velvet = "velvet 🧵", pixelpirate = "pixelpirate 🏴‍☠️" }
 
 [directory]
 format = "[$path](bold cyan) "
