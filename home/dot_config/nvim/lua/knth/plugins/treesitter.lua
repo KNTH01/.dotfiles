@@ -8,6 +8,7 @@ return {
 		end,
 
 		config = function()
+			local ts = require("nvim-treesitter")
 			local parsers = {
 				"rust",
 				"javascript",
@@ -29,7 +30,14 @@ return {
 				"regex",
 			}
 
-			require("nvim-treesitter").install(parsers)
+			local installed = ts.get_installed("parsers")
+			local missing = vim.tbl_filter(function(parser)
+				return not vim.tbl_contains(installed, parser)
+			end, parsers)
+
+			if #missing > 0 then
+				ts.install(missing)
+			end
 
 			vim.api.nvim_create_autocmd("FileType", {
 				callback = function(args)
