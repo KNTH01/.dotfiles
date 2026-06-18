@@ -1,4 +1,6 @@
 machines:
+  raven:
+    isDesktop: true
   velvet:
     isDesktop: true
   pixelpirate:
