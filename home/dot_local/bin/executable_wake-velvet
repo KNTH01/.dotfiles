@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Wake Velvet over LAN using its Ethernet MAC address.
+# Requires `wol` (Arch: sudo pacman -S wol).
+exec wol -i 192.168.1.255 c8:7f:54:6c:ed:51
