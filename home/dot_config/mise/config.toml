@@ -33,6 +33,7 @@ lazygit = "0.62.2"
 gh = "2.94.0"
 pi = "0.79.9"
 fzf = "0.73.1"
+jq = "latest"
 
 [settings]
 minimum_release_age = "7d"
