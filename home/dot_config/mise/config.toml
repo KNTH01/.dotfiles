@@ -35,6 +35,8 @@ pi = "0.79.6"
 fzf = "0.73.1"
 
 [settings]
+minimum_release_age = "7d"
+minimum_release_age_excludes = ["pi"]
 
 [settings.npm]
 package_manager = "bun"
