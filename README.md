@@ -100,6 +100,39 @@ prefix + U  update plugins
 prefix + alt-u  remove plugins no longer listed in ~/.tmux.conf
 ```
 
+### KDE theme sync
+
+Tmux follows the KDE light/dark color scheme via:
+
+- `~/.local/bin/tmux-sync-theme`
+- `~/.config/systemd/user/tmux-sync-theme.path`
+- `~/.config/systemd/user/tmux-sync-theme.service`
+
+The path unit watches `~/.config/kdeglobals`. When KDE switches theme, the service runs the script, which maps KDE light to Catppuccin `latte` and KDE dark to Catppuccin `frappe`, then reloads tmux.
+
+Enable it on a machine after `chezmoi apply`:
+
+```bash
+cd ~/.dotfiles
+mise run enable-tmux-theme-sync
+```
+
+Test manually:
+
+```bash
+~/.local/bin/tmux-sync-theme current
+~/.local/bin/tmux-sync-theme apply
+```
+
+Debug:
+
+```bash
+systemctl --user status tmux-sync-theme.path
+journalctl --user -u tmux-sync-theme.service -n 50 --no-pager
+```
+
+Note: the installed Catppuccin tmux plugin expects `@catppuccin_flavour`.
+
 Optional dependency for `laktak/extrakto`:
 
 ```bash

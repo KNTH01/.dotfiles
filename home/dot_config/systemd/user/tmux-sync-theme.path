@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch KDE color scheme changes and sync tmux theme
+
+[Path]
+PathChanged=%h/.config/kdeglobals
+Unit=tmux-sync-theme.service
+
+[Install]
+WantedBy=default.target

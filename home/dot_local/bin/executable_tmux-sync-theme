@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+light_flavour="latte"
+dark_flavour="frappe"
+
+read_kde_config() {
+  local group="$1"
+  local key="$2"
+
+  if command -v kreadconfig6 >/dev/null 2>&1; then
+    kreadconfig6 --file kdeglobals --group "$group" --key "$key" 2>/dev/null || true
+  elif command -v kreadconfig5 >/dev/null 2>&1; then
+    kreadconfig5 --file kdeglobals --group "$group" --key "$key" 2>/dev/null || true
+  fi
+}
+
+rgb_is_light() {
+  local rgb="$1"
+  local r g b luminance
+  IFS=',' read -r r g b <<< "$rgb"
+
+  [[ "$r" =~ ^[0-9]+$ && "$g" =~ ^[0-9]+$ && "$b" =~ ^[0-9]+$ ]] || return 1
+
+  # Integer approximation of perceived luminance: 0.299 R + 0.587 G + 0.114 B.
+  luminance=$(( (299 * r + 587 * g + 114 * b) / 1000 ))
+  (( luminance >= 128 ))
+}
+
+detect_flavour() {
+  local scheme lower bg
+  scheme="$(read_kde_config General ColorScheme)"
+  lower="${scheme,,}"
+
+  case "$lower" in
+    *light*|*latte*)
+      printf '%s\n' "$light_flavour"
+      return
+      ;;
+    *dark*|*mocha*|*frappe*|*macchiato*)
+      printf '%s\n' "$dark_flavour"
+      return
+      ;;
+  esac
+
+  bg="$(read_kde_config 'Colors:Window' BackgroundNormal)"
+  if [[ -n "$bg" ]] && rgb_is_light "$bg"; then
+    printf '%s\n' "$light_flavour"
+    return
+  fi
+
+  bg="$(read_kde_config 'Colors:View' BackgroundNormal)"
+  if [[ -n "$bg" ]] && rgb_is_light "$bg"; then
+    printf '%s\n' "$light_flavour"
+    return
+  fi
+
+  printf '%s\n' "$dark_flavour"
+}
+
+flavour="$(detect_flavour)"
+
+case "${1:-apply}" in
+  current|print)
+    printf '%s\n' "$flavour"
+    ;;
+  apply)
+    # No tmux server: nothing to update. tmux.conf calls this script at startup.
+    if ! tmux info >/dev/null 2>&1; then
+      exit 0
+    fi
+
+    current="$(tmux show -gqv @catppuccin_flavour 2>/dev/null || true)"
+    if [[ "$current" == "$flavour" ]]; then
+      exit 0
+    fi
+
+    tmux set -g @catppuccin_flavour "$flavour"
+    tmux source-file "$HOME/.tmux.conf"
+    ;;
+  *)
+    printf 'usage: %s [apply|current]\n' "$0" >&2
+    exit 2
+    ;;
+esac

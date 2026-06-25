@@ -1,0 +1,9 @@
+[Unit]
+Description=Sync tmux theme with KDE color scheme
+# KDE can rewrite kdeglobals several times during one theme switch.
+# Allow repeated oneshot syncs instead of leaving the path unit failed.
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/tmux-sync-theme apply

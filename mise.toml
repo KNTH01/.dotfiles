@@ -1,0 +1,7 @@
+[tasks.enable-tmux-theme-sync]
+description = "Enable the systemd user watcher that syncs tmux with the KDE color scheme"
+run = """
+systemctl --user daemon-reload
+systemctl --user enable --now tmux-sync-theme.path
+systemctl --user --no-pager --full status tmux-sync-theme.path
+"""
