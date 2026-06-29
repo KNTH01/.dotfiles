@@ -6,7 +6,7 @@ DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 
 CHEZMOI_CONFIG_DIR="$HOME/.config/chezmoi"
 CHEZMOI_CONFIG="$CHEZMOI_CONFIG_DIR/chezmoi.toml"
-CHEZMOI_AGE_IDENTITY="$CHEZMOI_CONFIG_DIR/key.txt"
+CHEZMOI_AGE_IDENTITY="$HOME/.config/age/key.txt"
 
 CHEZMOI_AGE_RECIPIENTS=(
   "age1fuhr3hfm3ln4g8sr9tg9ryv3t9pv8tmt3hf6ss9qqsfdrhf3spqs0uc2tk"
