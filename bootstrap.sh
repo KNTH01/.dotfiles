@@ -6,6 +6,14 @@ DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 
 CHEZMOI_CONFIG_DIR="$HOME/.config/chezmoi"
 CHEZMOI_CONFIG="$CHEZMOI_CONFIG_DIR/chezmoi.toml"
+CHEZMOI_AGE_IDENTITY="$CHEZMOI_CONFIG_DIR/key.txt"
+
+CHEZMOI_AGE_RECIPIENTS=(
+  "age1fuhr3hfm3ln4g8sr9tg9ryv3t9pv8tmt3hf6ss9qqsfdrhf3spqs0uc2tk"
+  "age13qdxr3kk72nvlnv02ydwvl7t90ecqqhk849xep2ynkg7quwwapwsjhqa74"
+  "age1sheelfnxxkz9wwpuruk33wn7xhut9ukvmzlqg982vzj0am2tjqyswchuhz"
+  "age1m8m24y6xj4f3hq68h0dur7mef2w702jcgc63ytenarast4e3l4ls945fef"
+)
 
 need_cmd() {
   command -v "$1" >/dev/null 2>&1
@@ -45,11 +53,27 @@ echo "==> Writing chezmoi config"
 
 mkdir -p "$CHEZMOI_CONFIG_DIR"
 
-cat > "$CHEZMOI_CONFIG" <<EOF
-sourceDir = "$DOTFILES_DIR"
-EOF
+{
+  printf 'sourceDir = "%s"\n' "$DOTFILES_DIR"
+
+  if [ "${#CHEZMOI_AGE_RECIPIENTS[@]}" -gt 0 ]; then
+    printf 'encryption = "age"\n\n'
+    printf '[age]\n'
+    printf 'identity = "%s"\n' "$CHEZMOI_AGE_IDENTITY"
+    printf 'recipients = [\n'
+    for recipient in "${CHEZMOI_AGE_RECIPIENTS[@]}"; do
+      printf '  "%s",\n' "$recipient"
+    done
+    printf ']\n'
+  fi
+} > "$CHEZMOI_CONFIG"
 
 echo "==> Wrote $CHEZMOI_CONFIG"
+
+if [ "${#CHEZMOI_AGE_RECIPIENTS[@]}" -gt 0 ] && [ ! -f "$CHEZMOI_AGE_IDENTITY" ]; then
+  echo "==> Warning: age identity not found at $CHEZMOI_AGE_IDENTITY"
+  echo "    Encrypted files cannot be decrypted until this private key exists."
+fi
 
 echo "==> Checking chezmoi"
 
