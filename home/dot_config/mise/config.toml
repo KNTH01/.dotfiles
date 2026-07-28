@@ -36,6 +36,7 @@ pi = "0.82.0"
 fzf = "0.73.1"
 jq = "latest"
 superfile = "1.6.0"
+"npm:mcporter" = "0.12.3"
 
 [settings]
 minimum_release_age = "7d"
@@ -43,3 +44,9 @@ minimum_release_age_excludes = ["pi"]
 
 [settings.npm]
 package_manager = "bun"
+
+[env]
+XDG_CONFIG_HOME = "/home/knth/.config"
+XDG_DATA_HOME = "/home/knth/.local/share"
+XDG_CACHE_HOME = "/home/knth/.cache"
+XDG_STATE_HOME = "/home/knth/.local/state"
